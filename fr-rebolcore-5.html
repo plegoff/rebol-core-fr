@@ -1,0 +1,976 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Chapitre 5 - Les scripts</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Chapitre 5 - Les scripts</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Chapitre 5 - Les scripts</h1>
+<div class="header">
+Ce document est la traduction française du Chapitre 5 du User Guide de REBOL/Core, <br />qui concerne les scripts.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-5.html#section-1">1. Historique de la traduction</a><br />
+<a class="toc1" href="fr-rebolcore-5.html#section-2">2. Présentation générale</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-2.1">2.1 Suffixe des scripts</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-2.2">2.2 Structure</a><br />
+<a class="toc1" href="fr-rebolcore-5.html#section-3">3. En-têtes</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-3.1">3.1 En-tête</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-3.2">3.2 Scripts avec préambules</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-3.3">3.3 Inclusion de scripts</a><br />
+<a class="toc1" href="fr-rebolcore-5.html#section-4">4. Arguments des scripts</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-4.1">4.1 Options de programme</a><br />
+<a class="toc1" href="fr-rebolcore-5.html#section-5">5. Exécution des scripts</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-5.1">5.1 Chargement des scripts</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-5.2">5.2 Sauvegarde des scripts</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-5.3">5.3 Commentaires dans les scripts</a><br />
+<a class="toc1" href="fr-rebolcore-5.html#section-6">6. Guide de Style</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-6.1">6.1 Formatage</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.1.1">6.1.1 Indentez le contenu pour le clarifier</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.1.2">6.1.2 Taille standard pour les tabulations</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.1.3">6.1.3 Détabuler avant de publier</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.1.4">6.1.4 Limitez les longueurs de ligne à 80 caractères</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-6.2">6.2 Libellés des mots</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.2.1">6.2.1 Utilisez les mots les plus courts ayant le sens le plus fort</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.2.2">6.2.2 Employez des mots entiers si possible</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.2.3">6.2.3 Mettez un trait d'union aux mots ayant des libellés complexes</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.2.4">6.2.4 Débutez les noms de fonction par un verbe</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.2.5">6.2.5 Commencez les variables avec des noms</a><br />
+<a class="toc3" href="fr-rebolcore-5.html#section-6.2.6">6.2.6 Utilisez des mots standards</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-6.3">6.3 En-têtes de script</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-6.4">6.4 En-tête de fonctions</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-6.5">6.5 Nom des fichiers de script</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-6.6">6.6 Insertion d'exemples</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-6.7">6.7 Déboguage incorporé</a><br />
+<a class="toc2" href="fr-rebolcore-5.html#section-6.8">6.8 Minimiser le nombre de variables globales</a><br />
+<a class="toc1" href="fr-rebolcore-5.html#section-7">7. Clarification du format d'un script</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>20 mai 2005 - 21:31</p>
+</td><td>
+<p>1.0.0</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+<p><br />
+<br /></p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Présentation générale</h2>
+<blockquote>
+<p>Le terme "script" fait référence non seulement à de simples fichiers à évaluer 
+mais aussi à du code incorporé dans d'autres types de fichiers 
+(comme des pages Web), ou à des morceaux de code source sauvegardés 
+en tant que fichiers de données ou transmis comme messages.</p>
+</blockquote>
+<p>
+<h3 id="section-2.1">2.1 Suffixe des scripts</h3>
+<blockquote>
+<p>Typiquement, les scripts REBOL prennent un suffixe <b>.r</b> à leur noms de fichiers. 
+Cependant, cette convention n'est pas obligatoire. L'interpréteur lit les fichiers 
+quelque soit leur suffixe et recherche dans leur contenu un en-tête (<b>header</b>) valide de script REBOL.</p>
+</blockquote>
+<p>
+<h3 id="section-2.2">2.2 Structure</h3>
+<blockquote>
+<p>La structure d'un script est libre. L'indentation et l'usage d'espaces peuvent être 
+utilisés pour clarifier la structure et le contenu d'un script. 
+De plus, vous êtes encouragés à utiliser les conventions standard de style REBOL pour rendre vos scripts 
+universellement lisibles. Voir le Guide de Style pour plus d'informations, à la fin de ce chapitre.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. En-têtes</h2>
+<blockquote>
+</blockquote>
+<p>
+<h3 id="section-3.1">3.1 En-tête</h3>
+<blockquote>
+<p>Précédant directement le corps du script, chaque script doit posséder un en-tête 
+qui identifie son propos, ainsi que d'autres attributs du script.</p>
+<p>Un en-tête de script (le "header") peut contenir le nom du script, de l'auteur, 
+la date, le numéro de version, le nom du fichier, et des informations supplémentaires.</p>
+<p>Les fichiers de données REBOL qui ne sont pas destinés à une évaluation directe ne 
+nécessitent pas un en-tête.</p>
+<p>Les en-têtes sont pratiques pour plusieurs raisons.</p>
+<p>Ils identifient un script comme étant du texte source valide pour l'interpréteur
+REBOL. L'interpréteur utilise l'en-tête pour afficher le titre du script, et 
+déterminer quelles ressources et quelles versions sont nécessaires avant d'évaluer 
+le script. Les en-têtes fournissent un moyen normalisé de communiquer le titre, le 
+sujet, l'auteur et d'autres détails du script.</p>
+<p>Vous pouvez souvent déterminer à partir d'un en-tête de script si celui-ci vous intéressera.</p>
+<p>Les bibliothèques de scripts et les sites web utilisent les en-têtes pour générer automatiquement les 
+répertoires, les catégories de scripts, et les références croisées.</p>
+<p>Certains éditeurs de texte permettent de consulter et de  mettre à jour les en-têtes de 
+scripts, afin de créer un historique des informations telles l'auteur, la date, la version.</p>
+<p>La forme générale d'un en-tête de script est :</p>
+<pre>
+REBOL [block]
+</pre>
+<p>Pour que l'interpréteur reconnaisse l'en-tête, le bloc doit immédiatement suivre 
+le mot REBOL. Seuls des espaces blancs (espaces, tabulations, et lignes) sont 
+autorisés entre le mot REBOL et le bloc.</p>
+<p>Le bloc qui suit le mot REBOL va présenter le script. Il est souhaitable d'avoir au 
+minimum un en-tête du type :</p>
+<pre>
+REBOL [
+    Title:  "Scan Web Sites"
+    Date:   2-Feb-2000
+    File:   %webscan.r
+    Author: "Jane Doer"
+    Version: 1.2.3
+]
+</pre>
+<p>Lorsqu'un script est chargé, le bloc d'en-tête est évalué et les valeurs sont attribuées 
+aux mots leur faisant référence. Ces valeurs sont utilisées par l'interpréteur (pour construire 
+un objet REBOL <b>system/script/header</b>) et peuvent aussi être utilisées par le script lui-même.</p>
+<p>Notez que les mots définis avec des valeurs uniques peuvent aussi être définis avec 
+des valeurs multiples, il suffit de fournir ces valeurs dans un bloc :</p>
+<pre>
+REBOL [
+    Title: "Scan Web Sites"
+    Date:   12-Nov-1997
+    Author: ["Ema User" "Wasa Writer"]
+]
+</pre>
+<p>Les en-têtes peuvent être plus complexes, avec des informations sur l'auteur, la 
+licence, le formatage, les versions requises, l'historique des révisions, et plus encore.</p>
+<p>Puisque le bloc est utilisé pour construire l'objet "<b>header</b>" (<b>system/script/header</b>), il peut aussi être 
+étendu avec de nouvelles informations.</p>
+<p>Cela signifie qu'un en-tête de script peut être adapté selon le besoin, mais ceci devrait 
+être fait avec précaution pour éviter les ambiguïtés ou la redondance d'informations.</p>
+<p>Un en-tête complet pourrait ressembler à quelque chose comme cela :</p>
+<pre>
+REBOL [
+    Title:   "Full REBOL Header Example"
+    Date:    8-Sep-1999
+    Name:    'Full-Header  ; Pour le titre de la fenêtre
+
+    Version: 1.1.1
+    File:    %headfull.r
+    Home:    http://www.rebol.com/rebex/
+
+    Author:  "Carl Sassenrath"
+    Owner:   "REBOL Headquarters"
+    Rights:  "Copyright (C) Carl Sassenrath 1999"
+
+    Needs:   [2.0 ODBC]
+    Tabs:    4
+
+    Purpose: {
+        The purpose or general reason for the program
+        should go here.
+    }
+
+    Note: {
+        An important comment or notes about the program
+        can go here.
+    }
+
+    History: [
+        0.1.0 [5-Sep-1999 "Created this example" "Carl"]
+        0.1.1 [8-Sep-1999 {Moved the header up, changed
+            comment on extending the header, added
+            advanced user comment.} "Carl"]
+    ]
+
+    Language: 'English
+]
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.2">3.2 Scripts avec préambules</h3>
+<blockquote>
+<p>L'écriture des scripts n'impose pas de commencer avec un en-tête. Les scripts peuvent commencer avec 
+n'importe quel texte, ce qui leur permettrait d'être inclus dans des messages emails, des pages web, 
+et d'autres fichiers.</p>
+<p>Cependant, l'en-tête marque pour REBOL le début du script, et le texte qui le suit est le corps du script. 
+Le texte qui apparaît avant un en-tête est appelé le préambule ("<i>preface</i>") et ce texte 
+est ignoré pendant l'évaluation.</p>
+<p>Le texte qui apparaît avant les en-têtes est ignoré par REBOL et peut donc 
+être utilisé pour des commentaires, des en-têtes d'email, des balises HTML, etc.</p>
+<pre>
+un essai de script
+REBOL [
+  Title:   "Exemple de préambule"
+  Date:    8-Jul-1999
+]
+
+print "Ce fichier a un préambule avant son en-tête"
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.3">3.3 Inclusion de scripts</h3>
+<blockquote>
+<p>Si un script doit être suivi par du texte sans lien avec le script lui-même, 
+le script doit être placé entre deux crochets [ ] :</p>
+<pre>
+Un peu de texte avant le script.
+
+[
+    REBOL [
+        Title:   "Embedded Example"
+        Date:    8-Nov-1997
+    ]
+    print "done"
+]
+
+Ici du texte après le script.
+</pre>
+<p>Seul un espace blanc est compris entre le premier crochet et le mot REBOL.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-4">4. Arguments des scripts</h2>
+<blockquote>
+<p>Quand un script est évalué, il peut accéder aux informations le concernant.</p>
+<p>Celles-ci se trouvent dans l'objet REBOL <b>system/script</b>. Cet objet contient les 
+champs pour le titre du script (<b>system/script/title</b>), 
+les informations mises dans l'en-tête (<b>system/script/header</b>), et plus encore.</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Item</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Title</b></p>
+</td><td>
+<p>Le libellé décrivant le script</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Header</b></p>
+</td><td>
+<p>L'en-tête du script, sous la forme d'un objet. Peut être 
+utilisé pour accéder au titre du script, au nom de l'auteur, sa version, 
+la date, et d'autres champs.</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Parent</b></p>
+</td><td>
+<p>Si le script a été évalué à partir d'un autre script, cet objet donne 
+des informations pour ce script parent.</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Path</b></p>
+</td><td>
+<p>La localisation (path) du fichier dans l'arborescence des fichiers, 
+ou l'URL à partir de laquelle le script a été évalué.</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Args</b></p>
+</td><td>
+<p>Les arguments du script. Ils sont passés depuis la ligne de commande, 
+ou à partir de la fonction <b>do</b> qui a été utilisée pour évaluer le script.</p>
+</td></tr></table>
+<p>
+<p>Quelques exemples illustrant l'usage de l'objet <b>system/script</b> :</p>
+<pre>
+print system/script/title
+
+print system/script/header/date
+
+do system/script/args
+
+do system/script/path/script.r
+</pre>
+<p>Le dernier exemple évalue un script appelé script.r, se trouvant dans le même répertoire 
+(system/script/path) que le script en cours d'évaluation.</p>
+</blockquote>
+<p>
+<h3 id="section-4.1">4.1 Options de programme</h3>
+<blockquote>
+<p>Les scripts peuvent aussi accéder aux options fournies à l'interpréteur 
+REBOL quand il a été démarré. Elles peuvent être trouvées dans 
+l'objet <b>system/option</b>.</p>
+<p>Cet objet contient les champs suivants :</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Item</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Home</b></p>
+</td><td>
+<p>Le chemin vers l'interpréteur, dans l'environnement de 
+votre système d'exploitation. Il s'agit du chemin indiqué dans la 
+variable HOME de votre environnement, ou de la base de registre si 
+votre système l'exploite. C'est le chemin utilisé aussi pour trouver 
+les fichiers  <b>rebol.r</b> et <b>user.r</b>.</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Script</b></p>
+</td><td>
+<p>Le nom du fichier de script initialement fourni quand 
+l'interpréteur a été lancé.</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Path</b></p>
+</td><td>
+<p>Le chemin vers le répertoire courant.</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Args</b></p>
+</td><td>
+<p>Les arguments initiaux fournis à l'interpréteur en 
+ligne de commande.</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Do-arg</b></p>
+</td><td>
+<p>La chaîne fournie en argument à l'option --do en 
+ligne de commande.</p>
+</td></tr></table>
+<p>
+<p>L'objet <b>system/options</b> peut aussi contenir des options 
+supplémentaires qui ont été fournies en ligne de commande. <br />
+Saisissez :</p>
+<pre>
+probe system/options
+</pre>
+<p>pour étudier le contenu de l'objet <b>system/options</b>.</p>
+<p>Exemples:</p>
+<pre>
+print system/options/script
+
+probe system/options/args
+
+print read system/options/home/user.r
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-5">5. Exécution des scripts</h2>
+<blockquote>
+<p>Il y a deux manières d'exécuter un script : en tant que script initial, quand 
+REBOL est démarré, ou à partir de la fonction <b>do</b>.</p>
+<p>Pour exécuter un script au lancement de l'interpréteur, donnez le nom du 
+script en ligne de commande juste après le nom de l'interpréteur (rebol ou rebol.exe) :</p>
+<pre>
+rebol script.r
+</pre>
+<p>Lors de l'initialisation de l'interpréteur, le script sera 
+évalué.</p>
+<p>A la fonction <b>do</b>, fournissez le nom de fichier du script en argument. 
+Le fichier sera chargé dans l'interpréteur et évalué :</p>
+<pre>
+do %script.r
+
+do http://www.rebol.com/script.r
+</pre>
+<p>La fonction <b>do</b> renvoie le résultat du script quand l'évaluation 
+est terminée. 
+Notez que le script doit inclure en en-tête (header) REBOL valide.</p>
+</blockquote>
+<p>
+<h3 id="section-5.1">5.1 Chargement des scripts</h3>
+<blockquote>
+<p>Les scripts peuvent être chargés comme des données, avec la fonction <b>load</b>.</p>
+<p>Cette fonction lit le script, et traduit le script en valeurs, mots et blocs, mais 
+sans évaluer le script. Le résultat de la fonction <b>load</b> est un bloc, sauf si 
+une seule valeur a été chargée, auquel cas cette valeur est retournée.</p>
+<p>L'argument de la fonction <b>load</b> est un nom de fichier, une URL, ou une chaîne :</p>
+<pre>
+load %script.r
+load %datafile.txt
+load http://www.rebol.org/script.r
+load "print now"
+</pre>
+<p>La fonction <b>load</b> réalise les étapes suivantes.</p>
+<p>Elle</p>
+<ul>
+<li>lit le texte du fichier, de l'URL, ou de la chaîne de caractères.</li>
+<li>recherche un en-tête de script, s'il est présent.</li>
+<li>traduit les données trouvées après l'en-tête, s'il y en a.</li>
+<li>renvoie un bloc contenant les valeurs traduites.</li>
+</ul>
+<p>Par exemple, si un script appelé <i>buy.r</i> contient le texte :</p>
+<pre>
+Buy 100 shares at $20.00 per share
+</pre>
+<p>il pourra être chargé avec la ligne :</p>
+<pre>
+data: load %buy.r
+</pre>
+<p>et il renverra dans un bloc :</p>
+<pre>
+probe data
+<span class="output">[Buy 100 shares at $20.00 per share]</span>
+</pre>
+<p>Remarquez que l'exemple "Buy" précédent est un dialecte de REBOL 
+et non du code directement exécutable. Voir <a href="fr-rebolcore-4.html">le chapitre 4 sur 
+les Expressions</a> pour plus d'information.</p>
+<p>A noter aussi qu'un fichier ne nécessite pas un en-tête pour être chargé. 
+L'en-tête est nécessaire seulement si le fichier doit être exécuté en tant que script.</p>
+<p>La fonction <b>load</b> possède quelques raffinements dont voici la description :</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Item</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/header</b></p>
+</td><td>
+<p>Inclue l'en-tête (header) s'il est présent</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/next</b></p>
+</td><td>
+<p>Charge seulement la valeur suivante, une valeur à la fois. Ceci est pratique pour 
+parser, analyser des scripts REBOL.</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/markup</b></p>
+</td><td>
+<p>Traite le fichier comme un fichier HTML ou XHTML et renvoie un bloc permettant de 
+manipuler les balises et le texte.</p>
+</td></tr></table>
+<p>
+<p>En principe, <b>load</b> ne renvoie pas l'en-tête du script. 
+Mais, si le raffinement <b>/header</b> est utilisé, l'en-tête est le premier item 
+du bloc renvoyé par <b>load</b>.</p>
+<p>Le raffinement <b>/next</b> charge la valeur suivante et renvoie un bloc contenant 
+deux valeurs. La première  est la valeur suivante dans la série. La seconde valeur 
+retournée est la position dans la chaîne suivant immédiatement le dernier item chargé.</p>
+<p>Le raffinement <b>/markup</b> charge des données XML et HTML sous la forme d'un bloc de 
+balises et de chaînes de caractères. Toutes les balises sont du type <b>tag!</b>. 
+Les autres données sont traitées comme des chaînes de caractères.</p>
+<p>Si le contenu du fichier suivant est chargé avec <b>load/markup</b> :</p>
+<pre>
+&lt;title&gt;This is an example&lt;/title&gt;
+</pre>
+<p>un bloc sera créé :</p>
+<pre>
+probe data
+<span class="output">[&lt;title&gt; "This is an example" &lt;/title&gt;]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.2">5.2 Sauvegarde des scripts</h3>
+<blockquote>
+<p>Des données peuvent être sauvegardées dans un fichier de script selon un format facilement 
+récupérable sous REBOL avec la fonction <b>load</b>.</p>
+<p>C'est une manière pratique de sauver des données et des blocs de données. Par ce moyen, 
+il est possible de créer une mini base de données.</p>
+<p>La fonction <b>save</b> attend deux arguments : un nom de fichier et, soit le bloc, soit la valeur 
+à sauvegarder.</p>
+<pre>
+data: [Buy 100 shares at $20.00 per share]
+
+save %data.r data
+</pre>
+<p>Les données <i>data</i> sont écrites au format texte pour REBOL, ce qui permet de les 
+charger ultérieurement avec :</p>
+<pre>
+data: load %data.r
+</pre>
+<p>De simples valeurs peuvent aussi être sauvées et chargées. Par exemple, un horodatage peut 
+être sauvé avec :</p>
+<pre>
+save %date.r now
+</pre>
+<p>et plus tard rechargé avec :</p>
+<pre>
+stamp: load %date.r
+</pre>
+<p>Dans l'exemple précédent, comme <i>stamp</i> est une valeur unique, elle n'est pas mise  
+dans un bloc lorsqu'elle est chargée.</p>
+<p>Pour sauvegarder un fichier script avec un en-tête, celui-ci doit être fourni en argument, 
+à load avec le raffinement <b>/header</b>, soit sous la forme d'un objet ou sinon d'un bloc :</p>
+<pre>
+header: [Title: "This is an example"]
+
+save/header %data.r data header
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.3">5.3 Commentaires dans les scripts</h3>
+<blockquote>
+<p>L'usage de commentaires est pratique pour clarifier l'objet de certains paragraphes de 
+scripts. 
+L'en-tête d'un script fournit la description générale du script et les commentaires 
+une description plus courte des fonctions. C'est également une bonne idée de mettre 
+des commentaires pour d'autres parties de votre code.</p>
+<p>Un commentaire mono-ligne est précédé d'un point-virgule ( <b>;</b> ).
+Tout ce qui suit le point-virgule, et jusqu'à la fin de la ligne, est pris comme 
+un commentaire :</p>
+<pre>
+zertplex: 10   ; set to the highest quality
+</pre>
+<p>Vous pouvez aussi utiliser des chaînes de caractères pour les commentaires. Par exemple, 
+vous pouvez créer des commentaires sur plusieurs lignes avec une chaîne de caractères 
+placée entre accolades.</p>
+<pre>
+{
+    This is a long multilined comment.
+}
+</pre>
+<p>Cette façon de commenter fonctionne uniquement si la chaîne n'est pas interprétée comme 
+un argument d'une fonction. Si vous voulez être sûr qu'un commentaire multi-lignes soit  
+reconnu comme tel et non interprété comme du code, faites-le précéder du mot <b>comment</b> :</p>
+<pre>
+comment {
+    This is a long multilined comment.
+}
+</pre>
+<p>La fonction <b>comment</b> indique à REBOL qu'il faut ignorer le bloc ou la chaîne qui le suit. 
+Notez que les commentaires sous forme de blocs ou de chaînes font actuellement partie  
+du bloc global du script. Faites attention de ne pas mettre ces commentaires dans des 
+blocs de données, car ils pourraient être évalués comme des parties de données.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-6">6. Guide de Style</h2>
+<blockquote>
+<p>Les scripts REBOL n'ont pas de formalisme particulier. Vous pouvez écrire un script 
+en utilisant l'indentation, la longueur de ligne ou les marqueurs de fin de ligne que 
+vous voulez. Vous pouvez mettre chaque mot sur une ligne séparée ou les joindre 
+ensemble sur une seule grande ligne.</p>
+<p>Bien que le formatage de votre script n'affecte pas l'interpréteur, la présentation 
+affecte, elle, la lisibilité. A cause de cela, REBOL Technologies suggère de suivre un 
+certain style pour écrire vos scripts, qui va être décrit dans cette section.</p>
+<p>Bien sûr, vous n'êtes pas obligés de suivre l'une ou l'autre de ses suggestions. 
+Pourtant, le style du code est plus important qu'il ne paraît à première vue.
+La lisibilité et la réutilisation des scripts peuvent en être facilitées. 
+Les utilisateurs peuvent juger la qualité de vos scripts par la clarté de votre style. 
+Un script alambiqué va souvent de pair avec un code alambiqué. Les codeurs expérimentés  
+trouvent d'habitude qu'un style clair et cohérent rend leur code plus facile à produire, à 
+maintenir et à contrôler.</p>
+</blockquote>
+<p>
+<h3 id="section-6.1">6.1 Formatage</h3>
+<blockquote>
+<p>Utilisez les indications de style suivantes pour clarifier  la présentation de vos scripts :</p>
+<p>
+<h4 id="section-6.1.1">6.1.1 Indentez le contenu pour le clarifier</h4>
+<p>Le contenu d'un bloc est indenté, mais pas les crochets <b>[ ]</b> encadrant le bloc. 
+C'est parce que les crochets ont un niveau de priorité plus important pour la syntaxe, 
+et parce qu'ils définissent le bloc mais ne sont pas le contenu du bloc. 
+De plus, il est plus facile de se focaliser sur les ruptures entre des blocs adjacents 
+quand les crochets sont repérables.</p>
+<p>Lorsque cela est possible, un crochet ouvrant <b>[</b> demeure sur la ligne avec l'expression 
+qui lui est associée. Le crochet fermant <b>]</b> peut être suivi de plusieurs expressions 
+au même niveau. Des règles identiques s'appliquent pour les parenthèses <b>( )</b> et les 
+accolades <b>{ }</b>.</p>
+<pre>
+if check [do this and that]
+
+if check [
+    do this and do that
+    do another thing
+    do a few more things
+]
+
+either check [do something short][
+    do something else]
+
+either check [
+    when an expression extends
+    past the end of a block...
+][
+    this helps keep things
+    straight
+]
+
+while [
+    do a longer expression
+    to see if it's true
+][
+    the end of the last block
+    and start of the new one
+    are at the WHILE level
+]
+
+adder: func [
+    "This is an example function"
+    arg1 "this is the first arg"
+    arg2 "this is the second arg"
+][
+    arg1 + arg2
+]
+</pre>
+<p>Une exception est faite pour les expressions qui appartiennent normalement à une 
+ligne simple, mais se prolongent sur plusieurs lignes :</p>
+<pre>
+if (this is a long conditional expression that
+    breaks over a line and is indented
+)[
+    so this looks a bit odd
+]
+</pre>
+<p>Ceci s'applique aussi à des valeurs qui sont normalement groupées ensemble, mais 
+qui doivent être adaptées à la ligne.</p>
+<pre>
+[
+    "Hitachi Precision Focus" $1000 10-Jul-1999
+        "Computers Are Us"
+
+    "Nuform Natural Keyboard" $70 20-Jul-1999
+        "The Keyboard Store"
+]
+</pre>
+<p>
+<h4 id="section-6.1.2">6.1.2 Taille standard pour les tabulations</h4>
+<p>La taille standard de tabulation pour REBOL est de quatre espaces. Comme les programmeurs  
+utilisent différents éditeurs de texte pour les scripts, il est suggérer d'employer  
+les espaces plutôt que les tabulations.</p>
+<p>
+<h4 id="section-6.1.3">6.1.3 Détabuler avant de publier</h4>
+<p>Dans beaucoup de navigateurs, ou shells, ou lecteurs, le caractère de tabulation (ASCII 9) 
+ne correspond pas à quatre espaces, donc utilisez votre éditeur ou REBOL pour ôter 
+les tabulations d'un script avant de le publier sur le Net. La fonction suivante 
+transforme chaque tabulation d'un fichier en un bloc de quatre espaces.</p>
+<pre>
+detab-file: func [file-name [file!]] [
+    write file-name detab read file-name
+]
+detab-file %script.r
+</pre>
+<p>La fonction suivante convertit des tabulations à huit espaces en tabulations à quatre espaces :</p>
+<pre>
+detab-file: func [file-name [file!]] [
+    write file-name detab entab/size read file-name 8
+]
+</pre>
+<p>
+<h4 id="section-6.1.4">6.1.4 Limitez les longueurs de ligne à 80 caractères</h4>
+<p>Pour faciliter la lecture et la portabilité entre éditeurs de texte et clients email, 
+limitez les lignes à 80 caractères. Les lignes trop longues sont mal formatées dans les clients 
+email, sont difficiles à lire et posent des problèmes de chargement.</p>
+</blockquote>
+<p>
+<h3 id="section-6.2">6.2 Libellés des mots</h3>
+<blockquote>
+<p>Les mots de votre code sont en premier lieu ce qui est exposé à un utilisateur, de sorte 
+qu'il vous faut les choisir soigneusement.
+Un script doit être clair et concis. Lorsque c'est possible, les mots doivent être 
+parlants. Voici les convention de nommage pour REBOL.</p>
+<p>
+<h4 id="section-6.2.1">6.2.1 Utilisez les mots les plus courts ayant le sens le plus fort</h4>
+<p>Quand c'est possible, les mots directs donnent plus de sens :</p>
+<pre>
+size  time  send  wait  make  quit
+</pre>
+<p>Un mot à portée locale peut souvent être réduit à un mot simple.  
+D'un autre côté, des mots plus descriptifs sont préférables pour les mots à portée globale.</p>
+<p>
+<h4 id="section-6.2.2">6.2.2 Employez des mots entiers si possible</h4>
+<p>Ce que vous conservez en abrégeant un mot est rarement le meilleur.</p>
+<p>Saisissez <i>date</i> et non pas <i>dt</i>, ou <i>image-file</i> et non pas <i>imgfl</i>.</p>
+<p>
+<h4 id="section-6.2.3">6.2.3 Mettez un trait d'union aux mots ayant des libellés complexes</h4>
+<p>Le style standard est d'utiliser un trait d'union, et non la casse des caractères, pour 
+distinguer des mots.</p>
+<pre>
+group-name image-file  clear-screen  bake-cake
+</pre>
+<p>
+<h4 id="section-6.2.4">6.2.4 Débutez les noms de fonction par un verbe</h4>
+<p>Les noms de fonction commencent avec un verbe et sont suivis par un nom, un adverbe, et un adjectif.
+Certains noms peuvent aussi être utilisés comme verbes.</p>
+<pre>
+make  print  scan  find  show  hide  take
+rake-coals  find-age  clear-screen
+</pre>
+<p>Eviter autant que possible les mots inutiles. Par exemple, <b>quit</b> est aussi 
+clair que <b>quit-system</b>.</p>
+<p>Quand un nom est utilisé comme verbe, utilisez des caractères spéciaux comme le caractère ( <b>?</b> ) 
+là où cela est possible. Par exemple, la fonction donnant la longueur d'une série est  <b>length?</b>.</p>
+<p>Voici d'autres fonctions REBOL utilisant cette convention de nommage :</p>
+<pre>
+size?  dir?  time?  modified?
+</pre>
+<p>
+<h4 id="section-6.2.5">6.2.5 Commencez les variables avec des noms</h4>
+<p>Les mots représentant des objets ou des variables qui manipulent des données devraient 
+commencer par un nom. Ils peuvent aussi comprendre un adjectif si nécessaire :</p>
+<pre>
+image  sound  big-file  image-files  start-time
+</pre>
+<p>
+<h4 id="section-6.2.6">6.2.6 Utilisez des mots standards</h4>
+<p>Il y a des noms standards en REBOL qui devraient être utilisés pour des types d'opérations 
+similaires. Par exemple :</p>
+<pre>
+make-blub           ; créer quelque chose de nouveau (make)
+free-blub           ; libérer les ressources (free)
+copy-blub           ; copier un contenu (copy)
+to-blub             ; transformer en quelque chose (to-...)
+insert-blub         ; insérer quelque chose (insert)
+remove-blub         ; enlever (remove)
+clear-blub          ; remettre à zéro
+</pre>
+</blockquote>
+<p>
+<h3 id="section-6.3">6.3 En-têtes de script</h3>
+<blockquote>
+<p>L'intérêt des en-têtes est clair. Les en-têtes donnent aux utilisateurs 
+un résumé du script et permettent à d'autres scripts de traiter cette information ( comme 
+pour cataloguer de script). Un en-tête minimum de script fournit le titre, la date, 
+le nom du fichier, et le sujet du script. D'autres champs peuvent aussi être fournis comme 
+les auteurs, des notes, l'usage et les pré-requis.</p>
+<pre>
+REBOL [
+    Title: "Local Area Defringer"
+    Date:  1-Jun-1957
+    File:  %defringe.r
+    Purpose: {
+        Stabilize the wide area ignition transcriber
+        using a double ganged defringing algorithm.
+    }
+]
+</pre>
+</blockquote>
+<p>
+<h3 id="section-6.4">6.4 En-tête de fonctions</h3>
+<blockquote>
+<p>Il est commode d'avoir une description dans le bloc de spécification d'une fonction. 
+Limitez ce texte à une ligne de 70 caractères ou moins.</p>
+<p>Au sein de cette description, 
+mentionnez quel type de valeur est attendu normalement par la fonction.</p>
+<pre>
+defringe: func [
+    "Return the defringed localization radius."
+    area "Topo area to defringe"
+    time "Time allotted for operation"
+    /cost num "Maximum cost permitted"
+    /compound "Compound the calculation"
+][
+    ...code...
+]
+</pre>
+</blockquote>
+<p>
+<h3 id="section-6.5">6.5 Nom des fichiers de script</h3>
+<blockquote>
+<p>La meilleure manière de nommer un fichier est de penser à la façon dont vous 
+pourriez le retrouver dans quelques mois. 
+Les noms courts et clairs sont assez souvent les meilleurs.  Les noms complexes devraient être évités, 
+à moins d'être significatifs.</p>
+<p>De plus, en nommant le script, pensez à la manière dont le nom ressortira dans le listing 
+d' un répertoire. Par exemple, conservez les fichiers ayant un lien entre eux en faisant 
+débuter leur nom par un mot commun.</p>
+<pre>
+%net-start.r
+%net-stop.r
+%net-run.r
+</pre>
+</blockquote>
+<p>
+<h3 id="section-6.6">6.6 Insertion d'exemples</h3>
+<blockquote>
+<p>Le cas échéant, fournissez des exemples dans votre script pour présenter 
+son fonctionnement et pour permettre aux utilisateurs de vérifier 
+rapidement s'il fonctionne correctement sur leur système.</p>
+</blockquote>
+<p>
+<h3 id="section-6.7">6.7 Déboguage incorporé</h3>
+<blockquote>
+<p>Il est souvent utile de construire des fonctions de débogage 
+intégrées au script. C'est particulièrement vrai pour les scripts utilisant le réseau et manipulant  
+des fichiers, et pour lesquels où il n'est pas souhaitable d'émettre et d'écrire des fichiers 
+tant qu'on est en mode de test. De tels tests peuvent être gérés avec une variable de contrôle 
+au début du script.</p>
+<pre>
+verbose: on
+check-data: off
+</pre>
+</blockquote>
+<p>
+<h3 id="section-6.8">6.8 Minimiser le nombre de variables globales</h3>
+<blockquote>
+<p>Dans les longs scripts, et autant que possible, évitez d'utiliser des variables 
+globales qui portent leur état interne d'une partie ou d'une fonction à l'autre.</p>
+<p>Pour les petits scripts, ce n'est pas toujours pratique.  
+Mais reconnaissez que ces scripts courts peuvent devenir au fil du temps de 
+plus en plus grands.</p>
+<p>Si vous avez un ensemble de variables globales fortement reliées entre elles, pensez à 
+utiliser un objet pour les regrouper :</p>
+<pre>
+user: make object! [
+    name:  "Fred Dref"
+    age:   94
+    phone: 707-555-1234
+    email: dref@fred.dom
+]
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-7">7. Clarification du format d'un script</h2>
+<blockquote>
+<p>Voici un court script qui peut être utilisé pour nettoyer l'indentation d'un script. 
+Il fonctionne en analysant la syntaxe REBOL et en reconstruisant chaque ligne du script. 
+Cet exemple peut être trouvé dans la bibliothèque de scripts sur 
+<a href="www.rebol.com">www.REBOL.com</a>.</p>
+<pre>
+out: none ; output text
+spaced: off ; add extra bracket spacing
+indent: "" ; holds indentation tabs
+
+emit-line: func [] [append out newline]
+
+emit-space: func [pos] [
+    append out either newline = last out [indent] [
+        pick [#" " ""] found? any [
+            spaced
+            not any [find "[(" last out
+                     find ")]" first pos]
+        ]
+    ]
+]
+
+emit: func [from to] [
+    emit-space from append out copy/part from to
+]
+
+clean-script: func [
+    "Returns new script text with standard spacing."
+    script "Original Script text"
+    /spacey "Optional spaces near brackets/parens"
+    /local str new
+] [
+    spaced: found? spacey
+    out: append clear copy script newline
+    parse script blk-rule: [
+        some [
+            str:
+            newline (emit-line) |
+            #";" [thru newline | to end] new:
+                (emit str new) |
+            [#"[" | #"("]
+                (emit str 1 append indent tab)
+                blk-rule |
+            [#"]" | #")"]
+                (remove indent emit str 1) |
+            skip (set [value new]
+                load/next str emit str new) :new
+        ]
+    ]
+    remove out ; remove first char
+]
+
+script: clean-script read %script.r
+
+write %new-script.r script
+</pre>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 15-Apr-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>

@@ -1,0 +1,1278 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Chapitre 11 - Maths</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Chapitre 11 - Maths</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Chapitre 11 - Maths</h1>
+<div class="header">
+Ce document est la traduction française du Chapitre 11 du User Guide de REBOL/Core,<br />qui concerne les expressions mathématiques.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-11.html#section-1">1. Historique de la traduction</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-2">2. Présentation</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-3">3. Types de données scalaires</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-4">4. Ordre de l'évaluation</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-5">5. Fonctions et Opérateur standards</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-5.1">5.1 absolute</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-5.2">5.2 add</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-5.3">5.3 complement</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-5.4">5.4 divide</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-5.5">5.5 multiply</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-5.6">5.6 negate</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-5.7">5.7 random</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-5.8">5.8 remainder</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-5.9">5.9 subtract</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-6">6. Conversion de type</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-7">7. Fonctions de comparaison</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-7.1">7.1 equal</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-7.2">7.2 greater</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-7.3">7.3 greater-or-equal</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-7.4">7.4 lesser</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-7.5">7.5 lesser-or-equal</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-7.6">7.6 not equal to</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-7.7">7.7 same</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-7.8">7.8 strict-equal</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-7.9">7.9 strict-not-equal</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-8">8. Fonctions Logarithmiques</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-8.1">8.1 exp</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-8.2">8.2 log-10</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-8.3">8.3 log-2</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-8.4">8.4 log-e</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-8.5">8.5 power</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-8.6">8.6 square-root</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-9">9. Fonctions Trigonométriques</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-9.1">9.1 arccosine</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-9.2">9.2 arcsine</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-9.3">9.3 arctangent</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-9.4">9.4 cosine</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-9.5">9.5 sine</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-9.6">9.6 tangent</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-10">10. Fonctions logiques</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-10.1">10.1 and</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-10.2">10.2 or</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-10.3">10.3 xor</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-10.4">10.4 complement</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-10.5">10.5 not</a><br />
+<a class="toc1" href="fr-rebolcore-11.html#section-11">11. Erreurs</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-11.1">11.1 Tentative de division par zéro</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-11.2">11.2 Débordement de calcul</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-11.3">11.3 Nombre positif requis</a><br />
+<a class="toc2" href="fr-rebolcore-11.html#section-11.4">11.4 Impossible d'utiliser l'opérateur avec un type de données</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>1er juin 2005 19:33</p>
+</td><td>
+<p>1.0.0</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Présentation</h2>
+<blockquote>
+<p>REBOL permet d'assurer un ensemble complet d'opérations mathématiques et trigonométriques. 
+La plupart de ces opérateurs peuvent manipuler plusieurs types de données, 
+comme les nombres entiers et décimaux, les tuples, des valeurs de type temps et date. 
+Certains de ces types de données peuvent même être mélangés ou forcés.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. Types de données scalaires</h2>
+<blockquote>
+<p>Les fonctions mathématiques de REBOL agissent de façon 
+régulière sur une grande variété de types de données scalaires (numériques). 
+Ces types de données incluent :</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Type de données</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Integer!</b></p>
+</td><td>
+<p>nombres sur 32 bits sans décimales</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Decimal!</b></p>
+</td><td>
+<p>nombres sur 64 bits avec décimales</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Money!</b></p>
+</td><td>
+<p>valeurs monétaires sur 64 bits avec décimales</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Time!</b></p>
+</td><td>
+<p>heures, minutes, secondes, dixièmes jusqu'à millième de secondes</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Date!</b></p>
+</td><td>
+<p>jour, mois, année, heure, fuseau horaire</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Pair!</b></p>
+</td><td>
+<p>coordonnées graphiques ou taille</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Tuple!</b></p>
+</td><td>
+<p>versions, couleurs, adresses réseau</p>
+</td></tr></table>
+<p>
+<p>Voici ci-dessous quelques exemples pour illustrer 
+un certain nombre d'opération sur les types de donnée scalaires. 
+Notez que les opérateurs renvoient les résultats adéquats pour chaque type de données.</p>
+<p>Les types de données <b>integer!</b> et <b>decimal!</b> :</p>
+<pre>
+print 2 + 1
+<span class="output">3</span>
+print 2 - 1
+<span class="output">1</span>
+print 2 * 10
+<span class="output">20</span>
+print 20 / 10
+<span class="output">2</span>
+print 21 // 10
+<span class="output">1</span>
+print 2.2 + 1
+<span class="output">3.2</span>
+print 2.2 - 1
+<span class="output">1.2</span>
+print 2.2 * 10
+<span class="output">22</span>
+print 2.2 / 10
+<span class="output">0.22</span>
+print random 10
+<span class="output">5</span>
+</pre>
+<p>Le type de données <b>time!</b> :</p>
+<pre>
+print 2:20 + 1:40
+<span class="output">4:00</span>
+print 2:20 + 5
+<span class="output">2:20:05</span>
+print 2:20 + 60
+<span class="output">2:21</span>
+print 2:20 + 2.2
+<span class="output">2:20:02.2</span>
+print 2:20 - 1:20
+<span class="output">1:00</span>
+print 2:20 - 5
+<span class="output">2:19:55</span>
+print 2:20 - 120
+<span class="output">2:18</span>
+print 2:20 * 2
+<span class="output">4:40</span>
+print 2:20 / 2
+<span class="output">1:10</span>
+print 2:20:01 / 2
+<span class="output">1:10:00.5</span>
+print 2:21 // 2
+<span class="output">0:00</span>
+print - 2:20
+<span class="output">-2:20</span>
+print random 10:00
+<span class="output">5:30:52</span>
+</pre>
+<p>Le type de données <b>date!</b> :</p>
+<pre>
+print 1-Jan-2000 + 1
+<span class="output">2-Jan-2000</span>
+print 1-Jan-2000 - 1
+<span class="output">31-Dec-1999</span>
+print 1-Jan-2000 + 31
+<span class="output">1-Feb-2000</span>
+print 1-Jan-2000 + 366
+<span class="output">1-Jan-2001</span>
+birthday: 7-Dec-1944
+print ["I've lived" (now/date - birthday) "days."]
+<span class="output">I've lived 20305 days.</span>
+print random 1-1-2000
+<span class="output">29-Apr-1695</span>
+</pre>
+<p>Le type de données <b>money!</b> :</p>
+<pre>
+print $2.20 + $1
+<span class="output">$3.20</span>
+print $2.20 + 1
+<span class="output">$3.20</span>
+print $2.20 + 1.1
+<span class="output">$3.30</span>
+print $2.20 - $1
+<span class="output">$1.20</span>
+print $2.20 * 3
+<span class="output">$6.60</span>
+print $2.20 / 2
+<span class="output">$1.10</span>
+print $2.20 / $1.10
+<span class="output">2</span>
+print $2.21 // 2
+<span class="output">$0.21</span>
+print random $10.00
+<span class="output">$6.00</span>
+</pre>
+<p>Le type de données <b>pair!</b> :</p>
+<pre>
+print 100x200 + 10x20
+<span class="output">110x220</span>
+print 10x10 + 3
+<span class="output">13x13</span>
+print 10x20 * 2x4
+<span class="output">20x80</span>
+print 100x100 * 3
+<span class="output">300x300</span>
+print 100x30 / 10x3
+<span class="output">10x10</span>
+print 100x30 / 10
+<span class="output">10x3</span>
+print 101x32 // 10x3
+<span class="output">1x2</span>
+print 101x32 // 10
+<span class="output">1x2</span>
+print random 100x20
+<span class="output">67x12</span>
+</pre>
+<p>Le type de données <b>tuple!</b> :</p>
+<pre>
+print 1.2.3 + 3.2.1
+<span class="output">4.4.4</span>
+print 1.2.3 - 1.0.1
+<span class="output">0.2.2</span>
+print 1.2.3 * 3
+<span class="output">3.6.9</span>
+print 10.20.30 / 10
+<span class="output">1.2.3</span>
+print 11.22.33 // 10
+<span class="output">1.2.3</span>
+print 1.2.3 * 1.2.3
+<span class="output">1.4.9</span>
+print 10.20.30 / 10.20.30
+<span class="output">1.1.1</span>
+print 1.2.3 + 7
+<span class="output">8.9.10</span>
+print 1.2.3 - 1
+<span class="output">0.1.2</span>
+print random 10.20.30
+<span class="output">8.18.12</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-4">4. Ordre de l'évaluation</h2>
+<blockquote>
+<p>Il y a deux règles à se rappeler pour l'évaluation d'expressions mathématiques :</p>
+<ul>
+<li>Les expressions sont évaluées de gauche à droite.</li>
+<li>Les opérateurs ont priorité sur les fonctions</li>
+</ul>
+<p>L'évaluation des expressions de gauche à droite est indépendante du type 
+d'opérateur utilisé. Par exemple :</p>
+<pre>
+print 1 + 2 * 3
+<span class="output">9</span>
+</pre>
+<p>Dans l'exemple ci-dessus, notez que le résultat n'est pas sept, comme cela 
+le serait si la multiplication avait priorité sur l'addition.</p>
+<div class="note"><p><b></b></p>
+<p><b>Remarque importante</b></p>
+<p>Le fait que les expressions mathématiques soient évaluées de 
+la gauche vers la droite sans se soucier des opérateurs donne un comportement 
+différent de la plupart des autres langages de programmation. 
+Beaucoup de langages possèdent des règles de priorité où vous 
+devez vous rappeler ce qui détermine l'ordre dans lequel les opérateurs 
+seront évalués. Par exemple, une multiplication est faite avant une addition. 
+Certains langages possèdent plus d'une dizaine de règles de ce genre.</p>
+<p>En REBOL, plutôt que d'imposer à l'utilisateur de se remémorer les priorités 
+des opérateurs, vous avez seulement à vous rappeler la règle "de-gauche-à-droite".</p>
+<p>Encore plus important, pour un code poussé, perfectionné, comme des expressions 
+qui manipulent d'autres expressions (de la réflectivité, par exemple), vous n'avez 
+pas besoin de réordonner les termes sur la base d'une priorité. L'ordre d'évaluation 
+demeure simple.</p>
+<p>Pour la plupart des expressions mathématiques, l'évaluation de gauche à droite 
+fonctionne assez bien et est simple à se rappeler. D'un autre côté, comme 
+cette règle est différente d'autres langages de programmation, elle peut être 
+la cause d'erreurs de programmation, donc soyez vigilants.</p>
+<p>La meilleure solution est de vérifier votre travail. 
+Vous pouvez aussi utiliser des parenthèses si nécessaire, afin de clarifier vos 
+expressions (voir ci-dessous), et vous pouvez toujours saisir votre expression 
+dans la console, pour vérifier le résultat.</p>
+</div>
+<p>S'il est nécessaire d'évaluer une expression dans un autre ordre, réordonnez-la ou 
+utilisez des parenthèses :</p>
+<pre>
+print 2 * 3 + 1
+<span class="output">7</span>
+print 1 + (2 * 3)
+<span class="output">7</span>
+</pre>
+<p>Quand des fonctions sont mélangées avec des opérateurs, les opérateurs sont 
+évalués en premier, puis les fonctions :</p>
+<pre>
+print absolute -10 + 5
+<span class="output">5</span>
+</pre>
+<p>Dans l'exemple ci-dessus, l'addition est d'abord réalisée, 
+et son résultat passé à la fonction "valeur absolue".</p>
+<p>Dans l'exemple suivant :</p>
+<pre>
+print 10 + sine 30 + 60
+<span class="output">11</span>
+</pre>
+<p>l'expression est évaluée dans cet ordre :</p>
+<pre>
+30 + 60 =&gt; 90
+sine 90 =&gt; 1
+10 + 1 =&gt; 11
+print
+</pre>
+<p>Pour changer l'ordre afin que le sinus de 30 soit calculé en premier, 
+utilisez des parenthèses :</p>
+<pre>
+print 10 + (sine 30) + 60
+<span class="output">70.5</span>
+</pre>
+<p>ou réorganisez l'expression :</p>
+<pre>
+print 10 + 60 + sine 30
+<span class="output">70.5</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-5">5. Fonctions et Opérateur standards</h2>
+<blockquote>
+<p>Cette section décrit les fonctions et opérateurs mathématiques standards 
+utilisés en REBOL.</p>
+</blockquote>
+<p>
+<h3 id="section-5.1">5.1 absolute</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+absolute value
+
+abs value
+</pre>
+<p>renvoient la valeur absolue de l'argument <i>value</i>.<br>
+Les types de données possibles sont : integer, decimal, money, time, pair.</p>
+<pre>
+print absolute -10
+<span class="output">10</span>
+print absolute -1.2
+<span class="output">1.2</span>
+print absolute -$1.2
+<span class="output">$1.20</span>
+print absolute -10:20
+<span class="output">10:20</span>
+print absolute -10x-20
+<span class="output">10x20</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.2">5.2 add</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 + value2
+
+add value1 value2
+</pre>
+<p>renvoient la somme des valeurs <i>value1</i> et <i>value2</i>.<br>
+S'utilise avec les types de données  integer, decimal, 
+money, time, tuple, pair, date, char.</p>
+<pre>
+print 1 + 2
+3
+print 1.2 + 3.4
+4.6
+print 1.2.3 + 3.4.5
+4.6.8
+print $1 + $2
+$3.00
+print 1:20 + 3:40
+5:00
+print 10x20 + 30x40
+40x60
+print #"A" + 10
+K
+print add 1 2
+3
+</pre>
+<div class="note"><p><b></b></p>
+<p><u><b>NdT</b></u> : remarquez que l'expression</p>
+<pre>
++ 1 2
+<span class="output">3</span>
+</pre>
+<p>est aussi valable, quoique moins "naturelle".<br>
+Il en est ainsi avec plusieurs opérateurs.</p>
+</div>
+</blockquote>
+<p>
+<h3 id="section-5.3">5.3 complement</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+complement value
+</pre>
+<p>renvoie le complément numérique (bitwise complement) d'une valeur.<br>
+Pour types de données integer, decimal, tuple, 
+logic, char, binary, string, bitset, image.</p>
+<pre>
+print complement 10
+<span class="output">-11</span>
+print complement 10.5
+<span class="output">-11</span>
+print complement 100.100.100
+<span class="output">155.155.155</span>
+</pre>
+<div class="note"><p><b></b></p>
+<p><u><b>NdT</b></u>:  il est possible d'utiliser <b>complement</b> sur des caractères :</p>
+<pre>
+complement "I"
+<span class="output">"¶"       (le symbole de saut de ligne de Ms-Word)</span>
+complement "V"
+<span class="output">"©"       (le symbole Copyright)</span>
+</pre>
+</div>
+</blockquote>
+<p>
+<h3 id="section-5.4">5.4 divide</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 / value2
+
+divide value1 value2
+</pre>
+<p>retournent le résultat de la division de <i>value1</i> par <i>value2</i>.<br> 
+S'utilise sur les types de données integer, decimal, money, time, tuple, 
+pair, char .</p>
+<pre>
+print 10 / 2
+<span class="output">5</span>
+print 1.2 / 3
+<span class="output">0.4</span>
+print 11.22.33 / 10
+<span class="output">1.2.3</span>
+print $12.34 / 2
+<span class="output">$6.17</span>
+print 1:20 / 2
+<span class="output">0:40</span>
+print 10x20 / 2
+<span class="output">5x10</span>
+print divide 10 2
+<span class="output">5</span>
+</pre>
+<div class="note"><p><b></b></p>
+<p><u><b>NdT</b></u> : l'expression</p>
+<pre>
+/ 1 2
+<span class="output">0.5</span>
+</pre>
+<p>marche également.</p>
+</div>
+</blockquote>
+<p>
+<h3 id="section-5.5">5.5 multiply</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 * value2
+
+multiply value1 value2
+</pre>
+<p>renvoient le résultat de la multiplication de <i>value1</i> par <i>value2</i>.<br>
+Fonctionne avec les datatypes integer, decimal, money, time, tuple, pair, char.</p>
+<pre>
+print 10 * 2
+<span class="output">20</span>
+print 1.2 * 3.4
+<span class="output">4.08</span>
+print 1.2.3 * 3.4.5
+<span class="output">3.8.15</span>
+print $10 * 2
+<span class="output">$20.00</span>
+print 1:20 * 3
+<span class="output">4:00</span>
+print 10x20 * 3
+<span class="output">30x60</span>
+print multiply 10 2
+<span class="output">20</span>
+</pre>
+<div class="note"><p><b></b></p>
+<p><u><b>NdT</b></u> : l'expression</p>
+<pre>
+* $10 2
+<span class="output">$20.00</span>
+</pre>
+<p>est également valable.</p>
+</div>
+</blockquote>
+<p>
+<h3 id="section-5.6">5.6 negate</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+- value
+
+negate value
+</pre>
+<p>changent le signe de la valeur.
+Les types de données possibles sont : integer, decimal, money, time, pair, 
+char.</p>
+<pre>
+print - 10
+<span class="output">-10</span>
+print - 1.2
+<span class="output">-1.2</span>
+print - $10
+<span class="output">-$10.00</span>
+print - 1:20
+<span class="output">-1:20</span>
+print - 10x20
+<span class="output">-10x-20</span>
+print negate 10
+<span class="output">-10</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.7">5.7 random</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+random value
+</pre>
+<p>renvoie une valeur aléatoire qui est inférieure ou égale à la valeur de l'argument.</p>
+<p>Notez que pour les nombres entiers, <b>random</b> commence à 1, pas à 0, et 
+va inclure la valeur de l'argument fourni. Ceci permet à <b>random</b> d'être utilisé directement 
+dans des fonctions comme <b>pick</b>.</p>
+<p>Quand un nombre décimal est utilisé, le résultat est du type décimal, arrondi à un entier.</p>
+<p>Le raffinement <b>/seed</b> réinitialise le générateur de nombres aléatoires. Utilisez 
+d'abord le raffinement <b>/seed</b> avec <b>random</b> si vous voulez générer un nombre 
+unique aléatoire. Vous pouvez utiliser la date et l'heure courante 
+pour fabriquer une base unique :</p>
+<pre>
+random/seed now
+</pre>
+<p>S'utilise avec les types de données integer, decimal, money, time, tuple, 
+pair, date, char, string, et block.</p>
+<pre>
+print random 10
+<span class="output">5</span>
+print random 10.5
+<span class="output">2</span>
+print random 100.100.100
+<span class="output">79.95.66</span>
+print random $100
+<span class="output">$32.00</span>
+print random 10:30
+<span class="output">6:37:33</span>
+print random 10x20
+<span class="output">2x4</span>
+print random 30-Jun-2000
+<span class="output">27-Dec-1171</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.8">5.8 remainder</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 // value2
+
+remainder value1 value2
+</pre>
+<p>renvoient le reste de la division de <i>value1</i> par <i>value2</i>.<br>
+Fonctionne avec les datatypes integer, decimal, money, time, tuple, pair .</p>
+<pre>
+print 11 // 2
+<span class="output">1</span>
+print 11.22.33 // 10
+<span class="output">1.2.3</span>
+print 11x22 // 2
+<span class="output">1x0</span>
+print remainder 11 2
+<span class="output">1</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.9">5.9 subtract</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 - value2
+
+subtract value1 value2
+</pre>
+<p>renvoient le résultat de la soustraction entre <i>value2</i> et <i>value1</i>.<br>
+S'utilise avec les types de données integer, decimal, money, time, 
+tuple, pair, date, char.</p>
+<pre>
+print 2 - 1
+<span class="output">1</span>
+print 3.4 - 1.2
+<span class="output">2.2</span>
+print 3.4.5 - 1.2.3
+<span class="output">2.2.2</span>
+print $2 - $1
+<span class="output">$1.00</span>
+print 3:40 - 1:20
+<span class="output">2:20</span>
+print 30x40 - 10x20
+<span class="output">20x20</span>
+print #"Z" - 1
+<span class="output">Y</span>
+print subtract 2 1
+<span class="output">1</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-6">6. Conversion de type</h2>
+<blockquote>
+<p>Lorsque des opérations mathématiques sont réalisées entre des types de données différents, 
+normalement, le type de données non entier ou non décimal est retourné. Quand des entiers 
+sont combinés avec des nombres décimaux, c'est le datatype décimal qui est retourné.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-7">7. Fonctions de comparaison</h2>
+<blockquote>
+<p>Toutes les fonctions de comparaison renvoient une valeur logique : <b>true</b> ou <b>false</b>.</p>
+</blockquote>
+<p>
+<h3 id="section-7.1">7.1 equal</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 = value2
+
+equal? value1 value2
+</pre>
+<p>renvoient <b>true</b> si la première et la seconde valeur sont égales.<br>
+Fonctionne avec les types de données : integer, decimal, money, time, date, 
+tuple, char et series.</p>
+<pre>
+print 11-11-99 = 11-11-99
+<span class="output">true</span>
+print equal? 111.112.111.111 111.112.111.111
+<span class="output">true</span>
+print #"B" = #"B"
+<span class="output">true</span>
+print equal? "a b c d" "A B C D"
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.2">7.2 greater</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 &gt; value2
+
+greater? value1 value2
+</pre>
+<p>retournent <b>true</b> si la première valeur est supérieure à la seconde valeur.<br>
+S'utilise avec les types de données integer, decimal, money, time, date,
+tuple, char et series.</p>
+<pre>
+print 13-11-99 &gt; 12-11-99
+<span class="output">true</span>
+print greater? 113.111.111.111 111.112.111.111
+<span class="output">true</span>
+print #"C" &gt; #"B"
+<span class="output">true</span>
+print greater? [12 23 34] [12 23 33]
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.3">7.3 greater-or-equal</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 &gt;= value2
+
+greater-or-equal? value1 value2
+</pre>
+<p>retournent <b>true</b> si la première valeur est supérieure ou égale à la seconde valeur.<br>
+S'utilise avec les types de données integer, decimal, money, time, date,
+tuple, char et series.</p>
+<pre>
+print 11-12-99 &gt;= 11-11-99
+<span class="output">true</span>
+print greater-or-equal? 111.112.111.111 111.111.111.111
+<span class="output">true</span>
+print #"B" &gt;= #"A"
+<span class="output">true</span>
+print greater-or-equal? [b c d e] [a b c d]
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.4">7.4 lesser</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 &lt; value2
+
+lesser? value1 value2
+</pre>
+<p>retournent <b>true</b> si la première valeur est inférieure à la seconde valeur.<br>
+S'utilise avec les types de données integer, decimal, money, time, date,
+tuple, char et series.</p>
+<pre>
+print 25 &lt;; 50
+true
+print lesser? 25.3 25.5
+true
+print $2.00 &lt; $2.30
+true
+print lesser? 00:10:11 00:11:11
+true
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.5">7.5 lesser-or-equal</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 &lt;= value2
+
+lesser-or-equal? value1 value2
+</pre>
+<p>retournent <b>true</b> si la première valeur est inférieure ou égale à la seconde valeur.<br>
+S'utilise avec les types de données integer, decimal, money, time, date,
+tuple, char et series.</p>
+<pre>
+print 25 &lt;= 25
+<span class="output">true</span>
+print lesser-or-equal? 25.3 25.5
+<span class="output">true</span>
+print $2.29 &lt;= $2.30
+<span class="output">true</span>
+print lesser-or-equal? 11:11:10 11:11:11
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.6">7.6 not equal to</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 &lt;&gt; value2
+
+not-equal? value1 value2
+</pre>
+<p>retournent <b>true</b> si la première valeur n'est pas égale à la seconde valeur.<br>
+S'utilise avec les types de données integer, decimal, money, time, date,
+tuple, char et series.</p>
+<pre>
+print 26 v 25
+<span class="output">true</span>
+print not-equal? 25.3 25.5
+<span class="output">true</span>
+print $2.29 &lt;&gt; $2.30
+<span class="output">true</span>
+print not-equal? 11:11:10 11:11:11
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.7">7.7 same</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 =? value2
+
+same? value1 value2
+</pre>
+<p>renvoient <b>true</b> si les deux mots font référence à la même valeur. <br>
+Par exemple, lorsque vous voulez savoir si deux mots font référence à la même valeur d'index 
+dans une série. <br>Fonctionne avec tous les types de données.</p>
+<pre>
+reference-one: "abcdef"
+reference-two: reference-one
+print same? reference-one reference-two
+<span class="output">true</span>
+reference-one: next reference-one
+print same? reference-one reference-two
+<span class="output">false</span>
+reference-two: next reference-two
+print same? reference-one reference-two
+<span class="output">true</span>
+reference-two: copy reference-one
+print same? reference-one reference-two
+<span class="output">false</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.8">7.8 strict-equal</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 == value2
+
+strict-equal? value1 value2
+</pre>
+<p>retournent <b>true</b> si la première et la seconde valeurs sont strictement identiques.
+<b>Strict-equal</b> peut être utilisée comme la version sensible à la casse de <b>equal?</b> ( = ) 
+pour les chaînes de caractères et pour différencier les entiers des décimaux lorsque 
+les valeurs sont identiques.<br>
+Fonctionne avec tous les types de données.</p>
+<pre>
+print strict-equal? "abc" "ABC"
+<span class="output">false</span>
+print equal? "abc" "ABC"
+<span class="output">true</span>
+print strict-equal? "abc" "abc"
+<span class="output">true</span>
+print strict-equal? 1 1.0
+<span class="output">false</span>
+print equal? 1 1.0
+<span class="output">true</span>
+print strict-equal? 1.0 1.0
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.9">7.9 strict-not-equal</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+strict-not-equal? value1 value2
+</pre>
+<p>renvoie <b>true</b> si la première et la seconde valeurs ne sont pas strictement égales. 
+<b>strict-not-equal</b> peut être utilisée comme la version sensible à la casse de <b>not-equal?</b> 
+( <> ) pour les chaînes de caractères et pour différencier les entiers des décimaux lorsque 
+leurs valeurs sont identiques. <br>
+Fonctionne avec tous les types de données.</p>
+<pre>
+print strict-not-equal? "abc" "ABC"
+<span class="output">true</span>
+print not-equal? "abc" "ABC"
+<span class="output">false</span>
+print strict-not-equal? "abc" "abc"
+<span class="output">false</span>
+print strict-not-equal? 1 1.0
+<span class="output">true</span>
+print not-equal? 1 1.0
+<span class="output">false</span>
+print strict-not-equal? 1.0 1.0
+<span class="output">false</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-8">8. Fonctions Logarithmiques</h2>
+<blockquote>
+</blockquote>
+<p>
+<h3 id="section-8.1">8.1 exp</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+exp value
+</pre>
+<p>calcule E (nombre naturel) à la puissance de l'argument.</p>
+</blockquote>
+<p>
+<h3 id="section-8.2">8.2 log-10</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+log-10 value
+</pre>
+<p>renvoie le logarithme de base 10 de l'argument.</p>
+</blockquote>
+<p>
+<h3 id="section-8.3">8.3 log-2</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+log-2 value
+</pre>
+<p>renvoie le logarithme de base 2 de l'argument.</p>
+</blockquote>
+<p>
+<h3 id="section-8.4">8.4 log-e</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+log-e value
+</pre>
+<p>renvoie le logarithme naturel (base E) de l'argument.</p>
+</blockquote>
+<p>
+<h3 id="section-8.5">8.5 power</h3>
+<blockquote>
+<p>Les expressions :</p>
+<pre>
+value1 ** value2
+
+power value1 value2
+</pre>
+<p>renvoient le résultat du calcul de <i>value1</i> à la puissance <i>value2</i>.</p>
+</blockquote>
+<p>
+<h3 id="section-8.6">8.6 square-root</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+square-root value
+</pre>
+<p>renvoie la racine carrée de l'argument <i>value</i>.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-9">9. Fonctions Trigonométriques</h2>
+<blockquote>
+<p>Les fonctions trigonométriques travaillent normalement en degrés. Il faut 
+utiliser le raffinement <b>/radians</b> avec l'une ou l'autre des fonctions trigonométriques 
+pour travailler en radians.</p>
+</blockquote>
+<p>
+<h3 id="section-9.1">9.1 arccosine</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+arccosine value
+</pre>
+<p>renvoie la fonction cosinus inverse pour l'argument.</p>
+</blockquote>
+<p>
+<h3 id="section-9.2">9.2 arcsine</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+arcsine value
+</pre>
+<p>renvoie la fonction sinus inverse pour l'argument.</p>
+</blockquote>
+<p>
+<h3 id="section-9.3">9.3 arctangent</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+arctangent value
+</pre>
+<p>renvoie la fonction tangente inverse pour l'argument.</p>
+</blockquote>
+<p>
+<h3 id="section-9.4">9.4 cosine</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+cosine value
+</pre>
+<p>renvoie le cosinus de l'argument.</p>
+</blockquote>
+<p>
+<h3 id="section-9.5">9.5 sine</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+sine value
+</pre>
+<p>renvoie le sinus de l'argument.</p>
+</blockquote>
+<p>
+<h3 id="section-9.6">9.6 tangent</h3>
+<blockquote>
+<p>L'expression :</p>
+<pre>
+tangent value
+</pre>
+<p>renvoie la tangente de l'argument.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-10">10. Fonctions logiques</h2>
+<blockquote>
+<p>Les fonctions logiques peuvent être effectuées sur des valeurs logiques et sur des 
+valeurs scalaires incluant les types de données integer, char, tuple, et 
+bitset.</p>
+<p>Avec des valeurs logiques, les fonctions logiques renvoient des valeurs booléennes. 
+Quand elles utilisent d'autres types de valeurs, les fonctions logiques travaillent au niveau 
+des bits.</p>
+</blockquote>
+<p>
+<h3 id="section-10.1">10.1 and</h3>
+<blockquote>
+<p>La fonction <b>and</b> compare deux valeurs logiques et renvoie 
+<b>true</b> seulement si les deux valeurs sont elles aussi <b>true</b> :</p>
+<pre>
+print (1 &lt; 2) and (2 &lt; 3)
+<span class="output">true</span>
+print (1 &lt; 2) and (4 &lt; 3)
+<span class="output">false</span>
+</pre>
+<p>Quand elle est utilisée avec des nombres entiers, la fonction <b>and</b> 
+effectue une comparaison bit à bit, et renvoie 1 si chacun des bits est à 1, ou 0 
+si ni l'un ni l'autre n'est 1 :</p>
+<pre>
+print 3 and 5
+<span class="output">1</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-10.2">10.2 or</h3>
+<blockquote>
+<p>La fonction <b>or</b> compare deux valeurs logiques et renvoie <b>true</b> si 
+l'une ou l'autre des deux est <b>true</b>, ou renvoie <b>false</b> si les deux sont <b>false</b>.</p>
+<pre>
+print (1 &lt; 2) or (2 &lt; 3)
+true
+print (1 &lt; 2) or (4 &lt; 3)
+true
+print (3 &lt; 2) or (4 &lt; 3)
+false
+</pre>
+<p>Quand elle est utilisée avec des nombres entiers, la fonction <b>or</b> 
+effectue une comparaison bit à bit, et renvoie 1 si l'un des bits est 1, ou 0 
+si l'un et l'autre bit sont à 0 :</p>
+<pre>
+print 3 or 5
+7
+</pre>
+</blockquote>
+<p>
+<h3 id="section-10.3">10.3 xor</h3>
+<blockquote>
+<p>La fonction <b>xor</b> compare deux valeurs logiques et retourne <b>true</b> 
+si et seulement si l'une des valeurs est <b>true</b> et l'autre <b>false</b>.</p>
+<pre>
+print (1 &lt; 2) xor (2 &lt; 3)
+<span class="output">false</span>
+print (1 &lt; 2) xor (4 &lt; 3)
+<span class="output">true</span>
+print (3 &lt; 2) xor (4 &lt; 3)
+<span class="output">false</span>
+</pre>
+<p>Utilisée avec des nombres entiers, <b>xor</b> compare bit à bit ces nombres 
+et renvoie 1 si et seulement si un bit est à 1 tandis que l'autre est à 0. 
+Sinon, elle renvoie 0 :</p>
+<pre>
+print 3 xor 5
+<span class="output">6</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-10.4">10.4 complement</h3>
+<blockquote>
+<p>La fonction <b>complement</b> renvoie le complément logique ou binaire 
+d'une valeur. Elle est utilisée pour avoir l'inverse binaire de nombres entiers ou 
+inverser un ensemble de bits (bitsets).</p>
+<pre>
+print complement true
+<span class="output">false</span>
+print complement 3
+<span class="output">-4</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-10.5">10.5 not</h3>
+<blockquote>
+<p>Pour une valeur logique, la fonction <b>not</b> renverra <b>true</b> si l'argument est <b>false</b> 
+et <b>false</b> si, au contraire, l'argument est <b>true</b>. Elle n'effectue pas d'opérations numériques binaires.</p>
+<pre>
+print not true
+<span class="output">false</span>
+print not false
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-11">11. Erreurs</h2>
+<blockquote>
+<p>Les erreurs mathématiques sont émises quand des opérations 
+illégales sont réalisées, ou quand un débordement de calcul (overflow) se produit.</p>
+<p>Les erreurs suivantes peuvent être rencontrées dans les opérations mathématiques.</p>
+</blockquote>
+<p>
+<h3 id="section-11.1">11.1 Tentative de division par zéro</h3>
+<blockquote>
+<p>Une tentative a été faite de diviser un nombre par 0.</p>
+<pre>
+1 / 0
+** Math Error: Attempt to divide by zero
+** Where: connect-to-link
+** Near: 1 / 0
+</pre>
+</blockquote>
+<p>
+<h3 id="section-11.2">11.2 Débordement de calcul</h3>
+<blockquote>
+<p>Une tentative de calcul d'un nombre trop grand pour REBOL a été 
+faite.</p>
+<pre>
+1E+300 + 1E+400
+** Math Error: Math or number overflow
+** Where: connect-to-link
+** Near: 1 / 0
+</pre>
+</blockquote>
+<p>
+<h3 id="section-11.3">11.3 Nombre positif requis</h3>
+<blockquote>
+<p>Une tentative de calcul a été faite avec un nombre négatif 
+sur un opérateur mathématique qui accepte juste des nombres positifs.</p>
+<pre>
+log-10 -1
+** Math Error: Positive number required
+** Where: connect-to-link
+** Near: log-10 -1
+</pre>
+</blockquote>
+<p>
+<h3 id="section-11.4">11.4 Impossible d'utiliser l'opérateur avec un type de données</h3>
+<blockquote>
+<p>Une tentative de calcul entre des types de données incompatibles. Le type de données 
+du second argument dans l'opération est retourné tel quel.</p>
+<pre>
+10:30 + 1.2.3
+** Script Error: Cannot use add on time! value
+** Where: connect-to-link
+** Near: 10:30 + 1.2.3
+</pre>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 8-Apr-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>

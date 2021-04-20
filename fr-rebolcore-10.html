@@ -1,0 +1,619 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Chapitre 10 - Les Objets</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Chapitre 10 - Les Objets</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Chapitre 10 - Les Objets</h1>
+<div class="header">
+Ce document est la traduction française du Chapitre 10 du User Guide de REBOL/Core,<br />qui concerne les Objets.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-10.html#section-1">1. Historique de la traduction</a><br />
+<a class="toc1" href="fr-rebolcore-10.html#section-2">2. Présentation</a><br />
+<a class="toc1" href="fr-rebolcore-10.html#section-3">3. Création d'objets</a><br />
+<a class="toc1" href="fr-rebolcore-10.html#section-4">4. Clonage des objets</a><br />
+<a class="toc1" href="fr-rebolcore-10.html#section-5">5. L'accés aux objets</a><br />
+<a class="toc1" href="fr-rebolcore-10.html#section-6">6. Fonctions et object (méthodes)</a><br />
+<a class="toc1" href="fr-rebolcore-10.html#section-7">7. Prototype d'objets</a><br />
+<a class="toc1" href="fr-rebolcore-10.html#section-8">8. Référence à self</a><br />
+<a class="toc1" href="fr-rebolcore-10.html#section-9">9. Encapsulation</a><br />
+<a class="toc1" href="fr-rebolcore-10.html#section-10">10. Réflectivité</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>4 avril 2005 17:52</p>
+</td><td>
+<p>1.0.0</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Présentation</h2>
+<blockquote>
+<p>Les objets permettent de regrouper un ensemble de variables et leurs valeurs dans 
+un contexte commun.</p>
+<p>Un objet peut inclure des valeurs scalaires, des séries,
+des fonctions ou d'autres objets.</p>
+<p>Les objets sont pratiques pour travailler avec des structures complexes car ils 
+permettent d'encapsuler des variables et le code qui leur est associé, et de les passer simplement à des fonctions.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. Création d'objets</h2>
+<blockquote>
+<p>De nouveaux objets sont construits avec la fonction <b>make</b>.</p>
+<p>La fonction <b>make</b> requiert deux arguments et retourne un nouvel objet. 
+Le format de la fonction <b>make</b> est le suivant :</p>
+<pre>
+new-object: make parent-object new-values
+</pre>
+<p>Le premier argument, <i>parent-object</i>, est l'objet "parent" à partir duquel le 
+nouvel objet sera construit. Si aucun objet parent n'est valable, par exemple losqu'on définit 
+pour la première fois un objet , on utilise par défaut le type <b>object!</b> :</p>
+<pre>
+new-object: make object! new-values
+</pre>
+<p>Le second argument, <i>new-values</i>, est un bloc contenant les définitions des variables et leurs valeurs initiales pour 
+ce nouvel objet.</p>
+<p>Chaque variable définie au sein de ce bloc est une variable de l'instance de l'objet.</p>
+<p>Par exemple, si le bloc contenait deux définitions de variables  :</p>
+<pre>
+mon-exemple: make object! [
+    var1: 10
+    var2: 20
+]
+</pre>
+<p>L'objet <i>mon-exemple</i> posséde ici deux variables de type <b>integer!</b> (valeurs entières).
+Le bloc définissant les variables est évalué, il peut inclure n'importe quelle expression 
+pour calculer les valeurs des variables :</p>
+<pre>
+mon-exemple: make object! [
+    var1: 10
+    var2: var1 + 10
+    var3: now/time
+]
+</pre>
+<p>Une fois que l'objet a été créé, il peut servir de prototype 
+pour créer d'autre objets:</p>
+<pre>
+mon-exemple2: make mon-exemple []
+</pre>
+<p>L'exemple ci-dessus crée une seconde instance de l'objet <i>mon-exemple</i>.
+De nouvelles valeurs peuvent être mises dans le bloc :</p>
+<pre>
+mon-exemple2: make mon-exemple [
+    var1: 30
+    var2: var1 + 10
+]
+</pre>
+<p>Ci-dessus, l'objet <i>mon-exemple2</i> posséde des valeurs différentes de  
+l'objet <i>mon-exemple</i> original.</p>
+<p>L'objet <i>mon-exemple2</i> peut aussi étendre la définition de l'objet 
+prototype <i>mon-exemple</i> en lui ajoutant de nouvelles variables :</p>
+<pre>
+mon-exemple2: make mon-exemple [
+    var4: now/date
+    var5: "example"
+]
+</pre>
+<p>Le résultat est un objet qui a cinq variables : 
+trois proviennent de l'objet original, deux sont nouvelles.</p>
+<p>Le processus d'extension de la définition d'un objet peut être ainsi répété de nombreuses fois.</p>
+<p>Il est aussi possible de créer un objet qui contient des variables initialisées à une valeur quelconque. 
+Par exemple, en utilisant une initialisation en cascade :</p>
+<pre>
+mon-example3: make object! [
+    var1: var2: var3: var4: none
+]
+</pre>
+<p>Dans le code précédent, les quatres variables <i>var1</i> à <i>var4</i> sont 
+mises à "<b>none</b>" au sein de l'objet.</p>
+<p>Pour résumer, le processus de création d'un objet passe par les étapes suivantes :</p>
+<ol>
+<li>Usage de la fonction <b>make</b> pour créer un nouvel objet basé sur un prototype (un objet parent) ou sur le type <b>object!</b>.</li>
+<li>Ajout au nouvel objet des variables définies dans le bloc .</li>
+<li>Evaluation du bloc, ce qui entraîne l'affectation des variables définies dans le bloc, 
+avec leurs valeurs pour le nouvel objet.</li>
+<li>Le nouvel objet est retourné comme résultat.</li>
+</ol>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-4">4. Clonage des objets</h2>
+<blockquote>
+<p>Quand un objet parent est utilisé pour créer un nouvel objet, 
+l'objet parent est cloné plutôt que "hérité".</p>
+<p>Ceci signifie que si l'objet parent est modifié, il n'y a pas d'effet sur l'objet fils.<br /></p>
+<p>Pour illustrer ceci, le code suivant montre la création d'un compte bancaire avec l'objet 
+<i>bank-account</i>, pour lequel les variables sont mises à "<b>none</b>" :</p>
+<pre>
+bank-account: make object! [
+    first-name:
+    last-name:
+    account:
+    solde: none
+]
+</pre>
+<p>Pour utiliser le nouvel objet, des valeurs sont fournies 
+lors de la création d'un compte client <i>luke</i> :</p>
+<pre>
+luke: make bank-account [
+    first-name: "Luke"
+    last-name: "Lakeswimmer"
+    account: 89431
+    solde: $1204.52
+]
+</pre>
+<p>Puisque les nouveaux comptes sont initiés sur l'objet <i>bank-account</i> , 
+il est pratique d'employer une fonction et quelques variables globales 
+pour les créer.</p>
+<pre>
+last-account: 89431
+bank-bonus: $10.00
+make-account: func [
+    "Returns a new account object"
+    f-name [string!] "First name"
+    l-name [string!] "Last name"
+    start-solde [money!] "Starting solde"
+][
+    last-account: last-account + 1
+    make bank-account [
+        first-name: f-name
+        last-name: l-name
+        account: last-account
+        solde: start-solde + bank-bonus
+    ]
+]
+</pre>
+<p>A présent, la création d'un nouveau compte pour le client <i>Fred</i> 
+se réduira seulement à la ligne suivante :</p>
+<pre>
+fred: make-account "Fred" "Smith" $500.00
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-5">5. L'accés aux objets</h2>
+<blockquote>
+<p>Les variables à l'intérieur des objets peuvent être atteintes avec les paths.</p>
+<p>Un <b>path</b> est composé du nom de l'objet suivi par le nom de la variable à atteindre.</p>
+<p>Ainsi, le code suivant permet d'atteindre les variables dans l'objet mon-exemple :</p>
+<pre>
+example/var1
+example/var2
+</pre>
+<p>Quelques illustrations avec l'objet "compte bancaire" :</p>
+<pre>
+print luke/last-name
+<span class="output">Lakeswimmer</span>
+print fred/solde
+<span class="output">$510.00</span>
+</pre>
+<p>Avec un <b>path</b>, les variables d'un objet peuvent aussi être modifiées :</p>
+<pre>
+fred/solde: $1000.00
+print fred/solde
+<span class="output">$1000.00</span>
+</pre>
+<p>Vous pouvez utiliser aussi la fonction <b>in</b> pour accéder à des variables d'objet en 
+récupérant leurs mots (words) depuis le contexte de l'objet :</p>
+<pre>
+print in fred 'solde
+<span class="output">solde</span>
+</pre>
+<p>Le mot (<b>word</b>) <i>'solde</i> fait partie du contexte de l'objet <i>Fred</i>.</p>
+<p>Il est possible de connaître la valeur de <i>solde</i> dans le contexte de l'objet <i>Fred</i>, 
+en utilisant la fonction <b>get</b> :</p>
+<pre>
+print get in fred 'solde
+<span class="output">$1000.00</span>
+</pre>
+<p>Le deuxième argument de la fonction <b>in</b> est un mot littéral (literal word).</p>
+<p>Ceci vous permet de changer dynamiquement les mots selon vos besoins :</p>
+<pre>
+words: [first-name last-name solde]
+foreach word words [print get in fred word]
+<span class="output">FredSmith
+$1000.00</span>
+</pre>
+<p>Chaque mot dans le bloc est utilisé dans la boucle foreach pour obtenir sa valeur dans l'objet.</p>
+<p>La fonction <b>in</b> peut aussi servir pour attribuer des valeurs aux variables d'un objet, 
+en conjuguaison avec la fonction <b>set</b> .</p>
+<pre>
+set in fred 'solde $20.00
+print fred/solde
+<span class="output">$20.00</span>
+</pre>
+<p>Si un mot n'est pas défini au sein d'un objet, la fonction <b>in</b> renvoie la valeur <b>none</b>.</p>
+<p>Ceci peut être mis à profit pour déterminer si une variable existe ou non dans un objet.</p>
+<pre>
+if get in fred 'bank [print fred/bank]
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-6">6. Fonctions et object (méthodes)</h2>
+<blockquote>
+<p>Un objet peut contenir des variables faisant référence à des fonctions dans l'objet.</p>
+<p>Ce peut être utile, car les fonctions sont encapsulées dans le contexte de l'objet, et peuvent  
+accéder à d'autres variables dans l'objet directement, sans passer par l'usage  d'un <b>path</b>.</p>
+<p>En guise d'exemple, l'objet <i>mon-autre-exemple</i> va inclure des fonctions qui vont calculer 
+de nouvelles valeurs au sein de l'objet :</p>
+<pre>
+mon-autre-exemple: make object! [
+    var1: 10
+    var2: var1 + 10
+    var3: now/time
+set-time: does [var3: now/time]
+calculate: func [value] [
+    var1: value
+    var2: value + 10
+]
+]
+</pre>
+<p>Remarquez que les fonctions peuvent se référer aux variables de l'objet directement, 
+sans utiliser de <b>paths</b>.</p>
+<p>Ceci est possible car les fonctions sont définies dans le même contexte que les variables auquelles 
+elles accédent.</p>
+<p>Pour définir un nouvel horaire pour la variable <i>var3</i> :</p>
+<pre>
+mon-autre-exemple/set-time
+</pre>
+<p>Cet exemple évalue la fonction qui va attribue à la variable <i>var3</i> 
+l'heure courante.<br /></p>
+<p>Pour calculer de nouvelles valeurs pour <i>var1</i> et <i>var2</i> :</p>
+<pre>
+mon-autre-exemple/calculate 100
+print example/var2
+<span class="output">110</span>
+</pre>
+<p>Dans le cas de l'objet <i>compte bancaire</i>, les fonctions pour un dépôt et un retrait peut être 
+ajoutées à la définition courante :</p>
+<pre>
+bank-account: make bank-account [
+    depot: func [amount [money!]] [
+        solde: solde + amount
+    ]
+    retrait: func [amount [money!]] [
+        either negative? solde [
+            print ["Denied. Account overdrawn by"
+                absolute solde]
+        ][solde: solde - amount]
+    ]
+]
+</pre>
+<p>Ici, les fonctions se référent à la variable <i>solde</i> directement au sein 
+du contexte de l'objet.</p>
+<p>Ceci parce qu'elles font elles-mêmes partie de ce contexte.</p>
+<p>A présent, si un nouveau compte est créé, il contiendra les fonctions
+pour le dépôt et le retrait d'argent.</p>
+<p>Par exemple :</p>
+<pre>
+lily: make-account "Lily" "Lakeswimmer" $1000
+print lily/solde
+<span class="output">$1010.00</span>
+lily/depot $100
+print lily/solde
+<span class="output">$1110.00</span>
+lily/retrait $2000
+print lily/solde
+<span class="output">-$890.00</span>
+lily/retrait $2.10
+<span class="output">Denied. Account overdrawn by $890.00</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-7">7. Prototype d'objets</h2>
+<blockquote>
+<p>N'importe quel objet peut servir de prototype pour créer 
+de nouveaux objets.</p>
+<p>Le compte bancaire <i>lily</i> créé précédemment peut être utilisé 
+pour construire de nouveaux objets :</p>
+<pre>
+maya: make lily []
+</pre>
+<p>Ceci définit une instance de l'objet.</p>
+<p>L'objet est une copie de l'objet <i>lily</i> et possède des valeurs identiques :</p>
+<pre>
+print lily/solde
+<span class="output">-$890.00</span>
+print maya/solde
+<span class="output">-$890.00</span>
+</pre>
+<p>Vous pouvez modifier les nouveaux objets en fournissant de nouvelles valeurs 
+à l'intérieur du bloc qui les définit :</p>
+<pre>
+maya: make lily [
+    first-name: "Maya"
+    solde: $10000
+]
+print maya/solde
+<span class="output">$10000.00</span>
+maya/depot $500
+print maya/solde
+<span class="output">$10500.00</span>
+print maya/first-name
+<span class="output">Maya</span>
+</pre>
+<p>L'objet <i>lily</i> sert de prototype pour créer le nouvel objet <i>maya</i>.</p>
+<p><b>Remarque: <br>
+un mot qui n'a pas été redéfini pour le nouvel objet 
+continue d'avoir les valeurs de l'ancien objet</b> :</p>
+<pre>
+print maya/last-name
+<span class="output">Lakeswimmer</span>
+</pre>
+<p>De nouveaux mots peuvent être ajoutés à l'objet :</p>
+<pre>
+maya: make lily [
+    email: maya@example.com
+    birthdate: 4-July-1977
+]
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-8">8. Référence à self</h2>
+<blockquote>
+<p>Chaque objet inclut une variable pré-définie appelée <b>self</b>.</p>
+<p>A l'intérieur du contexte de l'objet, la variable <b>self</b> fait référence à l'objet lui-même.</p>
+<p>Cette variable peut être utilisée pour passer à l'objet d'autres fonctions 
+ou pour le retourner en tant que résultat 
+d'une fonction.</p>
+<p>Dans l'exemple suivant, la fonction <i>show-date</i> nécessite un objet en argument et 
+c'est <b>self</b> qui lui est passé pour cela :</p>
+<pre>
+show-date: func [obj] [print obj/date]
+example: make object! [
+    date: now
+    show: does [show-date self]
+]
+example/show
+<span class="output">16-Jul-2000/11:08:37-7:00</span>
+</pre>
+<p>Un autre exemple d'utilisation de la variable <b>self</b> est ici la fonction 
+<i>new</i> pour le clonage de l'objet :</p>
+<pre>
+person: make object! [
+    name: days-old: none
+    new: func [name' birthday] [
+        make self [
+            name: name'
+            days-old: now/date - birthday
+        ]
+    ]
+]
+lulu: person/new "Lulu Ulu" 17-May-1980
+print lulu/days-old
+<span class="output">7366</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-9">9. Encapsulation</h2>
+<blockquote>
+<p>L'usage des objets est un bon moyen d'encapsuler un ensemble de variables
+qui ne devrait pas apparaître dans le contexte global.</p>
+<p>Quand des variables d'une fonction sont définies comme globales, elles peuvent involontairement 
+être modifiées par d'autres fonctions.</p>
+<p>La solution à ce problème de variables globales est de les encapsuler dans un objet.</p>
+<p>Ainsi, une fonction peut encore accéder à ses variables, mais celles-ci ne peuvent plus être accédées  
+depuis le contexte global.</p>
+<p>Par exemple :</p>
+<pre>
+bank: make object! [
+last-account: 89431
+bank-bonus: $10.00
+set &lt;i&gt;make-account&lt;/i&gt; func [
+    "Returns a new account object"
+    f-name [string!] "First name"
+    l-name [string!] "Last name"
+    start-solde [money!] "Solde Initial"
+][
+    last-account: last-account + 1
+    make bank-account [
+        first-name: f-name
+        last-name: l-name
+        account: last-account
+        solde: start-solde + bank-bonus
+    ]
+]
+]
+</pre>
+<p>Ici, les variables sont protégées de modifications 
+accidentielles, car encapsulées dans le contexte de l'objet <i>bank</i>. <br /></p>
+<p><u>Remarque</u> :</p>
+<p>La fonction <i>make-account</i> a été définie en utilisant 
+la fonction <b>set</b>, plutôt que par une affectation normale.</p>
+<p>Avec l'usage de <b>set</b>, la fonction <i>make-account</i> devient une fonction du contexte global.</p>
+<p>Cependant, si elle peut être utilisée de la même manière que d'autres fonctions, elle ne nécessite 
+pas l'usage de <b>paths</b>.</p>
+<pre>
+bob: make-account "Bob" "Baker" $4000
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-10">10. Réflectivité</h2>
+<blockquote>
+<p>Comme beaucoup d'autres types de données REBOL, vous pouvez accéder 
+aux composants des objets de tel sorte qu'il devient possible d'écrire des outils utiles pour les créer,
+les monitorer, ou les débugger.</p>
+<p>Les fonctions <b>first</b> et <b>second</b> vous permettent d'accéder aux composants d'un objet.</p>
+<p>La fonction <b>first</b> renvoie les mots définis pour un objet.</p>
+<p>La fonction <b>second</b> renvoie les valeurs de ces mots.</p>
+<p>Le diagramme suivant montre les liens entre les valeurs retournées par les  
+fonctions <b>first</b> et <b>second</b>.</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-47.gif"></p>
+<p>L'intéret de <b>first</b> est qu'elle permet d'obtenir la liste des mots de l'objet sans 
+connaitre quoi que ce soit sur lui :</p>
+<pre>
+probe first luke
+<span class="output">[self first-name last-name account solde]</span>
+</pre>
+<p>Dans l'exemple ci-dessus, la liste renvoyée contient le mot <b>self</b> 
+référence à l'objet lui-même.</p>
+<p>Vous pouvez exclure <b>self</b> de la liste en utilisant <b>next</b> :</p>
+<pre>
+probe next first luke
+<span class="output">[first-name last-name account solde]</span>
+</pre>
+<p>A présent, vous pouvez écrire une fonction qui va sonder le contenu 
+d'un objet :</p>
+<pre>
+probe-object: func [object][
+    foreach word next first object [
+        print rejoin [word ":" tab get in object word]
+    ]
+]
+probe-object fred
+<span class="output">first-name: Luke
+last-name: Lakeswimmer
+account: 89431
+solde: $1204.52</span>
+</pre>
+<p>En sondant les objets de cette façon, attention à éviter les boucles infinies !</p>
+<p>Par exemple, si vous essayer de connaître certains objets qui contiennent des références à eux-mêmes,
+votre code peut conduire à une boucle infinie.</p>
+<p>C'est d'ailleurs la raison pour laquelle vous ne pouvez sonder l'objet <b>system</b> directement.<br>
+L'objet <b>system</b> contient en effet beaucoup de références à lui-même.</p>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 21-Jan-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>

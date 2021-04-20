@@ -1,0 +1,1847 @@
+Chapitre 4 - Les Expressions
+
+
+	Ce document est la traduction française du Chapitre 4 du User Guide de REBOL/Core,
+	qui concerne les Expressions.
+	
+
+
+===Historique de la Traduction
+
+\table
+
+Date
+
+Version
+
+Commentaires
+
+Auteur
+
+Email
+
+=row
+
+19 avril 2005 17:55
+
+1.0.0
+
+Traduction initiale
+
+Philippe Le Goff
+
+lp--legoff--free--fr
+
+=row
+
+19 mai 2005 08:38
+
+1.0.1
+
+Corrections mineures
+
+Philippe Le Goff
+
+lp--legoff--free--fr
+
+/table
+
+<br />
+<br />
+
+
+===Présentation
+
+L'objectif premier de REBOL est d'établir une méthode standard de communication 
+qui soit commune à tous les systèmes informatiques.
+REBOL fournit un moyen simple, direct pour énoncer toutes sortes d'informations 
+avec une syntaxe minimale, et une grande flexibilité.
+
+Par exemple, examinez la ligne suivante :
+
+	Sell 100 shares of "Acme" at $47.97 per share
+
+Le code ressemble beaucoup à de l'anglais, ce qui le rend facile à rédiger 
+si vous l'écrivez et facile à comprendre si vous le recevez. 
+Pourtant, cette ligne est actuellement une expression valide en REBOL, de sorte 
+que votre ordinateur pourra aussi la comprendre et réagir en fonction.
+
+Notez que cette ligne de code est un "dialecte" de REBOL. Elle ne peut être 
+directement évaluée. (Voir plus loin concernant ce concept de dialecte.)
+
+REBOL fournit donc un langage commun entre vous et votre ordinateur. 
+De plus, si votre ordinateur envoie cette expression à celui de votre 
+courtier, qui utilise aussi REBOL, l'ordinateur de votre courtier peut comprendre 
+l'expression et la traiter en conséquence.
+
+REBOL fournit donc un langage commun aux ordinateurs. La ligne précédente peut 
+ainsi être envoyée à des millions d'autres ordinateurs qui eux aussi peuvent 
+la traiter.
+
+Le code suivant est un autre exemple d'expression REBOL : 
+
+	Reschedule exam for 2-January-1999 at 10:30
+
+
+L'expression ci-dessus (écrite dans un autre "dialecte") peut provenir de votre 
+médecin qui l'a saisie, ou peut être originaire d'une application qu'il utilise.
+Il n'y a pas de probléme.  
+Ce qui est important, c'est que l'expression peut être utilisable sans considérer 
+le type d'ordinateur, de console, de télévision, d'instruments informatiques que vous utilisez.
+
+
+Les données (nombres, chaînes de caractères, prix, dates, heures ) dans toutes 
+les expressions indiquées sont des formats standard REBOL.
+
+Par ailleurs, les mots dépendent du contexte dans lequel ils sont interprétés pour 
+convenir de leur sens.
+Les mots comme "sell", "at", et "read" ont différentes significations selon les 
+contextes. 
+ 
+<b>Les mots sont des expressions relatives - leur sens est dépendant du contexte.</b>
+
+Les expressions peuvent être traitées de deux manières : soit directement 
+par l'interpréteur REBOL, soit indirectement par un script REBOL.
+
+Un script traité indirectement est appelé un dialecte. 
+Les exemples précédents sont des dialectes et, par ailleurs, sont traités par 
+script.
+
+L'exemple suivant n'est pas un dialecte car il est exécuté directement par 
+l'interpréteur REBOL :
+
+	send master@rebol.com read http://www.rebol.com
+
+Dans cet exemple, les mots "send" et "read" sont des fonctions traitées 
+par l'interpréteur REBOL.
+
+Au niveau de REBOL, la différence est que l'information est soit traitée 
+directement, soit indirectement.
+La différence ne porte pas sur le fait que l'information soit du code ou des 
+données mais sur la façon dont elle va être interprétée (directement ou non).
+
+Le code REBOL est souvent manipulé comme une donnée et une donnée est fréquemment 
+traitée comme du code, de sorte que la division classique entre 
+données et code s'estompe.
+
+La façon dont l'information est traitée détermine s'il s'agit de code ou de données.
+
+
+===Blocs
+
+
+Les expressions REBOL sont basées sur ce concept : vous pouvez combiner des valeurs 
+et des mots dans des blocs.
+
+Dans les scripts, un bloc est normalement compris entre deux crochets [ ]. 
+
+Tout ce qui est à l'intérieur des crochets est une partie du bloc. Le bloc peut 
+s'étendre sur plusieurs lignes, et son format est complétement libre.
+
+Les exemples suivants montrent différentes manières de présenter le contenu de blocs :
+
+
+	[white red green blue yellow orange black]
+	
+	["Spielberg" "Back to the Future" 1:56:20 MCA]
+	
+	[
+	    "Bill"  billg@ms.dom  #315-555-1234
+	    "Steve" jobs@apl.dom  #408-555-4321
+	    "Ted"   ted@gw2.dom   #213-555-1010
+	]
+	
+	sites: [
+	    http://www.rebol.com [save %reb.html data]
+	    http://www.cnn.com   [print data]
+	    ftp://www.amiga.com  [send cs@org.foo data]
+	]
+
+Certains blocs ne nécessitent pas de crochets car ils sont implicites.
+
+Par exemple, dans un script REBOL, il n'y a pas de crochets entourant de part 
+et d'autre le contenu du script, et cependant, le contenu du script est un bloc.
+
+Les crochets d'un "script-bloc" sont implicites.
+
+La même chose est vraie pour les expressions tapées à l'invite de la console (prompt), 
+ou pour des messages REBOL envoyés entre ordinateurs -- chacun est un bloc implicite. 
+
+Un autre aspect important des blocs est qu'ils impliquent des 
+informations supplémentaires. <br>
+Les blocs rassemblent en effet des jeux de valeurs dans un 
+<u>ordre particulier</u>. 
+
+Ceci étant, un bloc peut être utilisé comme une donnée, tout comme un ensemble.
+
+Ceci sera décrit dans <a href="fr-rebolcore-6.html">le chapitre sur les Séries</a>.
+
+
+
+===Valeurs
+
+REBOL fournit en interne du langage  un ensemble de valeurs qui 
+peuvent être exprimées et échangées entre tous les systèmes. Ces valeurs sont les 
+élèments primaires pour composer toutes les expressions REBOL.
+
+---Valeurs directes et indirectes
+
+Les valeurs peuvent être directement ou indirectement exprimées. 
+
+Une valeur directement exprimée est connue comme elle est écrite que ce soit au niveau lexical ou littéral.
+<br> 
+Par exemple, le nombre 10 ou l'heure 10:30 sont des valeurs directement exprimées.
+
+Une valeur exprimée indirectement demeure inconnue tant qu'elle n'est pas évaluée.
+
+Les valeurs <b>none</b>, <b>true</b>, et <b>false</b> nécessitent toutes des 
+mots pour les représenter. Ces valeurs sont indirectement exprimées, car elles 
+doivent être évaluées pour être connues.
+Ceci est aussi vrai d'autres valeurs, comme les listes, les tables de hachage 
+(<b>hash!</b>), les fonctions, les objets.
+
+
+---Types de données des valeurs
+
+\note
+
+NDT : le mot anglais "datatype", utilisé pour "type de données" sera conservé, 
+afin d'alléger la lecture.
+
+/note
+
+
+Chaque valeur REBOL posséde un type de données particulier. Le type de données 
+(<i>datatype</i>) d'une valeur définit :
+
+* L'ensemble des valeurs possibles pour un type de données. Par exemple, le datatype 
+logique (<i>logic!</i>) peut seulement être : <b>true</b> ou <b>false</b>.
+
+* Les opérations qui peuvent être réalisées. Par exemple, vous pouvez additionner  
+deux entiers, mais vous ne pouvez pas additionner deux valeurs logiques. 
+
+* La façon dont les valeurs sont stockés en mémoire. Certains datatypes peuvent 
+être stockés directement (comme les nombres), tandis que d'autres sont stockés 
+indirectement (comme les chaînes de caractères).
+
+
+Par convention, les noms des types de données REBOL sont suivis d'un point 
+d'exclamation (<b>!</b>) pour aider à les distinguer.
+
+Par exemple :
+
+	integer!
+	char!
+	word!
+	string!
+
+Les mots utilisés pour les types de données sont simplement des <i>mots</i>. 
+Ils sont juste comme beaucoup d'autres mots en REBOL. Il n'y a rien de "magique" 
+concernant le "<b>!</b>" utilisé pour les représenter.
+
+Voir l'annexe concernant les Valeurs, pour une description de tous les datatypes 
+REBOL.
+
+
+
+===Evaluation des Expressions
+
+Evaluer une expression revient à calculer sa valeur. 
+
+REBOL opére en évaluant les séries d'expressions constituant un script et 
+ensuite retourne le résultat. <br>
+Evaluer, c'est aussi faire un traitement, exécuter un script.
+
+L'évaluation est réalisée sur des blocs. Les blocs peuvent être saisis à la console, 
+ou chargés à partir d'un fichier, un script. Dans les deux cas, le processus 
+d'évaluation est le même.
+
+
+---Evaluation depuis la console
+
+Toute expression pouvant être évaluée dans un script peut aussi l'être depuis 
+l'invite de console, fournissant un moyen simple de tester individuellement
+les expressions d'un script.
+
+Par exemple, si vous saississez l'expression suivante à la console :
+
+	>> 1 + 2
+
+L'expression est évaluée et le résultat suivant est retourné :
+
+	== 3
+
+\note 
+
+<b>Concernant les exemples de code ...</b>
+
+Dans l'exemple ci-dessus, l'invite de la console (>>) et l'indicateur de réponse 
+(==) sont indiqués pour vous donner une idée de la façon dont les résultats se présentent dans 
+la console.
+
+Pour les exemples suivants, ils ne seront plus affichés. Vous pouvez cependant 
+taper vous-même ces exemples pour vérifier les résultats.
+
+/note
+
+---Evaluation de valeurs simples
+
+Une valeur connue directement est simplement retournée.
+
+Par exemple, si vous saisissez la ligne suivante : 
+
+	10:30
+
+la valeur 10:30 est retournée. C'est le comportement de toutes les valeurs 
+directement fournies. <br>
+Ceci inclut : 
+
+	integer    1234
+	decimal    12.34
+	string     "REBOL world!"
+	time       13:47:02
+	date       30-June-1957
+	tuple      199.4.80.1
+	money      $12.49
+	pair       100x200
+	char       #"A"
+	binary     #{ab82408b}
+	email      info@rebol.com
+	issue      #707-467-8000
+	tag        <IMG SRC="xray.jpg">
+	file       %xray.jpg
+	url        http://www.rebol.com/
+	block      [milk bread butter]
+
+
+---Evaluation de blocs
+
+Normalement, les blocs ne sont pas évalués. Par exemple, la saisie du bloc 
+suivant :
+
+	[1 + 2]
+
+renverra le même bloc :
+
+==	[1 + 2]
+
+
++++ do
+
+	
+Le bloc n'est pas évalué; il est simplement traité comme une donnée. 
+Pour évaluer un bloc, utiliser la fonction <b>do</b>, comme le montre l'exemple 
+suivant :
+
+	do [1 + 2]
+==	3
+
+La fonction <b>do</b> renvoie le résultat de l'évaluation. <br>Ci-dessus, le nombre 
+3 est retourné. 
+
+Dans un bloc contenant plusieurs expressions, seul le résultat de la dernière 
+expression est renvoyé :
+
+	do [
+	    1 + 2
+	    3 + 4
+	]
+==	7
+
+Dans cet exemple, les deux expressions sont évaluées, mais seul le résultat de 
+3 + 4 est renvoyé.
+
+Un certain nombre de fonctions telles que <b>if</b>, <b>loop</b>, <b>while</b>, 
+et <b>foreach</b> évaluent un bloc faisant partie d'elles-mêmes.
+
+Ces fonctions sont discutées en détail plus loin dans ce chapitre, mais voici quelques 
+illustrations :
+ 
+	if time > 12:30 [print "past noon"]
+	past noon
+	loop 4 [print "looping"]
+==	looping
+==	looping
+==	looping
+==	looping
+
+C'est un point important à se rappeler : les blocs sont traités comme des données, 
+sauf s'ils sont explicitement évalués par une fonction. <br>
+Seule une fonction peut provoquer leur évaluation.
+ 
+
+---Réduire des blocs
+
+Quand vous évaluez un bloc avec la fonction <b>do</b>, seule la valeur de la 
+dernière expression est retournée comme résultat. 
+Cependant, vous voudrez parfois que les valeurs de toutes les expressions soient 
+retournées. 
+
++++ reduce
+
+Pour renvoyer le résultat de l'évaluation de chaque expression du bloc, 
+utilisez la fonction <b>reduce</b>. 
+
+Dans l'exemple suivant, <b>reduce</b> est utilisé pour retourner le résultat particulier 
+de chacune des expressions du bloc :
+
+
+	reduce [
+	    1 + 2
+	    3 + 4
+	]
+==	[3 7]
+
+Ci-dessus, le bloc a été ramené ("réduit") aux résultats de son évaluation. 
+La fonction <b>reduce</b> renvoie les résultats dans un bloc.
+
+La fonction <b>reduce</b> est importante car elle vous permet de créer des blocs 
+d'expressions, qui sont évalués et passés à d'autres fonctions.
+
+<b>Reduce</b> évalue chaque expression dans un bloc et place le résultat de 
+l'expression dans un nouveau bloc. <br />
+Ce nouveau bloc est renvoyé comme résultat de <b>reduce</b>.
+
+Certaines fonctions, comme <b>print</b>, utilise <b>reduce</b> comme partie 
+intégrante dans leur fonctionnement, comme le montre l'exemple suivant : 
+
+	print [1 + 2  3 + 4]
+==	3 7
+
+Les fonctions <b>rejoin</b>, <b>reform</b>, et <b>remold</b> l'utilisent également 
+en interne :
+
+	print rejoin [1 + 2  3 + 4]
+==	37
+	print reform [1 + 2  3 + 4]
+==	3 7
+	print remold [1 + 2  3 + 4]
+==	[3 7]
+
+Les fonctions <b>rejoin</b>, <b>reform</b>, et <b>remold</b> sont basées sur les  
+fonctions <b>join</b>, <b>form</b>, et <b>mold</b>, mais réduisent les blocs 
+en premier lieu.
+
+
+---Evaluation des scripts
+
+La fonction <b>do</b> peut être utilisée pour évaluer des scripts entiers.
+
+Normalement, <b>do</b> évalue un bloc, comme indiqué dans l'exemple suivant :
+
+	do [print "Hello!"]
+==	Hello!
+
+
+Mais, lorsque <b>do</b> évalue un nom de fichier au lieu d'un bloc, le fichier 
+est chargé dans l'interpréteur sous la forme d'un bloc, puis évalué :
+	
+	do %script.r
+
+Un en-tête REBOL valide est requis, comme décrit dans <a href="fr-rebolcore-5.html">le chapitre sur les Scripts</a>.
+L'en-tête identifie que le fichier contient du code et non un texte aléatoire.
+
+
+---Evaluation des chaînes
+
+La fonction <b>do</b> peut être utilisée pour évaluer des expressions 
+qui peuvent être trouvées à l'intérieur de chaînes de caractères. Par exemple, 
+l'expression suivante :
+
+	do "1 + 2"
+==	3
+
+retourne le résultat 3.
+
+D'abord, la chaîne est transformée en bloc, puis le bloc est évalué.
+
+
+L'évaluation d'une chaîne peut parfois s'avérer pratique mais ne 
+devra être utilisée que si nécessaire.
+ 
+Par exemple, pour créer un processeur de ligne de commande REBOL, 
+saisissez l'expression suivante:
+
+	forever [probe do ask "=> "]
+
+
+L'expression ci-dessus attend avec le symbole "=>" que vous tapiez une chaîne 
+de caractères. Le texte fourni doit être évalué et le résultat doit ensuite être affiché. 
+(Bien sûr, ce n'est pas vraiment aussi simple, car le script pourrait produire 
+une erreur). 
+
+
+Sauf nécessité, l'évaluation de chaînes de caractère n'est pas généralement une 
+bonne pratique. <br/>
+L'évaluation de chaînes est moins efficace que l'évaluation 
+de blocs, et, de plus, le contexte des mots dans une chaîne n'est pas connu.  
+
+Par exemple, l'expression suivante :
+
+	do form ["1" "+" "2"]
+
+est beaucoup moins efficace que de taper :
+
+	do [1 + 2]
+
+Des blocs REBOL peuvent être construits tout aussi facilement que des chaînes, 
+et les blocs sont plus efficaces pour évaluer les expressions. 
+
+
+
+---Evaluation d'erreurs
+
+Des erreurs peuvent se produire pour plusieurs raisons durant l'évaluation. 
+Par exemple, si vous divisez un nombre par zéro, l'évaluation est arrétée et 
+une erreur est affichée :
+
+
+	100 / 0
+==	** Math Error: Attempt to divide by zero.
+==	** Where: 100 / 0
+
+Une erreur courante est d'utiliser un mot avant qu'il soit définit :
+
+	size + 10
+==	** Script Error: size has no value.
+==	** Where: size + 10
+
+Une autre erreur courante est de ne pas fournir les valeurs correctes pour une 
+fonction :
+
+	10 + [size]
+==	** Script Error: Cannot use add on block! value.
+==	** Where: 10 + [size]
+
+Parfois les erreurs ne sont pas évidentes, et vous aurez à faire des tests pour 
+déterminer la cause de l'erreur.
+
+===Mots
+
+Les expressions sont construites à partir de valeurs et de mots. 
+Les mots sont utilisés pour représenter une signification. Un mot représente 
+une idée ou une valeur particulière.
+
+Dans les exemples précédents de ce chapitre, un certain nombre de mots ont été 
+employés sans explication, dans des expressions.
+
+Par exemple, les mots <b>do</b>, <b>reduce</b>, <b>try</b> sont utilisés, mais 
+pas expliqués.
+
+Les mots sont évalués légérement différemment des valeurs directement exprimées. 
+Quand un mot est évalué, sa valeur est recherchée, évaluée, puis retournée 
+comme résultat.
+
+Par exemple, si vous saississez le mot suivant : 
+
+	zero
+==	0
+
+La valeur <i>zero</i> est retournée. Le mot <i>zero</i> est prédéfini comme étant le nombre 0.<br>
+Quand le mot est recherché, un <i>zero</i> est trouvé et fournit le résultat.
+
+Quand des mots comme <b>do</b> et <b>print</b> sont analysés, leur valeurs 
+se trouvent être des fonctions, plutôt que de simples valeurs. 
+Dans de tels cas, la fonction est évaluée et le résultat de la fonction est renvoyé.
+
+
+
+---Validité des noms pour les mots
+
+Les mots sont composés de caractères alphabétiques, de nombres, et de n'importe 
+lesquels des caractères suivants :
+
+	? ! . ' + - * & | = _ ~
+
+Un mot ne doit pas commencer par un nombre, et il y a aussi quelques 
+restrictions sur les mots pouvant être interprétés comme des nombres.
+
+Par exemple, -1 et +1 sont des nombres, pas des mots.
+
+La fin d'un mot est marquée par un espace, une nouvelle ligne, ou l'un des caractères 
+suivants : 
+
+	[ ] ( ) { } " : ; /
+
+Par ailleurs, les crochets d'un bloc ne font pas partie d'un mot.
+
+Le bloc qui suit contient le mot <b>test</b> :
+
+	[test]
+
+Les caractères suivants ne sont pas autorisés dans les mots, car ils induisent 
+une mauvaise interprétation des mots ou générent une erreur :
+
+	@ # $ % ^ ,
+
+Les mots peuvent être de n'importe quelle longueur, mais ne peuvent pas se 
+prolonger après l'extrémité d'une ligne.
+
+	this-is-a-very-long-word-used-as-an-example
+
+Les lignes suivantes présentent des exemples de mots valides :
+
+	Copy print test
+	number?  time?  date!
+	image-files  l'image
+	++ -- == +-
+	***** *new-line*
+	left&right left|right
+
+REBOL n'est pas sensible à la casse des caractères. Les mots suivants font tous 
+référence au même mot :
+
+	blue
+	Blue
+	BLUE
+
+La casse d'un mot est conservée lorsqu'il est affiché.
+
+Les mots peuvent être réutilisés. La signification d'un mot est dépendante de 
+son contexte, de sorte que des mots identiques peuvent être réutilisés dans des 
+contextes différents. 
+
+Il n'y a pas de mot-clé en REBOL, vous pouvez réutiliser n'importe quel mot, même 
+ceux qui sont pré-définis.
+
+Par exemple, vous pouvez utilisez un mot dans votre code différemment de la 
+façon dont l'interpréteur utilise ce mot.
+
+
+\note 
+
+<b>Du bon choix des mots :</b>
+
+Choisissez soigneusement les mots que vous employez .  
+Les mots sont employés pour mettre en valeur une signification.  
+Si vous choisissez soigneusement vos mots, il sera plus facile pour vous et 
+pour les autres de comprendre vos scripts.
+
+/note
+
+---Usage des mots
+
+Les mots sont utilisés de deux manières : comme symboles ou comme variables. 
+Dans le bloc suivant, les mots sont utilisés en tant que symboles pour des 
+couleurs :
+
+	[red green blue]
+
+Dans la ligne suivante :
+
+	print second [red green blue]
+==	green
+
+Les mots n'ont pas d'autre signification que celle utilisée en tant que nom 
+pour les couleurs.  Tous les mots utilisés au sein des blocs servent de symboles 
+jusqu'à ce qu'ils soient évalués.
+
+Quand un mot est évalué, il est utilisé comme une variable. Dans l'exemple 
+précédent, les mots <b>print</b> et <b>second</b> sont des variables reliées 
+aux fonctions natives utilisées.
+
+Un mot peut être écrit de quatre manières différentes pour indiquer comment 
+il doit être traité, comme ceci est expliqué dans <a href="fr-rebolcore-a1.html">le chapitre consacré aux valeurs</a> et plus spécifiquement aux mots.
+
+
+\table
+		
+Format
+
+Ce qu'il fait
+
+=row 
+
+<b>word</b>
+
+Evalue un mot. C'est la façon la plus simple et la plus naturelle d'écrire un 
+mot. Si un mot référence une fonction, il sera évalué. Sinon, la valeur du mot 
+sera retournée.
+
+=row 
+
+<b>word:</b>
+
+Définit ou attribue la valeur d'un mot. Une nouvelle valeur est donnée. La valeur 
+peut être n'importe quoi, et même une fonction. Voir la section sur 
+définition des Mots, ci-dessous. 
+
+=row 
+
+<b>&#58;word</b>
+
+Récupère la valeur d'un mot mais sans l'évaluer. Ceci est utile pour faire 
+référence à des fonctions, et d'autres données, sans les évaluer. Voir la section sur 
+définition des Mots, ci-dessous. 
+
+=row 
+
+<b>'word</b>
+
+Traite le mot comme un symbole, mais ne l'évalue pas. Le mot est lui-même la valeur.
+
+/table
+
+
+---Définition des mots
+
+Un mot suivi du caractère (<b>:</b>) est utilisé pour définir ou attribuer sa 
+valeur :
+
+	age: 42
+	lunch-time: 12:32
+	birthday: 20-March-1990
+	town: "Dodge City"
+	test: %stuff.r
+
+Vous pouvez définir un mot pour afin qu'il représente n'importe quel type de valeur. 
+Dans les exemples précédents, les mots ont été définis en tant qu'entier, heure, 
+date, chaîne de caractère, et fichier.
+
+Vous pouvez aussi définir des mots correspondant à des types plus complexes de valeurs.
+
+Par exemple, les mots suivants sont attribués à des valeurs de blocs et de fonctions : 
+
+
+	towns: ["Ukiah" "Willits" "Mendocino"]
+	code: [if age > 32 [print town]]
+	say: func [item] [print item]
+
+\note 
+
+<b>Pourquoi les mots sont-ils définis ainsi ?</b>
+
+Dans beaucoup de langage, les mots sont définis avec un signe "égal", comme dans : 
+
+	age = 42
+
+En REBOL, les mots sont spécifiés avec le caractère "<b>:</b>". Il y a une raison 
+importante à cela. Ceci réduit l'opération de définition des mots à une seule valeur 
+lexicale. La représentation d'une opération de définition est <b>atomique</b>.
+
+La différence entre les deux approches peut être vue sur ce exemple : 
+
+	print length? [age: 42]
+==	2
+	print length? [age = 42]
+==	3
+
+REBOL est un langage <b>réflectif</b>, il est capable de manipuler son propre 
+code.  Cette méthode permet d'écrire du code qui va manipuler facilement, 
+et en une simple opération, la définition des valeurs. 
+
+
+Bien sûr, une autre raison est que le signe "=" est utilisé dans les opérations 
+de comparaison.
+
+/note
+
+Plusieurs mots peuvent être définis en une fois par un effet de "cascade" de définitions. 
+Par exemple,  chacun des mots suivants est défini à la valeur 42 :
+
+	age: number: size: 42
+
+Les mots peuvent aussi être définis avec la fonction <b>set</b> :
+
+	set 'time 10:30
+
+Dans cet exemple, <b>set</b> attribue au mot <b>time</b> la valeur : 10:30 .
+le mot <b>time</b> est écrit comme un mot litéral (usage de l'apostrophe) 
+de sorte qu'il n'est pas évalué.
+
+La fonction <b>set</b> peut aussi définir plusieurs mots :
+
+	set [number num ten] 10
+
+	print [number num ten]
+==	10 10 10
+
+Dans l'exemple précédent, remarquez que les mots n'ont pas besoin d'apostrophes car 
+ils sont à l'intérieur d'un bloc, qui n'est pas évalué. 
+
+La fonction <b>print</b> montre l'attribution à chaque mot de la valeur 10.
+
+Si un bloc de valeurs est fourni à <b>set</b>, chacune des valeurs sera attribuée 
+à un mot. Dans l'exemple suivant, les mots <b>one</b>, <b>two</b>, et <b>three</b> 
+prendront respectivement la valeur <b>1</b>, <b>2</b> et <b>3</b> : 
+
+
+	set [one two three] [1 2 3]
+
+	print three
+==	3
+	print [one two three]
+==	1 2 3
+
+Voir l'annexe concernant les valeurs, pour une description de tous les datatypes 
+REBOL.
+
+
+---Récupérer la valeur des mots
+
+Pour récupérer la valeur d'un mot qui a été précédemment défini, placez le 
+symbole <b>:</b> devant le mot. Un mot préfixé par deux points (<b>:</b>) récupére  
+la valeur du mot, mais sans l'évaluer sauf si c'est une fonction.
+
+Par exemple, la ligne suivante : 
+
+	drucken: :print
+
+définit un nouveau mot <b>drucken</b> (l'équivalent allemand pour <b>print</b>)  
+pour faire référence à la même fonction que <b>print</b>. En effet, <b>:print</b> 
+renvoie la fonction pour <b>print</b> mais sans l'évaluer. 
+
+A présent, <b>drucken</b> se comporte comme la fonction <b>print</b> :
+
+	drucken "test"
+==	test
+
+<b>print</b> et <b>drucken</b> référencent la même valeur, la fonction effectuant 
+l'affichage.
+
+Ceci peut aussi être réalisé avec la fonction <b>get</b>. Quand un mot litéral est donné, 
+<b>get</b> renvoie sa valeur, mais sans l'évaluer : 
+
+	stampa: get 'print
+	
+	stampa "test"
+==	test
+
+La possibilité de récupérer la valeur d'un mot est aussi importante, par exemple si vous voulez 
+connaître cette valeur mais sans l'évaluer. 
+
+Vous pouvez déterminer si un mot est une fonction native en utilisant la ligne 
+suivante : 
+
+	print native? :if
+==	true
+
+La fonction <b>if</b> n'est pas évaluée, mais elle est passée à la fonction 
+<b>native?</b> qui vérifie si elle est bien du type de données <b>native!</b>.
+
+Sans le caractère <b>:</b> placé devant, la fonction <b>if</b> aurait été  
+évaluée et parce qu'il n'y a pas d'arguments, une erreur se produirait. 
+
+
+---Mots Littéraux (Literal Words)
+
+La possibilité de traiter un mot comme un "littéral" est commode. 
+
+Aussi bien <b>set</b> que <b>get</b>, mais également d'autres fonctions comme 
+<b>value?</b>, <b>unset</b>, <b>protect</b> et <b>unprotect</b>, attendent 
+un mot littéral.
+
+Les mots littéraux peuvent être écrits de l'une ou l'autre manière : en préfixant 
+le mot avec une apostrophe, (`), ou en placant le mot dans un bloc.
+
+Vous pouvez utiliser l'apostrophe devant le mot à évaluer :
+
+	word: 'this
+
+Dans l'exemple ci-dessus, le mot littéral <i>this</i>, et non la valeur de celui-ci, 
+est affecté à la variable <i>word</i>. La variable <i>word</i> utilise juste 
+symboliquement le nom. 
+
+L'exemple ci-dessous montre que si vous affichez la valeur du mot, vous aurez 
+ceci :
+
+	print word
+==	this
+
+Vous pouvez aussi obtenir des mots littéraux à partir de blocs non évalués. 
+Dans l'exemple suivant, la fonction <b>first</b> récupére le premier mot du bloc. 
+Ce mot est alors passé à la variable <i>word</i>.
+
+	word: first [this and that]
+
+N'importe qeul mot peut être utilisé comme littéral.  Il peut ou non faire référence 
+à une valeur. Le mot <b>print</b> a une valeur mais il peut cependant être utilisé 
+comme un littéral car les mots littéraux ne sont pas évalués.
+
+	word: 'here
+	print word
+==	here
+	word: 'print
+	print word
+==	print
+
+L'exemple suivant illustre l'importance des valeurs littérales :
+
+	video: [
+	    title "Independence Day"
+	    length 2:25:24
+	    date   4/july/1996
+	]
+	print select video 'title
+==	Independence Day
+
+Dans cet exemple, le mot <i>title</i> est recherché dans le bloc. Si 
+l'apostrophe était manquante à ce mot <i>title</i>, alors sa valeur devrait être 
+utilisée. Si <i>title</i> n'avait pas de valeur attribuée, une erreur serait affichée.
+
+Voir l'annexe concernant les valeurs, pour plus de détail concernant les mots 
+littéraux.
+
+---Mots non définis 
+
+Un mot qui n'a pas de valeur est <b>unset</b>, non attribué.
+
+Si un mot non défini est évalué, une erreur se produit : 
+
+	>> outlook
+==	** Script Error: outlook has no value.
+==	** Where: outlook
+
+
+Le message d'erreur dans l'exemple précédent indique qu'aucune valeur n'a été attribuée 
+à ce mot. Le mot est non défini. Ne confondez pas ceci avec un mot qui aurait été 
+défini à <b>none</b>, qui est une valeur valide.
+
+Un mot préalablement défini peut être déclaré "unset" à n'importe quel moment en 
+utilisant la fonction :
+
+
+	unset 'word
+
+Lorsqu'un mot devient "usnet", sa valeur est perdue. Pour déterminer si un mot est 
+"unset", utilisez la fonction <b>value?</b> qui prend en argument un mot littéral : 
+
+	if not value? 'word [print "word is not set"]
+==	word is not set
+
+
+	
+Ceci peut être commode pour des scripts qui appellent d'autres scipts. 
+Ci-dessous, un script initialise un paramétre par défaut (<i>test-mode</i>) qui n'a pas été 
+défini auparavant 
+
+	if not value? 'test-mode [test-mode: on]
+
+
+---Protection des mots
+
+Vous pouvez éviter qu'un mot soit modifié, avec la fonction <b>protect</b>.
+
+	protect 'word
+
+Tenter de redéfinir un mot protégé génére une erreur :
+
+	word: "here"
+==	** Script Error: Word word is protected, cannot modify.
+==	** Where: word: "here"
+
+Un mot peut être "déprotégé" en utilsant la fonction <b>unprotect</b> :
+
+	unprotect 'word
+	word: "here"
+
+Les fonctions <b>protect</b> et <b>unprotect</b> peuvent aussi accepter un bloc 
+de mots : 
+
+	protect [this that other]
+
+Les mots et les fonctions importantes du système peuvent être protégés en utilisant 
+la fonction <b>protect-system</b>. 
+
+La protection des fonctions et des mots du système est particulièrement utile 
+pour les débutants qui pourraient accidentellement modifier des mots importants. 
+
+Si <b>protect-system</b> est placé dans votre fichier <b>user.r</b>, alors tous les mots 
+prédéfinis seront protégés.
+
+
+
+===Evaluation conditionnelle
+
+Comme mentionné précédemment, les blocs ne sont pas évalués, normalement. 
+La fonction <b>do</b> est requise pour forcer l'évaluation d'un bloc. 
+Parfois, vous aurez besoin qu'un bloc soit évalué sous condition. Le paragraphe 
+suivant décrit plusieurs façons de faire cela :
+
+---Bloc Conditionnel 
+
+La fonction <b>if</b> prend deux arguments. Le premier argument est une condition 
+et le second argument est un bloc. 
+Si la condition est : <b>true</b>, le bloc est évalué, sinon il n'est pas évalué.
+
+	if now/time > 12:00 [print "past noon"]
+==	past noon
+
+La condition est normalement une expression qui est évaluée à <i>true</i> 
+ou à <i>false</i>; cependant, d'autres valeurs peuvent aussi être fournies. 
+
+Seules les valeurs <i>false</i> ou <i>none</i> évite à un bloc d'être évalué.
+
+Ceci peut être pratique pour vérifier les résultats des fonctions <b>find</b>, 
+<b>select</b>, <b>next</b>, et d'autres fonctions, qui retournent <b>none</b> : 
+	
+
+	string: "let's talk about REBOL"
+	if find string "talk" [print "found"]
+==	found
+
+La fonction <b>either</b> améliore la fonction <b>if</b> en incluant un troisième 
+argument, qui est le bloc à évaluer si la condition est fausse (<i>false</i>) :
+
+	either now/time > 12:00 [
+	    print "after lunch"
+	][
+	    print "before lunch"
+	]
+==	after lunch
+
+La fonction <b>either</b> interpréte également une valeur <b>none</b> comme 
+étant <b>false</b>.
+
+
+Les fonctions <b>if</b> et <b>either</b> renvoient le résultat de l'évaluation de 
+leurs blocs. Dans le cas de la fonction <b>if</b>, la valeur du bloc est retournée 
+seulement si le bloc est évalué. <br>
+La fonction <b>if</b> est commode pour initialiser de façon conditionnelle des variables :
+
+	flag: if time > 13:00 ["lunch eaten"]
+	
+	print flag
+==	lunch eaten
+
+Avec la fonction <b>either</b>, l'exemple précédent peut être réécrit ainsi :
+
+	print either now/time > 12:00 [
+	    "after lunch"
+	][
+	    "before lunch"
+	]
+==	after lunch
+
+Bien que <b>if</b> et <b>either</b> soient toutes deux des fonctions, leurs arguments 
+de type <i>block</i> peuvent être une expression quelconque dont le résultat donnerait 
+un bloc lors de son évaluation.
+
+Dans l'exemple suivant, des mots (<i>notice</i>, <i>sleep</i>) sont utilisés 
+pour représenter l'argument de type <i>block!</i> pour  <b>if</b> et <b>either</b>.
+
+
+	notice: [print "Wake up!"]
+	if now/time > 7:00 notice           ;--  mot notice un bloc simple
+==	Wake up!
+	notices: [							;-- notices un bloc de bloc
+	    [print "It's past sunrise!"]
+	    [print "It's past noon!"]
+	    [print "It's past sunset!"]
+	]
+	if now/time > 12:00 second notices
+==	It's past noon!
+	sleep: [print "Keep sleeping"]     ; - le mot sleep
+	either now/time > 7:00 notice sleep
+==	Wake up!
+
+Les expressions conditionnelles utilisées pour le premier argument de <b>if</b> 
+ou <b>either</b> peuvent être composées de fonctions très diverses, fonctions de logique 
+ou de comparaison.
+
+Voir <a href="fr-rebolcore-11.html">le chapitre sur les Maths</a> pour plus d'information.
+
+
+
+\note 
+
+<b>Evitez une erreur courante :</b>
+
+Une erreur communément faite en REBOL est d'oublier le second bloc pour <b>either</b> 
+ou, a contrario, d'ajouter un second bloc pour <b>if</b>. 
+
+Les deux exemples suivants sont tous deux générateurs d'erreurs difficiles à détecter : 
+
+	either age > 10 [print "Older"]
+	
+	if age > 10 [print "Older"] [print "Younger"]
+
+Ces types d'erreurs peuvent être difficiles à détecter, aussi, ayez cela à l'esprit 
+si ces fonctions ne vous paraissent pas ressembler à ce qu'elles devraient.
+
+/note
+
+---Any et All
+
+Les fonctions <b>any</b> et <b>all</b> fournissent un raccourci pour évaluer certains 
+types d'expressions conditionnelles.  Ces fonctions peuvent être utilisées de 
+nombreuses manières : avec <b>either</b> en conjuguaison avec <b>if</b>, avec 
+<b>either</b> seulement, avec d'autres fonctions conditionnelles, ou séparement.
+
+<b>Any</b> et <b>all</b> acceptent toutes deux un bloc d'expressions, ce bloc étant 
+évalué ainsi : la première expression est évaluée, puis la suivante, etc...
+
+La fonction <b>any</b> retourne la première expression <i>true</i> rencontrée,  et 
+la fonction <b>all</b> retourne sa première expression <i>false</i>. 
+
+N'oubliez pas qu'une expression <i>false</i> peut être aussi <i>none</i>, et qu'une 
+expression <i>true</i> peut être n'importe quelle valeur SAUF <i>false</i> et <i>none</i>.
+
+
+La fonction <b>any</b> renvoie donc la première valeur rencontrée qui ne soit 
+pas fausse (<i>false</i>), sinon elle renvoie <b>none</b>.
+
+Les deux fonctions <b>any</b> et <b>all</b> évaluent juste ce qui leur est nécessaire.
+
+Par exemple, dés que <b>any</b> a trouvé une expression "vraie" (<i>true</i>), les 
+expressions restantes ne sont pas évaluées. 
+
+Voici un exemple d'usage de la fonction <b>any</b> :
+
+	size: 50
+	if any [size < 10 size > 90] [
+	    print "Size is out of range."
+	]
+
+Le comportement de <b>any</b> est aussi pratique pour définir des valeurs par défaut. 
+Par exemple, les lignes de code suivantes redéfinissent la valeur de <i>number</i> 
+à 100, mais seulement si sa valeur initiale est <b>none</b> :
+
+	number: none
+	print number: any [number 100]
+==	100
+
+Pareillement, si vous avez potentiellement plusieurs valeurs, vous pouvez utiliser 
+la première à avoir une valeur autre que <i>non</i> :
+
+	num1: num2: none
+	num3: 80
+	print number: any [num1 num2 num3]
+==	80
+
+Vous pouvez utiliser <b>any</b> avec des fonctions comme <b>find</b> pour retourner 
+systématiquement un résultat valide :
+
+	data: [123 456 789]
+	print any [find data 432 999]
+==	999
+
+De la même manière, la fonction <b>all</b> peut être utilisée pour des conditions qui nécessitent 
+d'être toutes "vraies" (<i>true</i>) :
+
+	if all [size > 10 size < 90] [print "Size is in range"]
+==	Size is in range
+
+Vous pouvez vérifier que des valeurs ont bien été définies avant d'évaluer une 
+fonction :
+
+	a: "REBOL/"
+	b: none
+	probe all [string? a string? b append a b] 
+==	none
+	b: "Core"
+	probe all [string? a string? b append a b] 
+==	REBOL/Core
+
+
+---Boucles conditionnelles
+
+Les fonctions <b>until</b> et <b>while</b> répétent l'évaluation d'un bloc jusqu'à 
+ce qu'une condition soit remplie.
+
+La fonction <b>until</b> répéte l'évaluation d'un bloc jusqu'à ce que cette 
+évaluation renvoie <b>true</b> (c'est à dire : ni <b>false</b>, ni <b>none</b> ). 
+
+L'évaluation du bloc est toujours réalisée au moins une fois. La fonction <b>until</b> 
+renvoie la valeur de ce bloc. 
+
+L'exemple ci-dessous affichera chaque mot du bloc <i>color</i>. Le bloc commence 
+par afficher le premier mot du bloc. Puis on se déplace à la couleur suivante, et 
+ainsi pour chaque couleur dans le bloc. Lorsque la fin du bloc est atteinte et que 
+la fonction <b>tail?</b> renvoie <b>true</b>, alors la boucle <b>until</b> se termine.
+
+
+	color: [red green blue]
+	until [
+	    print first color
+	    tail? color: next color
+	]
+==	red
+==	green
+==	blue
+
+
+<u>N.B.</u> : la fonction <b>break</b> peut être utilisée pour sortir de la boucle <b>until</b> 
+à n'importe quel moment.
+
+La fonction <b>while</b> répéte l'évaluation de ses deux arguments (des blocs), 
+jusqu'au moment où le premier bloc renvoie <b>true</b>.
+
+Le premier bloc est le bloc conditionnel, le second bloc est le bloc d'évaluation.
+
+Quand le bloc conditionnel est évalué et renvoie <b>true</b>, le second bloc n'est pas évalué, et 
+la boucle se termine. <br>
+Voici un exemple identique au précédent. La boucle <b>while</b> continuera d'afficher 
+une couleur du bloc <i>color</i> tant qu'il y aura des couleurs à afficher. 
+
+
+	color: [red green blue]
+	while [not tail? color] [
+	    print first color
+	    color: next color
+	]
+==	red
+==	green
+==	blue
+
+
+Le bloc conditionnel peut contenir plusieurs expressions, à condition que la 
+dernière expression renvoie la condition. Pour illustrer cela, l'exemple suivant 
+ajoute une ligne "<i>print index? color</i>" au bloc conditionnel. 
+Cette ligne affichera l'index de la valeur courante de la couleur. Le test sur la 
+fin du bloc de couleur s'effectue ensuite, fournissant la condition utilisée pour la boucle :
+
+
+	color: [red green blue]
+	while [
+	    print index? color
+	    not tail? color
+	][
+	    print first color
+	    color: next color
+	]
+==	1
+==	red
+==	2
+==	green
+==	3
+==	blue
+==	4
+
+La dernière valeur du bloc est retournée par la fonction <b>while</b>.
+
+<u>N.B.</u> : la fonction <b>break</b> peut être utilisée, là encore, pour forcer la sortie de la boucle, 
+à n'importe quel moment.
+
+
+---Erreurs classiques
+
+\note 
+
+Les expressions conditionnelles sont fausses seulement lorsque leur évaluation 
+retourne <b>false</b> ou <b>none</b>, et elles sont <b>true</b> (vraies) pour <b>toute 
+autre valeur</b>. 
+
+/note
+
+
+Toutes les expressions conditionnelles dans les exemples suivants  
+renvoient <b>true</b>, même pour des valeurs comme zéro ou un bloc vide : 
+
+	if true [print "yep"]
+==	yep
+	if 1 [print "yep"]
+==	yep
+	if 0 [print "yep"]
+==	yep
+	if [] [print "yep"]
+==	yep
+
+L'expression conditionnelle suivante renvoie <b>false</b> :
+
+	if false [print "yep"]
+	
+	if none [print "yep"]
+
+N'incluez PAS d'expressions conditionnelles dans un bloc. Les expressions 
+conditionnelles comprises dans un bloc retournent toujours un résultat <b>true</b> :
+
+	if [false] [print "yep"]
+	yep
+
+
+Ne confondez pas <b>either</b> et <b>if</b>. Par exemple, si vous souhaitez écrire : 
+
+	either some-condition [a: 1] [b: 2]
+
+mais écrivez ceci à la place : 
+
+	if some-condition [a: 1] [b: 2]
+
+la fonction <b>if</b> va ignorer le second bloc. Il n'y aura pas d'erreur, mais 
+le second bloc ne sera jamais évalué.
+
+Le contraire est aussi vrai. Si vous écrivez la ligne suivante, en oubliant le 
+second bloc : 
+
+	either some-condition [a: 1]
+
+la fonction <b>either</b> n'évaluera pas correctement le code et pourra produire 
+un résultat erroné.
+
+
+
+===Evaluations en boucle
+
+Les fonctions <b>while</b> et <b>until</b> ci-dessus ont été employées pour 
+une boucle jusqu'à ce qu'une condition soit remplie. 
+
+Il y a d'autres fonctions permettant de réaliser une boucle, un certain nombre 
+de fois.
+
+
+---Loop
+
+La fonction <b>loop</b> évalue un bloc autant de fois qu'indiqué. 
+L'exemple suivant affiche une ligne de quarante tirets :
+
+	loop 40 [prin "-"]
+==	----------------------------------------
+
+Notez que la fonction <b>prin</b> est identique à la fonction  <b>print</b>, 
+mais affiche son argument sans ajouter de retour à la ligne.
+
+La fonction <b>loop</b> renvoie la valeur de l'évaluation finale du bloc :  
+
+	i: 0
+	print loop 40 [i: i + 10]
+==	400
+
+
+---Repeat
+
+La fonction <b>repeat</b> rajoute à la fonction <b>loop</b> la possibilité de 
+contrôler votre compteur de boucle. Le premier argument de la fonction <b>repeat</b> 
+est un mot qui sera utilisé pour manipuler la valeur du compteur : 
+
+	repeat count 3 [print ["count:" count]]    ; count est le mot "compteur" 
+==	count: 1
+==	count: 2
+==	count: 3
+
+Le résultat du dernier bloc est aussi retourné par la fonction : 
+
+	i: 0
+	print repeat count 10 [i: i + count]
+==	55
+
+Dans cet exemple, le mot <i>count</i> a seulement une valeur à l'intérieur du bloc à répéter. 
+En d'autres termes, la valeur de <i>count</i> est locale au bloc. 
+A l'issue de la boucle, <i>count</i> référence la valeur définie qu'il pouvait 
+avoir avant.
+
+
+
+---For
+
+La fonction <b>for</b> rajoute à <b>repeat</b> une valeur de départ, une autre de fin, 
+et un incrément à préciser.  Chacune de ces valeurs peut être positive ou négative.
+
+L'exemple ci-dessous démarre son compteur à zéro et va jusqu'à 50, avec un incrément 
+de 10, à chaque itération.
+
+
+	for count 0 50 10 [print count]
+==	0
+==	10
+==	20
+==	30
+==	40
+==	50
+
+La fonction <b>for</b> fait une itération jusqu'à la valeur de fin <i>incluse</i>. 
+
+L'exemple ci-dessous indique une valeur de fin égale à 55. 
+Cette valeur ne sera jamais atteinte parce que le compteur est incrémenté de 10 
+à chaque itération. La boucle se terminera donc à 50.
+
+
+	for count 0 55 10 [prin [count " "]]
+==	0 10 20 30 40 50
+
+L'exemple suivant montre la valeur du compteur est décrémentée. 
+Il commence à quatre et diminue jusqu'à zéro d'une unité à la fois.
+
+	for count 4 0 -1 [print count]
+==	4
+==	3
+==	2
+==	1
+==	0
+
+La fonction <b>for</b> travaille aussi avec des nombres décimaux, des valeurs monétaires, 
+des dates/heures, des séries, et des caractères. 
+
+Soyez sûrs d'utiliser pour les valeurs de début et de fin le même type de données.
+
+Voici plusieurs exemples d'utilisation de boucle avec d'autres types de données : 
+
+
+	for count 10.5 0.0 -1 [prin [count " "]]
+==	10.5 9.5 8.5 7.5 6.5 5.5 4.5 3.5 2.5 1.5 0.5
+	for money $0.00 $1.00 $0.25 [prin [money " "]]
+==	$0.00 $0.25 $0.50 $0.75 $1.00
+	for time 10:00 12:00 0:20 [prin [time " "]]
+==	10:00 10:20 10:40 11:00 11:20 11:40 12:00
+	for date 1-jan-2000 4-jan-2000 1 [prin [date " "]]
+==	1-Jan-2000 2-Jan-2000 3-Jan-2000 4-Jan-2000
+	for char #"a" #"z" 1 [prin char]
+==	abcdefghijklmnopqrstuvwxyz
+
+
+La fonction <b>for</b> peut aussi être utilisée sur des séries. 
+
+Voici un exemple sur une valeur de type chaîne. Le mot <i>end</i> définit la chaîne de 
+caractères <i>str</i>, avec son index courant sur le caractère "d".
+
+La fonction <b>for</b> parcourt la série de caractères, un par un, et s'arrête 
+lorsque la position définie par <i>end</i> est atteinte : 
+
+	str: "abcdef"
+	end: find str "d"
+	for s str end 1 [print s]
+==	abcdef
+==	bcdef
+==	cdef
+==	def
+
+
+---Foreach
+
+La fonction <b>foreach</b> fournit une façon commode de répéter l'évaluation d'un bloc 
+pour chaque élément d'une série. Elle fonctionne avec tous types de blocs, et de  
+séries de type caractère. 
+
+Dans l'exemple ci-dessous, chaque mot dans le bloc sera affiché 
+
+	colors: [red green blue]
+	foreach color colors [print color]
+==	red
+==	green
+==	blue
+
+Dans l'exemple suivant, chaque caractère dans la chaîne sera affiché :
+
+
+	string: "REBOL"
+	foreach char string [print char]
+==	REBOL
+
+Ici, chaque nom de fichier dans un répertoire est retourné :
+
+	files: read %.
+	foreach file files [
+	    if find file ".t" [print file]
+	]
+==	file.txt
+==	file2.txt
+==	newfile.txt
+==	output.txt
+
+
+Quand un bloc contient des groupes de valeurs qui sont en lien les unes avec les 
+autres, la fonction <b>foreach</b> peut récupérer toutes les valeurs du groupe en 
+même temps. 
+
+Par exemple, voici un bloc qui contient une heure, une chaîne de caractères (un nom), 
+et un prix.
+
+En fournissant comme argument à la fonction <b>foreach</b> un bloc de mots pour 
+le groupe, chacune de ces valeurs peut être cherchée et affichée : 
+	
+
+	movies: [
+	     8:30 "Contact"      $4.95
+	    10:15 "Ghostbusters" $3.25
+	    12:45 "Matrix"       $4.25
+	]
+	
+	foreach [time title price] movies [
+	    print ["watch" title "at" time "for" price]
+	]
+==	watch Contact at 8:30 for $4.95
+==	watch Ghostbusters at 10:15 for $3.25
+==	watch Matrix at 12:45 for $4.25
+
+Dans l'exemple ci-dessus, le bloc de valeurs <i>[time title price]</i> mentionne 
+que trois valeurs seront cherchées dans la série <i>movies</i> pour chaque évaluation 
+du bloc.
+
+Dans la boucle <b>foreach</b>, les variables utilisées (ici <i>time, title, price</i>) 
+sont locales. 
+ 
+Leur valeur est uniquement définie au sein du bloc en cours d'évaluation.
+
+Une fois la boucle finie, les variables retournent aux valeurs qu'elles pouvaient 
+avoir auparavant.
+
+
+---Forall and Forskip
+
+Tout comme <b>foreach</b>, la fonction <b>forall</b> évalue un bloc pour chaque 
+valeur dans la série. Cependant, il y a quelques différences importantes. 
+
+La fonction <b>forall</b> manipule la série, en partant du début de la série. 
+Au cours des itérations, <b>forall</b> modifie la position à l'intérieur de la série.
+
+
+	colors: [red green blue]
+	forall colors [print first colors]
+==	red
+==	green
+==	blue
+
+Dans l'exemple ci-dessus, après chaque évaluation du bloc, la série est 
+avancée à la position suivante. Quand <b>forall</b> rend la main, l'index de la série 
+<i>color</i> est sur la fin (<i>tail</i>) de la série.
+
+Pour continuer à utiliser la série, vous aurez besoin de la repositionner sur la 
+position du début (<i>head</i>), avec la ligne suivante : 
+
+	colors: head colors
+
+La fonction <b>forskip</b> évalue un bloc par groupe de valeurs dans une série. 
+Le second argument de la fonction <b>forskip</b> est le nombre d'élements à "sauter" 
+entre deux itérations.  
+
+Comme <b>forall</b>, <b>forskip</b> manipule la série, en commencant avec l'index 
+au début de la série. Puis <b>forskip</b> parcourt la série en modifiant l'index 
+de position. 
+
+Après chaque évaluation du bloc, l'index de série est avancé du nombre de 
+positions sautées jusqu'à la nouvelle position.
+
+L'exemple suivant illustre le fonctionnnement de <b>forskip</b> :
+
+	movies: [
+	     8:30 "Contact"      $4.95
+	    10:15 "Ghostbusters" $3.25
+	    12:45 "Matrix"       $4.25
+	]
+	
+	forskip movies 3 [print second movies]
+==	Contact
+==	Ghostbusters
+==	Matrix
+
+Dans l'exemple ci-dessus, <b>foskip</b> retourne la série <i>movies</i>. 
+
+Vous devrez utiliser la fonction <b>head</b> pour repositionner la série sur sa 
+position de départ (<i>head</i>).
+
+---Forever
+
+La fonction <b>forever</b> évalue un bloc continuement, sans sortir, ou juste si la fonction 
+<b>break</b> est rencontrée.
+
+L'exemple suivant utilise <b>forever</b> pour vérifier l'existence d'un fichier, toutes les 
+dix minutes :
+
+	forever [
+	    if exists? %datafile [break]
+	    wait 0:10
+	]
+
+
+---Break
+
+Vous pouvez arrêter la répétition de l'évaluation d'un bloc avec la fonction 
+<b>break</b>. 
+
+La fonction <b>break</b> est pratique quand une condition particulière est 
+rencontrée et que la boucle doit être arrêtée. 
+
+La fonction <b>break</b> est utilisable avec tous les types de boucles.
+
+Dans l'exemple suivant, la boucle se termine si un nombre est supérieur à 5 :
+
+	repeat count 10 [
+	    if (random count) > 5 [break]
+	    print "testing"
+	]
+==	testing
+==	testing
+==	testing
+
+La fonction <b>break</b> ne renvoie pas de valeur, sauf si le raffinement 
+<b>return</b> est utilisé :
+
+	print repeat count 10 [
+	    if (random count) > 5 [break/return "stop here"]
+	    print "testing"
+	    "normal exit"
+	]
+==	testing
+==	testing
+==	testing
+==	stop here
+
+Dans cet exemple, si la boucle <b>repeat</b> se termine sans que la condition 
+particulière <i>(random count) > 5</i> se réalise, le bloc renvoie la chaîne "<i>normal exit</i>".
+
+Sinon, <b>break/return</b> retournera la chaîne "<i>stop here</i>".
+
+=== Evaluation sélective
+
+Il y a plusieurs méthodes pour évaluer sélectivement des expressions en REBOL. 
+Ces méthodes fournissent pour l'évaluation une manière de trier plusieurs choix, 
+sur la base d'une valeur de clé.
+
+
+---Select
+
+La fonction <b>select</b> est souvent utilisée pour obtenir une valeur 
+spécifique ou un bloc, à partir d'une valeur cible.
+
+Si vous définissez un bloc de valeurs et d'actions à faire, vous pouvez utiliser <b>select</b> 
+pour rechercher l'action correspondante à une valeur.
+
+	cases: [
+	    center [print "center"]
+	    right  [print "right"]
+	    left   [print "left"]
+	]
+	action: select cases 'right
+	if action [do action]
+==	right
+
+Dans cet exemple, la fonction <b>select</b> trouve le mot <i>rigth</i> et renvoie 
+le bloc qui suit ce mot. (Si pour une raison ou une autre, la recherche était infructueuse, 
+la valeur <b>none</b> serait retournée.)
+
+Le bloc est alors évalué. Les valeurs utilisées dans cet exemple sont des mots, 
+mais il peut y avoir n'importe quelle sorte de valeur : 
+
+	cases: [
+	     5:00 [print "everywhere"]
+	    10:30 [print "here"]
+	    18:45 [print "there"]
+	]
+	action: select cases 10:30
+	if action [do action]
+==	here
+
+
+---Switch
+
+La fonction <b>select</b> est utilisée tellement souvent qu'il existe de cette 
+fonction une version particulière, appelée <b>switch</b> : cette version inclut 
+l'évaluation du bloc résultant.
+
+
+La fonction <b>switch</b> rend plus simple et facile la réalisation directe d'évaluation 
+sélective.
+
+Par exemple, pour effectuer un choix sur une simple valeur numérique : 
+
+	switch 22 [
+	    11 [print "here"]
+	    22 [print "there"]
+	]
+==	there
+
+La fonction <b>switch</b> renvoie également la valeur du bloc évalué, de sorte que 
+l'exemple ci-dessus pourrait être ré-écrit sous la forme :
+
+	str: copy "right "
+	
+	print switch 22 [
+	    11 [join str "here"]
+	    22 [join str "there"]
+	]
+==	right there
+
+et :
+
+	car: pick [Ford Chevy Dodge] random 3
+	print switch car [
+	    Ford  [351 * 1.4]
+	    Chevy [454 * 5.3]
+	    Dodge [154 * 3.5]
+	]
+==	2406.2
+
+Les différentes sélections peuvent être de n'importe quel type de données valides, 
+ce qui inclut les nombres, les chaînes de caractères, les mots, les dates/heures, 
+les urls, et les fichiers. 
+
+En voici d'ailleurs quelques illustrations :
+
+* <u>Chaînes de caractères</u> :
+
+	person: "kid"
+	switch person [
+	    "dad" [print "here"]
+	    "mom" [print "there"]
+	    "kid" [print "everywhere"]
+	]
+==	everywhere
+
+* <u>Mots</u> : 
+
+	person: 'kid
+	switch person [
+	    dad [print "here"]
+	    mom [print "there"]
+	    kid [print "everywhere"]
+	]
+==	everywhere
+
+* <u>Type de données</u> :
+
+	person: 123
+	switch type?/word [
+	    string! [print "a string"]
+	    binary! [print "a binary"]
+	    integer! [print "an integer number"]
+	    decimal! [print "a decimal number"]
+	]
+==	an integer number
+
+* <u>Fichiers</u> :
+
+	file: %rebol.r
+	switch file [
+	    %user.r [print "here"]
+	    %rebol.r [print "everywhere"]
+	    %file.r [print "there"]
+	]
+==	everywhere
+
+* <u>URLs</u> :
+
+	url: ftp://ftp.rebol.org
+	switch url [
+	    http://www.rebol.com [print "here"]
+	    http://www.cnet.com [print "there"]
+	    ftp://ftp.rebol.org [print "everywhere"]
+	]
+==	everywhere
+
+* <u>Balises</u> :
+
+	tag: <LI>
+	print switch tag [
+	    <PRE>   ["Preformatted text"]
+	    <TITLE> ["Page title"]
+	    <LI>    ["Bulleted list item"]
+	]
+==	Bulleted list item
+
+* <u>Heures</u> :
+
+	time: 12:30
+	switch time [
+	     8:00 [send wendy@domain.dom "Hey, get up"]
+	    12:30 [send cindy@rebol.dom "Join me for lunch."]
+	    16:00 [send group@every.dom "Dinner anyone?"]
+	]
+
+
++++Sélection par défaut
+
+Une sélection par défaut peut être indiquée quand aucun des autres cas ne 
+correspond. 
+
+Utilisez le raffinement <b>/default</b> pour définir le choix par défaut :
+
+	time: 7:00
+	switch/default time [
+	     5:00 [print "everywhere"]
+	    10:30 [print "here"]
+	    18:45 [print "there"]
+	] [print "nowhere"]
+==	nowhere
+
++++Cas usuels
+
+Si vous avez couramment des cas, où le résultat devrait être le même 
+pour plusieurs valeurs, vous pouvez définir un mot pour manipuler un bloc de 
+code commun :
+
+	case1: [print length? url]   ; le bloc commun
+	
+	url: http://www.rebol.com
+	switch url [
+	    http://www.rebol.com case1
+	    http://www.cnet.com [print "there"]
+	    ftp://ftp.rebol.org case1
+	]
+==	20
+
++++Autres cas
+
+D'autres valeurs que des blocs peuvent être évaluées pour les sélections.
+
+Cet exemple illustre l'évaluation d'un fichier en correspondance avec 
+le jour de la semaine :
+
+	switch now/weekday [
+	    1 %monday.r
+	    5 %friday.r
+	    6 %saturday.r
+	]
+
+Ainsi, si c'est vendredi (<i>friday</i>), c'est le fichier friday.r qui est évalué et le résultat est retourné.
+
+Ce type d'évaluation marche aussi pour des URLs :
+
+	switch time [
+	     8:30 ftp://ftp.rebol.org/wakeup.r
+	    10:30 http://www.rebol.com/break.r
+	    18:45 ftp://ftp.rebol.org/sleep.r
+	]
+
+Les choix pour <b>switch</b> sont inclus dans un bloc, et par conséquent, peuvent 
+être définis à part de bloc <b>switch [...]</b> :
+
+	schedule: [
+	     8:00 [send wendy@domain.dom "Hey, get up"]
+	    12:30 [send cindy@dom.dom "Join me for lunch."]
+	    16:00 [send group@every.dom "Dinner anyone?"]
+	]
+	
+==	switch 8:00 schedule
+
+
+===Stopper une évaluation
+
+L'évaluation d'un script peut être stoppée à n'importe quel moment en pressant 
+la touche (ESC) sur le clavier ou en utilisant les fonctions <b>halt</b> et <b>quit</b>.
+
+La fonction <b>halt</b> arrête l'évaluation et retourne à l'invite de commande 
+dans la console REBOL : 
+
+	if time > 12:00 [halt]
+
+La fonction <b>quit</b> arrête l'évaluation et <b>quitte</b> l'interpréteur REBOL :
+
+	if error? try [print test] [quit]
+
+
+===Test de blocs 
+
+Il y a des fois où vous voudrez évaluer du code, mais ceci sans que l'évaluation 
+du reste de votre script s'arrête, si une erreur se produit.
+
+Par exemple, vous réalisez une division, mais vous ne voulez pas que 
+votre script s'arrête si une division par zéro se produit.
+
+La fonction <b>try</b> vous permet de récupérer les erreurs durant l'évaluation 
+d'un bloc. Elle est presque identique à <b>do</b>.
+
+La fonction <b>try</b> renverra normalement le résultat du bloc; cependant, si 
+une erreur se produit, elle renverra la valeur de l'erreur à la place.
+
+Dans l'exemple suivant, quand la division par zéro se produit, le script transmet 
+une erreur à la fonction <b>try</b>, et l'évaluation continue à partir de ce point.
+
+
+	for num 5 0 -1 [
+	    if error? try [print 10 / num] [print "error"]
+==	]
+==	2
+==	2.5
+==	3.33333333333333
+==	5
+==	10
+==	error
+
+D'autres informations concernant la gestion des erreurs se trouvent dans l'Annexe 
+consacrée aux Erreurs.
+
+
+
+=date 15-Apr-2005
+
+

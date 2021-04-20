@@ -1,0 +1,535 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Annexe 3 - La console</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Annexe 3 - La console</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Annexe 3 - La console</h1>
+<div class="header">
+Ce document est la traduction française de l'Annexe 3 du User Guide de REBOL/Core,<br />qui concerne la console.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-a3.html#section-1">1. Historique de la traduction</a><br />
+<a class="toc1" href="fr-rebolcore-a3.html#section-2">2. Le prompt de la ligne de commande</a><br />
+<a class="toc1" href="fr-rebolcore-a3.html#section-3">3. Indicateur de résultat</a><br />
+<a class="toc1" href="fr-rebolcore-a3.html#section-4">4. Rappel de l'historique</a><br />
+<a class="toc1" href="fr-rebolcore-a3.html#section-5">5. Indicateur d'activité</a><br />
+<a class="toc1" href="fr-rebolcore-a3.html#section-6">6. Opérations spécifiques avec la console</a><br />
+<a class="toc2" href="fr-rebolcore-a3.html#section-6.1">6.1 Séquences entrées au clavier</a><br />
+<a class="toc2" href="fr-rebolcore-a3.html#section-6.2">6.2 Séquences en sortie pour le terminal</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>16 Septembre 2005 07:03</p>
+</td><td>
+<p>1.0.0</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Le prompt de la ligne de commande</h2>
+<blockquote>
+<div class="note"><p><b></b></p>
+<p><b>NdT :</b><br>
+On appelle "prompt" l'indicateur alphanumérique qui indique que la console attend une saisie. 
+En console Dos, ou Unix, cette notion est bien connue. REBOL possède aussi en mode console un prompt.</p>
+</div>
+<p>Le prompt par défaut de la ligne de commande est ">>". Il est possible de modifier cela 
+avec par exemple le code suivant :</p>
+<pre>
+system/console/prompt: "Input: "
+</pre>
+<p>Le prompt devient alors :</p>
+<pre>
+<span class="output">Input:</span>
+</pre>
+<p>Le prompt peut être un bloc qui sera évalué à chaque fois. La ligne suivante affiche l'heure courante :</p>
+<pre>
+system/console/prompt: [reform [now/time " &gt;&gt; "]]
+</pre>
+<p>Le résultat devrait ressembler à un prompt comme ceci :</p>
+<pre>
+10:30 &gt;&gt;
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. Indicateur de résultat</h2>
+<blockquote>
+<p>Par défaut, l'indicateur de résultat est "==", il peut être aussi modifié 
+avec une ligne telle que :</p>
+<pre>
+system/console/result: "Result: "
+</pre>
+<p>Ces exemples modifiant les paramètres par défaut peuvent être placés dans votre 
+fichier <b>user.r</b> pour les rendre permanent, à chaque démarrage de REBOL.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-4">4. Rappel de l'historique</h2>
+<blockquote>
+<p>Chaque ligne saisie dans la console REBOL est conservée dans un bloc, en historique, et 
+peut être rappelée plus tard en utilisant les touches "flèche haut" et "flèche bas" (up et down).</p>
+<p>Par exemple, si vous appuyez une seule fois sur la touche "flèche haut", vous rappellerez la dernière ligne 
+de commande saisie.</p>
+<p>Le bloc d'historique contenant toutes les lignes entrées à la console peut être consulté en appelant 
+l'attribut <b>history</b> de l'objet <b>system/console</b>.</p>
+<pre>
+probe system/console/history
+</pre>
+<p>Vous pouvez sauvegarder ce bloc dans un fichier :</p>
+<pre>
+save %history.r system/console/history
+</pre>
+<p>et il peut être rechargé plus tard :</p>
+<pre>
+system/console/history: load %history.r
+</pre>
+<p>Ces lignes peuvent être placées dans le fichier user.r pour sauvegarder et recharger votre 
+historique entre deux sessions.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-5">5. Indicateur d'activité</h2>
+<blockquote>
+<p>Lorsque REBOL attend qu'une opération (par exemple, une requête réseau) se termine, 
+un indicateur d'activité apparaît à l'écran pour indiquer que quelque chose est en cours.</p>
+<p>Vous pouvez changer l'indicateur d'activité avec un ligne comme celle-ci par exemple :</p>
+<pre>
+system/console/busy: "123456789-"
+</pre>
+<p>Quand REBOL travaille en mode "silencieux" (quiet mode), l'indicateur d'activité 
+n'est pas affiché.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-6">6. Opérations spécifiques avec la console</h2>
+<blockquote>
+<p>La console se comporte comme un "terminal virtuel"  qui vous permet des opérations 
+comme le mouvement et l'adressage du curseur, l'édition de la ligne, l'effacement de l'écran, 
+l'usage de touches de contrôle, et de requêtes sur la position du curseur. 
+Les séquences de contrôle suivent le standard ANSI. Cela vous permet de définir votre 
+propre terminal (indépendamment de la plate-forme sur laquelle vous êtes) pour des programmes comme 
+des éditeurs de textes, des client emails, ou des émulateurs telnet.</p>
+<p>Les fonctionnalités de la console s'appliquent aux entrées et aux sorties.  Pour les entrées, 
+les touches de fonctions seront converties en séquences d'échappement de plusieurs caractères. 
+Pour les sorties, les séquences d'échappement peuvent être utilisées pour contrôler l'affichage 
+du texte dans la fenêtre de la console. Aussi bien les entrées que les sorties commencent avec le 
+caractère d'échappement ANSI : 27 en décimal (1B en hexa). Le caractère suivant dans la séquence indique 
+les contrôles en entrée ou l'opération en sortie pour le contrôle du terminal. 
+Les caractères ANSI sont sensibles à la casse et nécessitent en principe d'être en majuscules.</p>
+</blockquote>
+<p>
+<h3 id="section-6.1">6.1 Séquences entrées au clavier</h3>
+<blockquote>
+<p>Les séquences saisies avec les touches de fonctions sont listées dans la table ci-dessous (pour 
+les systèmes et les shells qui les supportent, comme Linux, BSD, etc.).
+Pour recevoir ces séquences en un flux de caractères non évalués, vous devez bloquer le 
+mode "lignes" pour le port "input" de REBOL :</p>
+<pre>
+set-modes system/ports/input [lines: false]
+</pre>
+<p>A présent, vous pouvez récupérer l'entrée à partir du port (avec les fonctions 
+<b>copy</b> ou <b>read-io</b>) ou utiliser une fonction comme input pour récupérer chaque caractère :</p>
+<pre>
+while [
+    code: input
+    code &lt;&gt; 13  ; ENTER
+][
+    probe code
+]
+</pre>
+<p>Voici quelques unes des fonctions ANSI les plus courantes :</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Touches de fonction</p>
+</b></td><td><b>
+<p>Comme séquences d'échappement</p>
+</b></td><td><b>
+<p>Comme bloc REBOL</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F1</p>
+</td><td>
+<p>ESC O P</p>
+</td><td>
+<p>[27 79 80]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F2</p>
+</td><td>
+<p>ESC O Q</p>
+</td><td>
+<p>[27 79 81]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F3</p>
+</td><td>
+<p>ESC O R</p>
+</td><td>
+<p>[27 79 82]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F4</p>
+</td><td>
+<p>ESC O S</p>
+</td><td>
+<p>[27 79 83]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F5</p>
+</td><td>
+<p>ESC [ 1 5 ~</p>
+</td><td>
+<p>[27 91 49 53 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F6</p>
+</td><td>
+<p>ESC [ 1 7 ~</p>
+</td><td>
+<p>[27 91 49 55 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F7</p>
+</td><td>
+<p>ESC [ 1 8 ~</p>
+</td><td>
+<p>[27 91 49 56 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F8</p>
+</td><td>
+<p>ESC [ 1 9 ~</p>
+</td><td>
+<p>[27 91 49 57 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F9</p>
+</td><td>
+<p>ESC [ 2 0 ~</p>
+</td><td>
+<p>[27 91 50 48 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F10</p>
+</td><td>
+<p>ESC [ 2 1 ~</p>
+</td><td>
+<p>[27 91 50 49 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F11</p>
+</td><td>
+<p>ESC [ 2 2 ~</p>
+</td><td>
+<p>[27 91 50 50 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>F12</p>
+</td><td>
+<p>ESC [ 2 3 ~</p>
+</td><td>
+<p>[27 91 50 51 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>Home</p>
+</td><td>
+<p>ESC [ 1 ~</p>
+</td><td>
+<p>[27 91 49 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>End ou Fin</p>
+</td><td>
+<p>ESC [ 4 ~</p>
+</td><td>
+<p>[27 91 52 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>Page-up</p>
+</td><td>
+<p>ESC [ 5 ~</p>
+</td><td>
+<p>[27 91 53 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>Page-down</p>
+</td><td>
+<p>ESC [ 6 ~</p>
+</td><td>
+<p>[27 91 54 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>Insert</p>
+</td><td>
+<p>ESC [ 2 ~</p>
+</td><td>
+<p>[27 91 50 126]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>Up</p>
+</td><td>
+<p>ESC [ A</p>
+</td><td>
+<p>[27 91 65]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>Down</p>
+</td><td>
+<p>ESC [ B</p>
+</td><td>
+<p>[27 91 66]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>Left</p>
+</td><td>
+<p>ESC [ D</p>
+</td><td>
+<p>[27 91 68]</p>
+</td></tr><tr class="md-cell" ><td>
+<p>Right</p>
+</td><td>
+<p>ESC [ C</p>
+</td><td>
+<p>[27 91 67]</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-6.2">6.2 Séquences en sortie pour le terminal</h3>
+<blockquote>
+<p>Il y a plusieurs variantes dans les séquences de caractère de contrôle. 
+Certaines commandes sont précédées par un chiffre (en ASCII), indiquant que l'opération 
+doit être réalisée le nombre de fois indiquées par le chiffre.</p>
+<p>Par exemple aussi, la commande permettant le déplacement du curseur peut être précédée par 
+deux nombres séparés d'un point virgule, pour indiquer que la position du curseur doit être 
+modifiée selon la ligne et la colonne courante. Les commandes de contrôle du curseur (les 
+majuscules sont requises) sont indiquées dans la table suivante :</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Séquence en sortie</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p>(1B)</p>
+</td><td>
+<p>Séquence d'échappement à utiliser avant les codes ci-dessous</p>
+</td></tr><tr class="md-cell" ><td>
+<p>D</p>
+</td><td>
+<p>Déplace le curseur d'un espace vers la gauche</p>
+</td></tr><tr class="md-cell" ><td>
+<p>C</p>
+</td><td>
+<p>Déplace le curseur d'un espace vers la droite</p>
+</td></tr><tr class="md-cell" ><td>
+<p>A</p>
+</td><td>
+<p>Déplace le curseur d'un espace vers le haut</p>
+</td></tr><tr class="md-cell" ><td>
+<p>B</p>
+</td><td>
+<p>Déplace le curseur d'un espace vers le bas</p>
+</td></tr><tr class="md-cell" ><td>
+<p>n D</p>
+</td><td>
+<p>Déplace le curseur de n espaces vers la gauche</p>
+</td></tr><tr class="md-cell" ><td>
+<p>n C</p>
+</td><td>
+<p>Déplace le curseur de n espaces vers la droite</p>
+</td></tr><tr class="md-cell" ><td>
+<p>n A</p>
+</td><td>
+<p>Déplace le curseur de n espaces vers le haut</p>
+</td></tr><tr class="md-cell" ><td>
+<p>n B</p>
+</td><td>
+<p>Déplace le curseur de n espaces vers le bas</p>
+</td></tr><tr class="md-cell" ><td>
+<p>r ; c H</p>
+</td><td>
+<p>Déplace le curseur vers la ligne r, colonne c*</p>
+</td></tr><tr class="md-cell" ><td>
+<p>H</p>
+</td><td>
+<p>Déplace le curseur vers le coin gauche supérieur (home)*</p>
+</td></tr><tr class="md-cell" ><td>
+<p>P</p>
+</td><td>
+<p>Efface un caractère à la droite de la position courante</p>
+</td></tr><tr class="md-cell" ><td>
+<p>n P</p>
+</td><td>
+<p>Efface deux caractères à la droite de la position courante</p>
+</td></tr><tr class="md-cell" ><td>
+<p>@</p>
+</td><td>
+<p>Insère un espace blanc à la position courante</p>
+</td></tr><tr class="md-cell" ><td>
+<p>n @</p>
+</td><td>
+<p>Insère n espaces blancs à la position courante</p>
+</td></tr><tr class="md-cell" ><td>
+<p>J</p>
+</td><td>
+<p>Efface l'écran et déplace le curseur dans le coin supérieur gauche (home)*</p>
+</td></tr><tr class="md-cell" ><td>
+<p>K</p>
+</td><td>
+<p>Efface tous les caractères entre la position courante et la fin de la ligne</p>
+</td></tr><tr class="md-cell" ><td>
+<p>6n</p>
+</td><td>
+<p>Place la position courante du curseur dans un buffer (input buffer)</p>
+</td></tr><tr class="md-cell" ><td>
+<p>7n</p>
+</td><td>
+<p>Place les dimensions de l'écran dans un buffer (input buffer)</p>
+</td></tr></table>
+<p>
+<p>Le coin supérieur gauche est défini à la colonne 1, ligne 1.</p>
+<p>L'exemple suivant déplace le curseur de huit espaces vers la droite :</p>
+<pre>
+print "^(1B)[10CHi!"
+<span class="output">Hi</span>
+</pre>
+<p>Cet exemple déplace le curseur de sept espaces vers la gauche et efface le restant de la ligne :</p>
+<pre>
+cursor: func [parm [string!]][join "^(1B)[" parm]
+print ["How are you" cursor "7D" cursor "K"]
+<span class="output">How a</span>
+</pre>
+<p>Pour trouver la taille courante de la fenêtre de la console, vous pouvez utiliser 
+cet exemple :</p>
+<pre>
+cons: open/binary [scheme: 'console]
+
+print cursor "7n"
+screen-dimensions: next next to-string copy cons
+<span class="output">33;105R</span>
+close cons
+</pre>
+<p>L'exemple précédent ouvre la console, envoie un caractère de contrôle vers le buffer de l'input, 
+et copie la valeur retournée. Elle lit la valeur (dimension de l'écran) qui est renvoyée après 
+le caractère de contrôle et ferme la console. 
+La valeur renvoyée est la hauteur et la largeur, séparées par un point-virgule (;), et suivies par un "R". 
+Dans cet exemple, l'écran fait 33 lignes et 105 colonnes.</p>
+<div class="note"><p><b></b></p>
+<p><b>* : Autoscrolling</b></p>
+<p>L'affichage d'un caractère dans le coin inférieur droit de certains terminaux 
+force la création d'une nouvelle ligne, et un réajustement de l'écran. 
+D'autres terminaux n'ont pas le même comportement. Ces différences de fonctionnement 
+doivent être prises en compte pour écrire des scripts REBOL multi-platformes.</p>
+</div>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 8-Apr-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>

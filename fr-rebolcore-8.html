@@ -1,0 +1,742 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Chapitre 8 - Les Séries : chaînes</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Chapitre 8 - Les Séries : chaînes</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Chapitre 8 - Les Séries : chaînes</h1>
+<div class="header">
+Ce document est la traduction française du Chapitre 8 du User Guide de REBOL/Core, qui concerne <br />les séries sous forme de chaînes de caractères.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-8.html#section-1">1. Historique de la traduction</a><br />
+<a class="toc1" href="fr-rebolcore-8.html#section-2">2. Fonctions relatives aux chaînes de caractères</a><br />
+<a class="toc1" href="fr-rebolcore-8.html#section-3">3. Conversion de valeurs en chaînes de caractères</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.1">3.1 Join</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.2">3.2 Rejoin</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.3">3.3 Form</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.4">3.4 Reform</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.5">3.5 Mold</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.6">3.6 Remold</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.7">3.7 Fonctions pour gérer les espaces</a><br />
+<a class="toc3" href="fr-rebolcore-8.html#section-3.7.1">3.7.1 Trim</a><br />
+<a class="toc3" href="fr-rebolcore-8.html#section-3.7.2">3.7.2 Detab et Entab</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.8">3.8 Uppercase et Lowercase</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.9">3.9 Checksum</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.10">3.10 Compression et décompression</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.11">3.11 Modification de la base numérique</a><br />
+<a class="toc2" href="fr-rebolcore-8.html#section-3.12">3.12 Décodage hexadécimal pour Internet</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>26 mai 2005 22:17</p>
+</td><td>
+<p>1.0.0</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+<p><br />
+<br /></p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Fonctions relatives aux chaînes de caractères</h2>
+<blockquote>
+<p>De nombreuses fonctions permettent de manipuler ou de créer des chaînes de caractères. 
+Ces fonctions peuvent transformer des chaînes, y effectuer des recherches, les 
+compresser ou les décompresser, modifier leur espacement, les analyser, et les 
+convertir. Ces fonctions agissent sur tous les types de données liés aux chaînes de 
+caractères, comme <b>string!</b>, <b>binary!</b>, <b>tag!</b>, <b>file!</b>,
+<b>URL!</b>, <b>email!</b>, et <b>issue!</b>.</p>
+<p>Les fonctions de création, de modification et de recherche ont été présentées dans <a href="fr-rebolcore-6.html">le chapitre 
+sur les Séries</a>. Cette présentation incluait les fonctions de chaînes :</p>
+<table cellspacing="6" border="0" width="95%">
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>copy</b></td><td valign="top">permet la copie d'une partie ou de toute une chaîne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>make</b></td><td valign="top">alloue un espace mémoire pour la chaîne, crée un type 
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>insert</b></td><td valign="top">insère un caractère ou une sous-chaîne dans une autre
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>remove</b></td><td valign="top">ôte un ou plusieurs caractères d'une chaîne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>change</b></td><td valign="top">change un ou plusieurs caractères dans une chaîne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>append</b></td><td valign="top">insère un caractère ou une sous-chaîne à la fin d'une chaîne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>find</b></td><td valign="top">trouve ou effectue une correspondance entre chaînes
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>replace</b></td><td valign="top">trouve une chaîne et la remplace par une autre
+</td></tr>
+</table>
+<p>De surcroît, les fonctions permettant de parcourir les séries, comme 
+<b>next</b>, <b>back</b>, <b>head</b>, et <b>tail</b> ont déjà été présentées. Elles sont utilisées pour 
+se déplacer dans les chaînes. Également, les fonctions de test des séries 
+vous permettent de déterminer votre position dans une chaîne (NdT : comme <b>index?</b>, <b>tail?</b>, <b>head?</b>).</p>
+<p>Ce chapitre va présenter d'autres fonctions qui permettent la conversion de valeurs REBOL 
+en chaînes de caractères. Ces fonctions sont fréquemment utilisées, comme avec 
+les fonctions <b>print</b> et <b>probe</b>.</p>
+<p>Elles comprennent :</p>
+<table cellspacing="6" border="0" width="95%">
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>form</b></td><td valign="top">convertit des valeurs avec des espaces en un format humainement lisible
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>mold</b></td><td valign="top">convertit des valeurs en un format REBOL
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>join</b></td><td valign="top">concatène des valeurs
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>reform</b></td><td valign="top">réduit (évalue) des valeurs avant de les traduire avec <b>form</b>
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>remold</b></td><td valign="top">réduit (évalue) des valeurs avant de les traduire avec <b>mold</b>
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>rejoin</b></td><td valign="top">réduit (évalue) des valeurs avant de les concaténer
+</td></tr>
+</table>
+<p>Ce chapitre décrira aussi les fonctions de chaîne de caractères :</p>
+<table cellspacing="6" border="0" width="95%">
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>detab</b></td><td valign="top">remplace les tabulations par des espaces
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>entab</b></td><td valign="top">remplace les espaces par des tabulations
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>trim</b></td><td valign="top">enlève les espaces blancs ou les lignes vierges autour de chaînes 
+de caractère
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>uppercase</b></td><td valign="top">change en majuscules
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>lowercase</b></td><td valign="top">change en minuscules
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>checksum</b></td><td valign="top">calcule la valeur de checksum pour une chaîne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>compress</b></td><td valign="top">compresse la chaîne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>decompress</b></td><td valign="top">décompresse la chaîne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>enbase</b></td><td valign="top">encode une chaîne sur une autre base numérique
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>debase</b></td><td valign="top">convertit une chaîne encodée
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>dehex</b></td><td valign="top">convertit des valeurs hexadécimales ASCII en caractères (ex. dans les URLs).
+</td></tr>
+</table>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. Conversion de valeurs en chaînes de caractères</h2>
+<blockquote>
+</blockquote>
+<p>
+<h3 id="section-3.1">3.1 Join</h3>
+<blockquote>
+<p>La fonction <b>join</b> prend deux arguments et les concatènent en une seule chaîne.</p>
+<p>Le type de données de la série retournée est basé sur celui du 
+premier argument. <br>Quand le premier argument est une valeur de type "série", le même type 
+est retourné :</p>
+<pre>
+str: "abc"
+file: %file
+url: http://www.rebol.com/
+
+probe join str [1 2 3]
+<span class="output">abc123</span>
+probe join file ".txt"
+<span class="output">%file.txt</span>
+probe join url %index.html
+<span class="output">http://www.rebol.com/index.html</span>
+</pre>
+<p>Quand le premier argument n'est pas une série, la fonction <b>join</b> 
+le convertit en chaîne de caractère, puis effectue la concaténation :</p>
+<pre>
+print join $11 " dollars"
+<span class="output">$11.00 dollars</span>
+print join 9:11:01 " elapsed"
+<span class="output">9:11:01 elapsed</span>
+print join now/date " -- today"
+<span class="output">30-Jun-2000 -- today</span>
+print join 255.255.255.0 " netmask"
+<span class="output">255.255.255.0 netmask</span>
+print join 412.452 " light-years away"
+<span class="output">412.452 light-years away</span>
+</pre>
+<p>Quand le deuxième argument ajouté est un bloc, les valeurs de ce 
+bloc sont évaluées et ajoutées au résultat :</p>
+<pre>
+print join "a" ["b" "c" 1 2]
+<span class="output">abc12</span>
+print join %/ [%dir1/ %sub-dir/ %filename ".txt"]
+<span class="output">%/dir1/sub-dir/filename.txt</span>
+print join 11:09:11 ["AM" " on " now/date]
+<span class="output">11:09:11AM on 30-Jun-2000</span>
+print join 312.423 [123 987 234]
+<span class="output">312.423123987234</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.2">3.2 Rejoin</h3>
+<blockquote>
+<p>La fonction <b>rejoin</b> est identique à <b>join</b>, mis à part le fait qu'elle 
+prend un argument de type bloc, qui est évalué  :</p>
+<pre>
+print rejoin ["try" 1 2 3]
+<span class="output">try123</span>
+print rejoin ["h" 'e #"l" (to-char 108) "o"]
+<span class="output">hello</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.3">3.3 Form</h3>
+<blockquote>
+<p>La fonction <b>form</b> transforme une valeur en chaîne de caractères :</p>
+<pre>
+print form $1.50
+<span class="output">$1.50</span>
+print type? $1.50
+<span class="output">money</span>
+print type? form $1.50
+<span class="output">string</span>
+</pre>
+<p>L'exemple suivant utilise <b>form</b> pour trouver un nombre par sa 
+valeur décimale :</p>
+<pre>
+blk: [11.22 44.11 11.33 11.11]
+foreach num blk [if find form num ".11" [print num]]
+<span class="output">44.11
+11.11</span>
+</pre>
+<p>Lorsque <b>form</b> est utilisée sur un bloc, toutes les valeurs du bloc 
+sont converties en chaînes de caractères, avec des espaces entre 
+chacune d'elles :</p>
+<pre>
+print form [11.22 44.11 11.33]
+<span class="output">11.22 44.11 11.33</span>
+</pre>
+<p>La fonction <b>form</b> n'évalue pas les valeurs d'un bloc. 
+Elle transforme des mots en chaînes de caractères :</p>
+<pre>
+print form [a block of undefined words]
+<span class="output">a block of undefined words</span>
+print form [33.44 num "-- unevaluated string:" str]
+<span class="output">33.44 num -- unevaluated string: str</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.4">3.4 Reform</h3>
+<blockquote>
+<p>La fonction <b>reform</b> est identique à <b>form</b>, excepté que les blocs sont 
+réduits (évalués) avant d'être convertis en chaînes.</p>
+<pre>
+str1: "Today's date is:"
+str2: "The time is now:"
+print reform [str1 now/date newline str2 now/time]
+<span class="output">Today's date is: 30-Jun-2000 The time is now: 14:41:44</span>
+</pre>
+<p>La fonction d'affichage <b>print</b> est basée sur la fonction <b>reform</b>.</p>
+</blockquote>
+<p>
+<h3 id="section-3.5">3.5 Mold</h3>
+<blockquote>
+<p>La fonction <b>mold</b> convertit une valeur en chaîne de caractère utilisable 
+par REBOL. Les chaînes créées avec <b>mold</b> peuvent être retransformées en valeurs 
+REBOL avec la fonction <b>load</b>.</p>
+<pre>
+blk: [[11 * 4] ($15 - $3.89) "eleven dollars"]
+probe blk
+<span class="output">[[11 * 4] ($15.00 - $3.89) "eleven dollars"]</span>
+molded-blk: mold blk
+probe molded-blk
+<span class="output">{[[11 * 4] ($15.00 - $3.89) "eleven dollars"]}</span>
+print type? blk
+<span class="output">block</span>
+print type? molded-blk
+<span class="output">string</span>
+probe first blk
+<span class="output">[11 * 4]</span>
+probe first molded-blk
+<span class="output">#"["</span>
+</pre>
+<p>Les chaînes renvoyées par <b>mold</b> peuvent être récupérées par REBOL :</p>
+<pre>
+new-blk: load molded-blk
+probe new-blk
+<span class="output">[[11 * 4] ($15.00 - $3.89) "eleven dollars"]</span>
+print type? new-blk
+<span class="output">block</span>
+probe first new-blk
+<span class="output">[11 * 4]</span>
+</pre>
+<p>La fonction <b>mold</b> n'évalue pas les valeurs d'un bloc :</p>
+<pre>
+money: $11.11
+sub-blk: [inside another block mold this is unevaluated]
+probe mold [$22.22 money "-- unevaluated block:" sub-blk]
+<span class="output">{[$22.22 money "-- unevaluated block:" sub-blk]}</span>
+probe mold [a block of undefined words]
+<span class="output">[a block of undefined words]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.6">3.6 Remold</h3>
+<blockquote>
+<p>La fonction <b>remold</b> s'utilise comme <b>mold</b>, à l'exception 
+du fait que les blocs sont réduits (évalués) avant d'être convertis.</p>
+<pre>
+str1: "Today's date is:"
+probe remold [str1 now/date]
+<span class="output">{["Today's date is:" 30-Jun-2000]}</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.7">3.7 Fonctions pour gérer les espaces</h3>
+<blockquote>
+<p>
+<h4 id="section-3.7.1">3.7.1 Trim</h4>
+<p>La fonction <b>trim</b> enlève tous les espaces multiples d'une chaîne. 
+Par défaut, <b>trim</b> enlève les espaces en excès au début et à la fin d'une 
+chaîne :</p>
+<pre>
+str: "  line of text with spaces around it "
+print trim str
+<span class="output">line of text with spaces around it</span>
+</pre>
+<p>Remarquez que la chaîne est modifiée dans le processus :</p>
+<pre>
+print str
+<span class="output">line of text with spaces around it</span>
+</pre>
+<p>Pour exécuter <b>trim</b> sur une copie d'une chaîne, écrivez :</p>
+<pre>
+print trim copy str
+<span class="output">line of text with spaces around it</span>
+</pre>
+<p>La fonction <b>trim</b> inclut quelques raffinement afin d'indiquer où les espaces doivent 
+être supprimés dans la chaîne :</p>
+<table cellspacing="6" border="0" width="95%">
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/head</b></td><td valign="top">enlève les espaces en début de chaîne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/tail</b></td><td valign="top">enlève les espaces en fin de chaîne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/auto</b></td><td valign="top">enlève les espaces à chaque ligne, relativement à la première ligne
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/lines</b></td><td valign="top">enlève les sauts de lignes, et les remplace par des espaces
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/all</b></td><td valign="top">enlève tous les espaces, les tabulations,et les sauts de lignes
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/with</b></td><td valign="top">enlève tous les caractères spécifiés
+</td></tr>
+</table>
+<p>Utilisez les raffinements <b>/head</b> et <b>/tail</b> pour ôter les espaces en début et 
+en fin de chaîne :</p>
+<pre>
+probe trim/head copy str
+<span class="output">line of text with spaces around it</span>
+probe trim/tail copy str
+<span class="output">line of text with spaces around it</span>
+</pre>
+<p>Utilisez le raffinement <b>/auto</b> pour effacer les espaces résiduels sur des 
+lignes multiples, tout en conservant intacte l'indentation :</p>
+<pre>
+str: {
+    indent text
+        indent text
+            indent text
+        indent text
+    indent text
+}
+print str
+<span class="output">indent text
+    indent text
+        indent text
+    indent text
+indent text</span>
+probe trim/auto copy str
+<span class="output">{indent text
+    indent text
+        indent text
+    indent text
+indent text
+}</span>
+</pre>
+<p>Le raffinement <b>/lines</b> permet d'enlever les espaces en début et en fin de chaîne, mais également de 
+convertir les sauts de lignes en espaces :</p>
+<pre>
+probe trim/lines copy str
+<span class="output">{indent text indent text indent text indent text indent text}</span>
+</pre>
+<p>L'usage du raffinement <b>/all</b> enlève tous les espaces, les tabulations, les sauts de lignes :</p>
+<pre>
+probe trim/all copy str
+<span class="output">indenttextindenttextindenttextindenttextindenttext</span>
+</pre>
+<p>La raffinement <b>/with</b> permet d'éliminer de la chaîne tous les caractères qui ont 
+été spécifiés avec <b>/with</b>. Dans l'exemple suivant, les espaces, les sauts de lignes, 
+et les caractères "e" et "t" sont supprimés :</p>
+<pre>
+probe trim/with copy str " ^/et"
+<span class="output">indnxindnxindnxindnxindnx</span>
+</pre>
+<p>
+<h4 id="section-3.7.2">3.7.2 Detab et Entab</h4>
+<p>Les fonctions <b>detab</b> et <b>entab</b> transforment les tabulations en espaces et inversement, 
+les espaces en tabulations.</p>
+<pre>
+str:
+{^(tab)line one
+^(tab)^(tab)line two
+^(tab)^(tab)^(tab)line three
+^(tab)line^(tab)full^(tab)of^(tab)tabs}
+print str
+<span class="output">line one
+        line two
+            line three
+    line    full    of  tabs</span>
+</pre>
+<p>Par défaut, la fonction <b>detab</b> convertit chaque tabulation en une série de <b>quatre</b> 
+espaces (le standard pour le style REBOL). Toutes les tabulations dans la chaîne 
+seront transformées en espaces, quelque soient leurs positions.</p>
+<pre>
+probe detab str
+<span class="output">{    line one
+        line two
+            line three
+    line    full    of  tabs}</span>
+</pre>
+<p>Remarquez que les fonctions <b>detab</b> et <b>entab</b> modifient la chaîne qu'elles prennent 
+en argument. Pour travailler sur une copie de la chaîne source, utilisez la fonction <b>copy</b>.</p>
+<p>La fonction <b>entab</b> convertit les espaces en tabulations. Chaque série de quatre espaces 
+sera transformée en une tabulation. Seuls les espaces en début de ligne seront transformés 
+en tabulations.</p>
+<pre>
+probe entab str
+<span class="output">{^-line one
+^-^-line two
+^-^-^-line three
+^-line^-full^-of^-tabs}</span>
+</pre>
+<p>Vous pouvez utiliser le raffinement <b>/size</b> pour spécifier la taille des tabulations. 
+Par exemple, si vous voulez convertir chaque tabulation en série de huit espaces, ou 
+transformer ces huit espaces en une tabulation, vous pouvez utiliser cet exemple :</p>
+<pre>
+probe detab/size str 8
+<span class="output">{        line one
+                line two
+                        line three
+        line    full    of      tabs}</span>
+probe entab/size str 8
+<span class="output">{^-line one
+^-^-line two
+^-^-^-line three
+^-line^-full^-of^-tabs}</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.8">3.8 Uppercase et Lowercase</h3>
+<blockquote>
+<p>Deux fonctions permettent le changement de la casse des caractères : 
+<b>uppercase</b> et <b>lowercase</b>.</p>
+<p>La fonction <b>uppercase</b> prend une chaîne en argument et la met en majuscule.</p>
+<pre>
+print uppercase "SamPle TExT, tO test CASES"
+<span class="output">SAMPLE TEXT, TO TEST CASES</span>
+</pre>
+<p>La fonction <b>lowercase</b> effectue le travail inverse, elle met les caractères en minuscule :</p>
+<pre>
+print lowercase "Sample TEXT, tO teST Cases"
+<span class="output">sample text, to test cases</span>
+</pre>
+<p>Pour transformer juste une partie de la chaîne, utilisez le raffinement <b>/part</b> :</p>
+<pre>
+print upppercase/part "ukiah" 1
+<span class="output">Ukiah</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.9">3.9 Checksum</h3>
+<blockquote>
+<p>La fonction <b>checksum</b> renvoie la valeur de checksum (somme de contrôle) d'une chaîne. 
+Plusieurs types de checksum peuvent être calculés</p>
+<table cellspacing="6" border="0" width="95%">
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>CRC24</b></td><td valign="top">contrôle de redondance cyclique (défaut)
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>TCP</b></td><td valign="top">checksum Internet TCP 16-bit.
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>Secure</b></td><td valign="top">Retourne un checksum sécurisé par cryptage
+</td></tr>
+</table>
+<div class="note"><p><b></b></p>
+<p><u><b>NdT</b></u> :</p>
+<p>Les éléments qui suivent correspondent à l'aide en ligne sur la fonction <b>checksum</b>, 
+et non à la documentation officielle du User Guide, qui semble caduque sur ce point.</p>
+</div>
+<p><b>Checksum</b> permet l'usage des raffinements :</p>
+<table cellspacing="6" border="0" width="95%">
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/tcp</b></td><td valign="top">renvoie la valeur de checksum Internet 16 bits 
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/secure</b></td><td valign="top">renvoie la valeur de checksum sécurisé par cryptage 
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/hash</b></td><td valign="top">retourne une valeur d'index pour une table de hachage.
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/method</b></td><td valign="top">utilise une méthode de cryptage, qui peut être  SHA1 ou MD5 
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>/key</b></td><td valign="top">utilise une clé pour une authentification HMAC ( <a href="http://www.faqs.org/rfcs/rfc2104.html">Keyed-Hashing for Message Authentication Code</a>).
+</td></tr>
+</table>
+<div class="note"><p><b></b></p>
+<p><u><b>NdT</b></u> :</p>
+<p>Voir l'aide en ligne pour plus de détails.</p>
+</div>
+<p>Par défaut, c'est la valeur de checksum CRC qui est calculée :</p>
+<pre>
+print checksum "hello"
+<span class="output">52719</span>
+print checksum (read http://www.rebol.com/)
+<span class="output">356358</span>
+</pre>
+<p>Pour calculer la checksum TCP, utilisez le raffinement <b>/tcp</b> :</p>
+<pre>
+print checksum/tcp "hello"
+<span class="output">10943</span>
+</pre>
+<p>Le raffinement <b>/secure</b> retournera une valeur binaire, pas un entier. Utilisez le 
+raffinement <b>/secure</b>, pour calculer ce type de checksum :</p>
+<pre>
+print checksum/secure "hello"
+<span class="output">#{AAF4C61DDCC5E8A2DABEDE0F3B482CD9AEA9434D}</span>
+</pre>
+<p>Le raffinement <b>/method</b> permet d'utiliser (par exemple pour contrôler des mots de 
+passe) une méthode de cryptage MD5 ou SHA1 :</p>
+<pre>
+print checksum/method "password2005" 'md5
+<span class="output">#{9FDC0F6F1A5A0443F1C6E2393BE936DE}</span>
+print checksum/method "password2005" 'sha1
+<span class="output">#{3E352A5705741521337C01537AEA0A54DD13B993}</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.10">3.10 Compression et décompression</h3>
+<blockquote>
+<p>La fonction <b>compress</b> va compresser une chaîne et retourner un type de donnée binaire. 
+Dans l'exemple suivant, un petit fichier est compressé :</p>
+<pre>
+Str:
+{I wanted the gold, and I sought it,
+  I scrabbled and mucked like a slave.
+Was it famine or scurvy -- I fought it;
+  I hurled my youth into a grave.
+I wanted the gold, and I got it --
+  Came out with a fortune last fall, --
+Yet somehow life's not what I thought it,
+  And somehow the gold isn't all.}
+
+print [size? str "bytes"]
+<span class="output">306 bytes</span>
+bin: compress str
+
+print [size? bin "bytes"]
+<span class="output">156 bytes</span>
+</pre>
+<p>Remarquez que le résultat de la compression est du type de données binaire (<b>binary!</b>).</p>
+<p>La fonction <b>decompress</b> décompresse une chaîne qui a été préalablement compressée.</p>
+<pre>
+print decompress bin
+<span class="output">I wanted the gold, and I sought it,
+  I scrabbled and mucked like a slave.
+Was it famine or scurvy -- I fought it;
+  I hurled my youth into a grave.
+I wanted the gold, and I got it --
+  Came out with a fortune last fall, --
+Yet somehow life's not what I thought it,
+  And somehow the gold isn't all.</span>
+</pre>
+<div class="note"><p><b></b></p>
+<p><i><b>Sauvegarde de vos données</b></i> :</p>
+<p>Conservez toujours une copie non compressée de vos données compressées. Si vous 
+perdez un seul octet d'une chaîne binaire compressée, il sera difficile de récupérer 
+les données. Ne sauvegardez pas des fichiers d'archives en format compressé à moins 
+que vous n'ayiez des copies d'origine non compressées.</p>
+</div>
+</blockquote>
+<p>
+<h3 id="section-3.11">3.11 Modification de la base numérique</h3>
+<blockquote>
+<p>Pour être envoyé sous forme de texte, les chaînes binaires doivent être 
+encodées en hexadécimal ou en base 64. Ceci est fréquemment réalisé pour le courrier électronique, 
+ou le contenu de groupes de nouvelles (newsgroups).</p>
+<p>La fonction <b>enbase</b> encodera une chaîne binaire :</p>
+<pre>
+line: "No! There's a land!"
+print enbase line
+<span class="output">Tm8hIFRoZXJlJ3MgYSBsYW5kIQ==</span>
+</pre>
+<p>Les chaînes encodées peuvent être décodées avec la fonction <b>debase</b>. 
+Notez que le résultat est une valeur de type binaire. Pour convertir cette valeur 
+en une chaîne de caractères (<b>string!</b>), utilisez la fonction <b>to-string</b>.</p>
+<pre>
+b-line: debase e-line
+print type? b-line
+<span class="output">binary</span>
+probe b-line
+<span class="output">#{4E6F2120546865726527732061206C616E6421}</span>
+print to-string b-line
+<span class="output">No! There's a land!</span>
+</pre>
+<p>Le raffinement <b>/base</b> peut être utilisé avec les fonctions <b>enbase</b> et <b>debase</b>, 
+pour spécifier un encode en base-2 (binaire), base-16 (hexadécimal) ou base-64.</p>
+<p>Voici quelques exemples utilisant l'encodage en base 2 :</p>
+<pre>
+e2-str: enbase/base str 2
+print e2-str
+<span class="output">01100001</span>
+b2-str: debase/base e2-str 2
+print type? b2-str
+<span class="output">binary</span>
+probe b2-str
+<span class="output">#{61}</span>
+print to-string b2-str
+<span class="output">a</span>
+</pre>
+<p>Quelques exemples avec un encodage en hexadécimal (base-16) :</p>
+<pre>
+e16-line: enbase/base line 16
+print e16-line
+<span class="output">4E6F2120546865726527732061206C616E6421</span>
+b16-line: debase/base e16-line 16
+print type? b16-line
+<span class="output">binary</span>
+probe b16-line
+<span class="output">#{4E6F2120546865726527732061206C616E6421}</span>
+print to-string b16-line
+<span class="output">No! There's a land!</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.12">3.12 Décodage hexadécimal pour Internet</h3>
+<blockquote>
+<p>La fonction <b>dehex</b> convertit les caractères encodés en hexadécimal des URLs Internet 
+ou CGI en chaînes de caractères. La représentation hexadécimal ASCII se présente dans 
+un URL ou une chaîne CGI comme %xx, où xx est une valeur hexadécimale.</p>
+<pre>
+str: "there%20seem%20to%20be%20no%20spaces"
+print dehex str
+<span class="output">there seem to be no spaces</span>
+print dehex "%68%65%6C%6C%6F"
+<span class="output">hello</span>
+</pre>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 8-Apr-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>

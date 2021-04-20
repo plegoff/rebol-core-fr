@@ -1,0 +1,282 @@
+Chapitre 1 - Introduction
+
+
+	Ce document est la traduction française du Chapitre 1 du User Guide de REBOL/Core, 
+	c'est à dire l'Introduction au langage.
+
+
+
+===Historique de la traduction
+
+\table
+
+Date
+
+Version
+
+Commentaires
+
+Auteur
+
+Email
+
+=row
+
+27 avril 2005 21:05
+
+1.0.0
+
+Traduction initiale
+
+Philippe Le Goff
+
+lp--legoff--free--fr
+
+
+/table
+
+<br />
+<br />
+
+
+
+===A propos de REBOL
+
+Voici rapidement quelques remarques concernant REBOL :
+
+* REBOL est l'acronyme pour <b>Relative Expression-Based Object Language</b>.<br><br>
+
+* REBOL se prononce  "reb-ol" comme dans "rebel with a cause".(<b>NDT</b>: intraduisible !)<br><br>
+
+* REBOL est un langage "messager". Son principal propos est de fournir une 
+meilleure approche pour les communications et l'informatique distribuée.<br><br>
+
+* REBOL a été conçu par Carl Sassenrath, l'architecte responsable du système 
+d'exploitation de l'Amiga OS, le premier système d'exploitation multi-tâches pour 
+ordinateurs personnels.<br><br>
+
+* REBOL est plus qu'un langage de programmation. C'est aussi un langage pour 
+représenter des données et des métadonnées. REBOL fournit une méthode unique 
+pour le traitement, le stockage, et l'échange d'information.<br><br>
+
+* REBOL est porté sur plus de 40 systèmes d'exploitation. Un script écrit en 
+sur Windows fonctionnera aussi bien sur Linux, UNIX, et d'autres plate-formes, ... 
+sans nécessairement de changements.<br><br>
+
+* REBOL introduit le concept de dialectes - des sous-langages petits, efficaces, 
+spécifiques à un domaine, pour le code, les données et les méta-données.<br><br>
+
+* Les tailles - très petites - des distributions de REBOL sont <i>intentionnellement</i> conservées ainsi,  
+bien qu'elles incluent des centaines de fonctions, des douzaines de types de 
+données, une aide en ligne, plusieurs protocoles Internet, une gestion d'erreurs, 
+la compression, une console pour le débuggage, et plus encore.<br><br>
+
+* Les programmes REBOL sont faciles à écrire. Vous avez seulement besoin d'un éditeur de texte. 
+Un programme peut être une ligne unique ou une 
+application complète.<br><br>
+
+* REBOL/Core sert de fondation pour toute la technologie REBOL.
+Quoique conçus pour être simple et productif pour des débutants, le langage offre 
+de nouvelles possibilités pour les professionnels.<br><br>
+
+La <b>version graphique</b> de REBOL, appelée <b>REBOL/View</b>, se trouve construite sur la base  
+de REBOL/Core. Elle peut être trouvée sur le site Web de REBOL.<br><br>
+
+
+
+=== Au sujet de ce manuel
+
+Ce Manuel fournit les informations de base nécessaires à l'utilisation de REBOL/Core.
+
+Il suppose que le lecteur soit déjà familier avec les concepts généraux de programmation 
+et avec la terminologie des systèmes d'exploitation.
+
+--- Suggestion pour les nouveaux programmeurs
+
+Si vous êtes nouveau dans la programmation, REBOL est un excellent moyen pour 
+démarrer.
+
+Il existe quelques concepts généraux que REBOL utilise partout. Par exemple,
+le concept REBOL de série est utilisé partout depuis les structures des données 
+jusqu'aux blocs de code. 
+
+Une fois que vous aurez appris les concepts et les méthodes propres aux séries, 
+ceux-ci pourront être appliqués partout dans vos programmes. 
+Vous devez <i>bien</i> apprendre ces concepts. <br>Vous en serez récompensé plus tard. 
+Les chapitres du Manuel Utilisateur sont ordonnés pour faciliter votre 
+apprentissage. 
+
+Si vous rencontrez des difficultés dans l'usage de REBOL, n'en soyez pas irrité. 
+Beaucoup de personnes peuvent vous aider. La <i>Mailing List de REBOL</i> (voir 
+plus loin la section concernant le Support) est composée de centaines de personnes 
+qui se font un plaisir d'aider les débutants à démarrer. <br> 
+N'hésitez pas à aller 
+sur ce forum pour quelque raison que ce soit.
+
+
+--- Suggestion pour les programmeurs expérimentés
+
+Si vous êtes déjà familier avec d'autres langages de programmation tels que C, 
+C++, Java, Pascal, Python, PERL, Basic, etc., soyez avertis : 
+REBOL est tout à fait différent.
+
+Vous devez savoir que REBOL n'est pas juste conçu pour être différent, mais plutôt 
+pour donner aux programmeurs une plus grande force d'expression. <br>Les programmeurs 
+qui ont maîtrisé REBOL suggèrent que la meilleure approche est d'oublier ce que vous 
+connaissez déjà pour d'autres langages. <br>Pourquoi ? parce que vous ne pouvez pas 
+concevoir des programmes REBOL de la même façon. <br>
+Bien sûr, vous pourriez créer des programmes REBOL avec un air de C, mais, si vous 
+faisiez cela, vous perdriez énormément d'avantages offerts par REBOL.
+
+En termes techniques, REBOL est un langage hautement réflectif, fonctionnel, 
+symbolique, avec des régles à portée définitionnelle.<br> 
+Si vous ne savez pas ce que cela signifie, ce n'est pas grave. (<b>NDT</b>: ouf !) <br />
+REBOL exploite des avancées dans la science informatique, mais vous n'avez pas besoin d'être un 
+savant informaticien  pour l'utiliser. En tant que programmeur chevronné, vous serez tenté de passer outre la plupart des 
+chapitres de ce Manuel. Pour la plupart, c'est très bien. <br>Cependant, des concepts 
+comme les séries sont critiques pour comprendre REBOL. <br>Si vous ne prenez pas le 
+temps de maîtriser de tels concepts, vous trouverez qu'il est difficile d'être   
+complétement à l'aise avec le langage REBOL.
+
+
+
+=== Conventions propres à ce manuel 
+
+Le tableau suivant décrit les conventions typographiques utilisées dans le Manuel.
+
+\table
+        
+Item
+
+Convention
+
+Exemple
+
+=row 
+
+Les Mots pré-définis dans le langage <br>(comme les noms de fonctions, des variables 
+spéciales, <br>des objets système).
+
+Bold, green, monospace
+
+<p><tt><b>Append at change</b></tt></p>
+
+=row 
+
+Mots ne faisant pas partie du langage, <br>
+tels que des noms de fichiers ou de 
+répertoires, <br>des noms de programmes ou de variables.
+
+Green, monospace
+
+<p><tt>myfile</tt> <tt>window-color</tt></p>
+
+=row 
+
+Exemples de code
+
+Boxed bold monospace
+
+  do %feedback.r
+
+
+=row 
+
+Résultats affichés à la console REBOL
+
+Boxed blue monospace
+
+<pre><span class="output">true</span></pre>
+
+/table
+
+<br>
+
+\note 
+
+<b>NDT</b> : &nbsp;&nbsp;il s'agit des conventions propres au User Guide original.<br>
+Dans cette traduction française, ces conventions sont légérement différentes :<br>
+
+* le code est 
+mis en évidence (retrait, paragraphe avec trame grisée, bordure noire, police 
+de type "Courrier"), 
+
+* les mots clés du langage sont en gras, 
+
+* et les mots propres aux variables dans les exemples ou certains mots non traduits sont en italique.
+
+/note
+
+===Support Technique
+
+Pour des questions générales ou un <i>feedback</i> concernant les produits REBOL ou 
+notre site Web, merci d'utiliser la page de <a href="http://www.rebol.com/feedback.html">feedback </a>.
+Habituellement, nous répondons aux messages sous 24 ou 48 heures. 
+N'oubliez pas d'inclure une adresse email valide si vous voulez une réponse.
+
+--- Informations et nouvelles pour les développeurs
+
+Le site Web pour les développeurs REBOL (<a href="http://www.REBOL.net">www.rebol.net/</a>) 
+fournit les dernières informations ou nouveautés techniques, la documentation, des 
+discussions, des bétas et plus encore.
+C'est également sur ce site que vous trouverez le 
+<a href="http://www.rebol.net/cgi-bin/blog.r">Blog de Carl</a>, 
+un espace d'idées, de réflexions, et de suggestions par l'inventeur et le constructeur 
+de REBOL , Carl Sassenrath.<br><br>
+
+--- Listes de Discussions et Forums
+
+* <a href="http://www.rebol.com/discussion.html"><u>Mailing List REBOL </u></a><br>
+La liste de discussion de REBOL est un forum pour des questions-réponses autour 
+de tous les thèmes liés à REBOL.
+Vous pouvez aussi consulter les anciens messages sur 
+<a href="http://www.rebol.org/cgi-bin/cgiwrap/rebol/ml-date-index.r">l'archive de la mailing liste</i> sur rebol.org.<br><br>
+
+* <a href="http://www.reboltalk.com/"><u>REBOL Talk Forum</u></a><br>
+Un forum Web indépendant consacré à des échanges à propos de REBOL.<br><br>
+
+* <a href="http://groups-beta.google.com/group/Rebol">Groupe Google REBOL </a><br>
+C'est un nouveau groupe de discussion (web/email) qui a récemment démarré sur les 
+Google Groups. Il est encore en phase expérimentale.<br><br>
+
+* <u>Autres lieux d'échanges</u> <br>
+REBOL Technologies abrite aussi plusieurs groupes de discussions privés 
+utilisant notre technologie IOS ou le système <a href="http://www.altme.com/">ALTME de Safeworlds Inc</a>.<br>
+Voir les annonces et les informations pour les membres sur www.rebol.net.<br><br>
+
+
+--- Corrections de Bug et propositions d'amélioration
+
+Les clients, les développeurs, et les utilisateurs de REBOL peuvent maintenant 
+directement chercher des informations liées à des problèmes connus, ou remonter de 
+nouveaux bugs, ou effectuer des demandes d'amélioration en utilisant notre base de 
+données <a href="http://www.rebol.net/cgi-bin/rambo.r">RAMBO</a>.<br>
+
+
+
+--- Bibliothèque de scripts REBOL.org 
+
+Le site <a href="http://www.rebol.org">www.rebol.org</a> est un site web de partage 
+de ressources, avec une bibliothèque de scripts et d'exemples. <br>
+Ce site comprend aussi de nombreux tutoriels, comme les archives des messages de 
+la Mailing List REBOL.<br><br>
+
+--- Nouvelles versions : alpha et beta 
+
+Nous <a href="http://www.rebol.net/builds/">publions des versions non finalisées</a> 
+de nos produits. Ce service est à destination des clients et des développeurs 
+expérimentés seulement. <br>
+Ces pages permettent d'accéder à des versions alphas ou bétas, pas à des 
+versions finales.<br><br>
+
+=== Vos remarques sont bienvenues
+
+Pour nous aider à améliorer les prochaines évolutions de cette documentation, nous 
+aimerions savoir quelles corrections ou clarifications vous semblent importantes.<br> 
+Envoyez-les sur la page de Feeback de notre site Web. Merci d'inclure le titre, 
+la version, et le chapitre concernés de ce Manuel.<br>
+
+
+=date 7-Apr-2005
+
+###

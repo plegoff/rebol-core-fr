@@ -1,0 +1,3196 @@
+Annexe 1 - Les valeurs
+
+	Ce document est la traduction française de l'Annexe 1 du User Guide de REBOL/Core,
+	qui concerne les Valeurs.
+	
+
+
+=== Historique de la traduction
+
+\table
+
+Date
+
+Version
+
+Commentaires
+
+Auteur
+
+Email
+
+=row
+
+18 Août 2005 21:02
+
+1.0.0
+
+Traduction initiale
+
+Philippe Le Goff
+
+lp--legoff--free--fr
+
+
+/table
+
+
+
+===Valeurs relatives aux nombres
+
+--- Decimal
+
++++ Concept
+
+Le type de données <b>decimal!</b> est basé sur le standard IEEE, c'est à dire des 
+nombres sur 64 bits en virgule flottante. Ils se distinguent des nombres entiers 
+via le séparateur décimal (un point, ou une virgule, peuvent être utilisés pour un usage international, voir les notes ci-dessous). 
+
++++ Format
+
+Les valeurs décimales sont une séquence de chiffres numériques suivis par un point ou une virgule, 
+puis encore d'autres chiffres. 
+
+Un signe (+) ou (-) présent immédiatement avant le premier chiffre indique le signe (positif ou négatif). 
+Les zéros présents avant le séparateur des décimales sont ignorés. Les espaces, les points virgules et les points en trop 
+ne sont pas autorisés.
+
+	1.23
+	123.
+	123.0
+	0.321
+	0.123
+	1234.5678
+
+Une virgule (elle est la norme dans de nombreux pays) peut être utilisée au lieu d'un point pour représenter le séparateur décimal 
+
+	1,23
+	0,321
+	1234,5678
+
+Utilisez une apostrophe simple (`) pour séparer les chiffres dans les grands nombres décimaux. 
+Les apostrophes simples peuvent apparaître après le premier chiffre dans le nombre, mais pas avant ce premier chiffre. 
+
+	100'234'562.3782
+	100'234'562,3782
+
+
+La notation scientifique peut être utilisée pour spécifier l'exposant d'un nombre 
+en ajoutant au nombre la lettre E ou e suivie d'une série de chiffres. L'exposant peut être un 
+nombre positif ou négatif. 
+
+
+	1.23E10
+	1.2e007
+	123.45e-42
+	56,72E300
+	-0,34e-12
+	0.0001e-001
+
+Les nombres décimaux s'étendent de 2.2250738585072e-308 jusqu'à 1.7976931348623e+308 
+et peuvent avoir une précision sur 15 chiffres.
+
++++ Création
+
+Utilisez la fonction <b>to-decimal</b> pour convertir une 
+chaîne de caractère (<b>string!</b>), un nombre entier (<b>integer!</b>), un bloc (<b>block!</b>), 
+ou type de données <b>decimal!</b> en nombre décimal :
+
+	probe to-decimal "123.45"
+==	123.45
+	probe to-decimal 123
+==	123
+	probe to-decimal [-123 45]
+==	-1.23E+47
+	probe to-decimal [123 -45]
+==	1.23E-43
+	probe to-decimal -123.8
+==	-123.8
+	probe to-decimal 12.3
+==	12.3
+
+Si un nombre décimal et un nombre entier sont combinés 
+dans une expression, le nombre entier est converti en nombre décimal : 
+
+
+	probe 1.2 + 2
+==	3.2
+	probe 2 + 1.2
+==	3.2
+	probe 1.01 > 1
+==	true
+	probe 1 > 1.01
+==	false
+
++++ Infos connexes
+
+Utilisez <b>decimal?</b> pour déterminer si une valeur est bien du type de données <b>decimal!</b> : 
+
+	print decimal? 0.123
+==	true
+
+Utilisez les fonctions <b>form</b>, <b>print</b> et <b>mold</b> avec un nombre en argument pour afficher la 
+valeur décimale dans sa forme la plus réduite : 
+
+
+* entière s'il est possible de l'afficher ainsi.
+
+* décimal sans exposant s'il n'est pas trop grand ou trop petit.
+
+* en notation scientifique s'il est trop grand ou trop petit. 
+
+Par exemple ,
+
+	probe mold 123.4
+==	123.4
+	probe form 2222222222222222
+==	2.22222222222222E+15
+	print 1.00001E+5
+==	100001
+
+Les apostrophes simples (quotes) et un signe "plus" (+) précédant le nombre 
+n'apparaissent pas dans l'affichage d'un décimal : 
+
+	print +1'100'200.222'112
+==	1100200.222112
+
+
+--- Integer
+
++++ Concept
+
+Le type de données <b>integer!</b> caractérise les nombres positifs et négatifs (et zéro) sur 32 bits. 
+Contrairement aux nombres décimaux, les nombres entiers ne contiennent pas de décimales.
+
+
++++ Format
+
+Les valeurs entières consistent en une séquence de chiffres. Un signe plus (+) ou un signe 
+moins (-) placé immédiatement avant le premier chiffre indique le signe. (Il ne peut y avoir 
+d'espace entre le signe et le premier chiffre). Les zéros qui précédent le premier chiffre sont ignorés. 
+
+	0 
+	1234 
+	+1234 
+	-1234 
+	00012 
+	-0123
+
+N'utilisez pas de points, ni de virgules dans les entiers. 
+Si une virgule ou un point est trouvé dans un entier, celui-ci sera interprété comme une valeur décimale. 
+D'autre part, vous pouvez utilisez une apostrophe (`) pour séparer les chiffres dans les grands nombres 
+entiers. Les apostrophes peuvent apparaître n'importe où après le premier chiffre dans le nombre, mais pas 
+avant ce premier chiffre. 
+
+
+	2'147'483'647
+
+Les nombres entiers varient entre -2147483648 et 2147483647.
+
++++ Création
+
+Utilisez la fonction <b>to-integer</b> pour convertir un type de données <b>string!</b>, <b>logic!</b>, 
+<b>decimal!</b>, ou <b>integer!</b> en un entier :
+
+	probe to-integer "123"
+==	123
+	probe to-integer false
+==	0
+	probe to-integer true
+==	1
+	probe to-integer 123.4
+==	123
+	probe to-integer 123.8
+==	123
+	probe to-integer -123.8
+==	-123
+
+Si un décimal et un entier sont combinés dans une expression, 
+le nombre entier sera converti en nombre décimal :
+
+	probe 1.2 + 2
+==	3.2
+	probe 2 + 1.2
+==	3.2
+	probe 1.01 > 1
+==	true
+	probe 0 < .001
+==	true
+
++++ Infos connexes
+
+Utilisez <b>integer?</b> pour déterminer si une valeur a pour type de données <b>integer!</b>.
+
+	probe integer? -1234
+==	true
+
+Utilisez les fonctions <b>form</b>, <b>print</b> et <b>mold</b> avec un argument de type <b>integer!</b> pour 
+afficher la valeur entière sous forme d'une chaîne de caractères : 
+
+	probe mold 123
+==	123
+	probe form 123
+==	123
+	print 123
+==	123
+
+Les entiers qui sont en dehors de l'intervalle décrit plus haut ou 
+qui ne peuvent être représentés sur 32 bits générent une erreur. 
+
+
+
+===Valeurs relatives aux séries
+
+
+---Binary
+
++++ Concept
+
+Les valeurs binaires comprennent arbitrairement des données binaires de n'importe quel type.
+N'importe quelle séquence d'octets peut être stockée, comme une image, un son, un fichier exécutable, 
+des données compressées, et des données cryptées. 
+
+
++++ Format
+
+Les chaînes binaires sont écrites sous la forme d'un signe (#) dièse, 
+suivi d'une chaîne de caractères incluse entre deux accolades. Les caractères 
+au sein de la chaîne sont encodés dans l'un des divers formats comme l'indique le nombre (optionnel) 
+qui précède le signe (#). 
+
+Le codage en base 16 (hexadécimal) est le format par défaut. 
+
+	#{3A18427F 899AEFD8} ; default base-16
+	2#{10010110110010101001011011001011} ; base-2
+	64#{LmNvbSA8yw9CB0aGvXmgUkVCu2Uz934b} ; base-64
+
+Les espaces, les tabulations et les sauts de lignes sont autorisés 
+dans la chaîne. Une donnée binaire peut s'étendre sur plusieurs lignes.
+
+	probe #{
+	    3A
+	    18
+	    92
+	    56
+	}
+==	#{3A189256}
+
+Les chaînes de caractères, pour lesquelles manquent des caractères permettant de retrouver 
+un résultat binaire correct, sont décalées sur la droite (au niveau des  bits).
+
++++ Création
+
+La fonction <b>to-binary</b> convertit des données dans le type <b>binary!</b>, avec l'encodage existant par 
+défaut dans <b>system/options/binary-base</b> :
+
+	probe to-binary "123"
+==	#{313233}
+	probe to-binary "today is the day..."
+==	#{746F64617920697320746865206461792E2E2E}
+
+Pour convertir un nombre entier en son équivalent en valeur binaire, mettez-le dans un bloc : 
+
+
+	probe to-binary [1]
+==	#{01}
+	probe to-binary [11]
+==	#{0B}
+
+La conversion d'une série de nombres entiers en binaire se fait par la conversion 
+de chacun des entiers, et en concaténant l'ensemble en une seule valeur binaire : 
+
+	probe to-binary [1 1 1 1]
+==	#{01010101}
+
++++ Infos supplémentaires
+
+L'usage de la fonction <b>binary?</b> permet de déterminer si une valeur est de type 
+de données <b>binary!</b>. 
+
+	probe binary? #{616263}
+==	true
+
+Les valeurs binaires font partie du type <b>series!</b> :
+
+	probe series? #{616263}
+==	true
+	probe length? #{616263} ; three hex values in this binary
+==	3
+
+Les fonctions <b>enbase</b> et <b>debase</b> sont très importantes dans la manipulation des 
+valeurs de type <b>binary!</b>. <br>La fonction <b>enbase</b> convertit des chaînes en leur représentation en base-2, 
+en base 16 ou en base 64. La fonction <b>debase</b> transforme des chaînes codées en une valeur binaire, en utilisant 
+la base numérique spécifiée dans  <b>system/options/binary-base</b>.
+
+--- Block
+
++++ Concept
+
+Les blocs sont des groupes de valeurs et de mots. Les blocs sont utilisés partout, comme depuis un script lui-même 
+jusqu'aux blocs de données et de code fournis dans le script. Les valeurs de type <b>block</b> sont indiquées 
+avec des crochets ouvrants et fermants ([ ]) et une quantité variable de datas contenues entre eux. 
+
+
+	[123 data "hi"]  ; bloc avec des datas
+	[]               ; bloc vide
+
+Les blocs peuvent permettre de manipuler des enregistrements : 
+
+	woodsmen: [
+	    "Paul" "Bunyan" paul@bunyan.dom
+	    "Grizzly" "Adams" grizzly@adams.dom
+	    "Davy" "Crocket" davy@crocket.dom
+	]
+
+Les blocs peuvent contenir du code : 
+
+	[print "this is a segment of code"]
+
+Les blocs sont également rattachés au type <b>series!</b>, et tout ce qui peut être réalisé avec une série 
+peut l'être aussi avec un bloc. 
+
+Il est possible d'effectuer des recherches dans des blocs : 
+
+	probe copy/part (find woodsmen "Grizzly") 3
+==	[
+==	    "Grizzly" "Adams" grizzly@adams.dom]
+
+Les blocs peuvent être modifiés : 
+
+	append woodsmen [
+	    "John" "Muir" john@muir.dom
+	]
+	probe woodsmen
+==	[
+==	    "Paul" "Bunyan" paul@bunyan.dom 
+==	    "Grizzly" "Adams" grizzly@adams.dom 
+==	    "Davy" "Crocket" davy@crocket.dom 
+==	    "John" "Muir" john@muir.dom
+==	]
+
+Les blocs peuvent être évalués : 
+
+	blk: [print "data in a block"]
+	do blk
+==	data in a block
+
+Les blocs peuvent contenir d'autres blocs : 
+
+	blks: [
+	    [print "block one"]
+	    [print "block two"]
+	    [print "block three"]
+	]
+	foreach blk blks [do blk]
+==	block one
+==	block two
+==	block three
+
++++ Format
+
+Les blocs peuvent contenir un nombre variable de valeurs ou aucune valeur. 
+Ils peuvent s'étendre sur plusieurs lignes et peuvent inclure n'importe quel type de valeurs, 
+y compris d'autres blocs. 
+
+Un bloc vide : 
+
+	[ ]
+
+Un bloc de nombres entiers : 
+
+	[24 37 108]
+
+Un en-tête (header) REBOL : 
+
+	REBOL [
+	    Title: "Test Script"
+	    Date: 31-Dec-1998
+	    Author: "Ima User"
+	]
+
+Un bloc conditionnel et un bloc évalué d'une fonction : 
+
+	while [time < 10:00] [
+	    print time
+	    time: time + 0:10
+	]
+
+Les mots dans un bloc ont besoin d'être définis : 
+
+	blk: [undefined words in a block]
+	probe value? pick blk 1
+==	false
+
+Les blocs autorisent n'importe quel nombre de lignes, d'espaces, ou de tabulations. 
+Les lignes et les espaces peuvent être placés n'importe où au sein du bloc, tant qu'ils ne segmentent pas des valeurs. 
+
++++ Création
+
+La fonction <b>to-block</b> convertit une data en une valeur de type de données <b>block!</b> : 
+
+	probe to-block luke@rebol.com
+==	[luke@rebol.com]
+	probe to-block {123 10:30 "string" luke@rebol.com}
+==	[123 10:30 "string" luke@rebol.com]
+
++++ Autres informations
+
+Utilisez  <b>block?</b> pour déterminer si une valeur est ou non du datatype <b>block!</b> .
+
+	probe block? [123 10:30]
+==	true
+
+Les blocs étant un sous-ensemble du pseudo type <b>series!</b>, vous pouvez utilisez <b>series?</b> pour vérifier qu'un bloc est bien de ce type : 
+
+	probe series? [123 10:30]
+==	true
+
+L'usage de la fonction <b>form</b> sur une valeur de type <b>block !</b>  produit une chaîne de caractères à partir du contenu 
+du bloc : 
+
+	probe form [123 10:30]
+==	123 10:30
+
+L'usage de la fonction <b>mold</b> sur une valeur de type block a pour effet, elle, de créer une chaîne de caractères avec 
+le contenu du bloc, comme <b>form</b>, mais en permettant que le résultat soit récupérable sous forme d'un bloc REBOL : 
+
+	probe mold [123 10:30]
+==	[123 10:30]
+
+Les types de données <b>hash!</b> et <b>list!</b> sont très similaires au type <b>block!</b>. Ils sont utilisables de la même façon que les valeurs de 
+type <b>block!</b> mais possèdent des caractéristiques particulières. Les valeurs de type <b>list!</b> sont conçues pour permettre des modifications de listes 
+plus rapidement que les valeurs <b>block!</b>, et les valeurs de type <b>hash!</b> permettent de gérer des tris et l'indexation de données. Ils sont assez commodes 
+lorsqu'on se sert de jeux de données importants. 
+
+--- Email
+
++++ Concept
+
+Une adresse email est un type de données. En REBOL, le type de données <b>email!</b> exprime facilement ce que représente des adresses email.
+
+
+	send luke@rebol.com {some message}
+
+	emails: [
+	    john@keats.dom
+	    lord@byron.dom
+	    edger@guest.dom
+	    alfred@tennyson.dom
+	]
+	mesg: {poetry reading at 8:00pm!}
+	foreach email emails [send email mesg]
+
+Le type de données <b>email!</b> fait partie aussi du type <b>series!</b>, de sorte que les règles s'appliquant aux séries s'appliquent 
+aussi aux valeurs de type <b>email!</b> : 
+
+	probe head change/part jane@doe.dom "john" 4
+==	john@doe.dom
+
++++ Format
+
+Le format standard d'une adresse email est le suivant : un nom, suivi du symbole arobase (@), 
+suivi d'un nom de domaine. Une adresse email peut être de n'importe quelle longueur, mais ne doit 
+pas comprendre un seul caractère non autorisé comme les crochets, les apostrophes (quotes), les accolades, les espaces, 
+les caractères de fin de ligne, etc.
+
+Les valeurs suivantes ont un format valide pour le type de données <b>email!</b> : 
+
+	info@rebol.com
+	123@number-mail.org
+	my-name.here@an.example-domain.com
+
+Les caractères minuscules et majuscules sont conservés dans les adresses email. 
+
++++ Raffinements
+
+Deux raffinements peuvent être utilisés avec une valeur <b>email!</b> pour récupérer le nom d'utilisateur ou le domaine. 
+Ces raffinements sont : 
+
+:/user - Récupère le nom d'utilisateur.
+
+:/host - Récupère le domaine.
+
+
+Voici quelques illustrations du fonctionnement de ces raffinements : 
+
+	email: luke@rebol.com
+	probe email/user
+==	luke
+	probe email/host
+==	rebol.com
+
+
+
+
++++ Création
+
+La fonction <b>to-email</b> transforme une donnée en une valeur de type <b>email!</b> : 
+
+	probe to-email "info@rebol.com"
+==	info@rebol.com
+	probe to-email [info rebol.com]
+==	info@rebol.com
+	probe to-email [info rebol com]
+==	info@rebol.com
+	probe to-email [user some long domain name out there dom]
+==	user@some.long.domain.name.out.there.dom
+
++++ Autres Informations
+
+Utilisez la fonction <b>email?</b> pour déterminer si une valeur est de type <b>email!</b>.
+
+	probe email? luke@rebol.com
+==	true
+
+Le type de donnée <b>email!</b> étant un sous-ensemble du type de donnée <b>series!</b>, vous pouvez aussi utilisez 
+<b>series?</b> pour savoir si la valeur testée est une série : 
+
+
+	probe series? luke@rebol.com
+==	true
+	probe pick luke@rebol.com 5
+==	#"@"
+
+
+--- File
+
++++ Concept
+
+Le type de données <b>file!</b> peut concerner un nom de fichier, un nom de répertoire ou un chemin complet 
+dans une arborescence (path).
+
+	%file.txt
+	%directory/
+	%directory/path/to/some/file.txt
+
+Les valeurs de type <b>file!</b> sont aussi des séries et peuvent être manipulées comme telles : 
+
+	probe find %dir/path1/path2/file.txt "path2"
+==	%path2/file.txt
+	f: %dir/path/file.txt
+	probe head remove/part (find f "path/") (length? "path/")
+==	%dir/file.txt
+
++++ Format
+
+Les fichiers se caractérisent par un signe "pourcentage" (%) suivi par une suite de caractères : 
+
+	load %image.jpg
+	prog: load %examples.r
+	save %this-file.txt "This file has few words."
+	files: load %../programs/
+
+Les caractères "inhabituels" dans les noms de fichiers doivent être encodés avec leurs équivalents hexadécimaux selon 
+la convention en vigueur sur Internet. Un nom de fichier avec un espace (en hexadécimal : %20) devrait ressembler à ceci : 
+
+	probe %cool%20movie%20clip.mpg
+==	%cool%20movie%20clip.mpg
+	print %cool%20movie%20clip.mpg
+==	cool movie clip.mpg
+
+Une autre possibilité est d'englober le nom de fichier entre deux apostrophes : 
+
+	probe %"cool movie clip.mpg"
+==	%cool%20movie%20clip.mpg
+	print %"cool movie clip.mpg"
+==	cool movie clip.mpg
+
+Le caractère standard pour séparer des répertoires dans un chemin est le caractère slash (/), et NON le backslash (\). 
+Cependant, le langage REBOL transforme automatiquement les symboles backslash trouvés dans les noms de fichiers en caractères slash : 
+
+	probe %\some\path\to\some\where\movieclip.mpg
+==	%/some/path/to/some/where/movieclip.mpg
+
++++ Création
+
+La fonction <b>to-file</b> transforme une donnée en une valeur de type de données <b>file!</b> :
+
+	probe to-file "testfile"
+==	%testfile
+
+Lorsqu'un bloc est passé en argument à <b>to-file</b>, les éléments du bloc sont concaténés pour former un chemin de fichier, le dernier 
+élément du bloc servant de nom de fichier : 
+
+
+	probe to-file [some path to a file the-file.txt]
+==	%some/path/to/a/file/the-file.txt
+
++++ Autres informations
+
+Utilisez la fonction <b>file?</b> pour savoir si une valeur est de type <b>file!</b> :
+
+	probe file? %rebol.r
+==	true
+
+Comme le type <b>file!</b> est un sous-ensemble de <b>series!</b>, la fonction <b>series?</b> est aussi utilisable : 
+
+	probe series? %rebol.r
+==	true
+
+
+--- Hash
+
++++ Concept
+
+Un hash est un bloc présentant une organisation particulière afin d'y trouver très rapidement des données. 
+Lorsqu'une recherche est réalisée sur une valeur de type <b>hash!</b>, celle-ci est réalisée en utilisant 
+une indexation spécifique à la table, qui permet pour de grands blocs, d'accélèrer la recherche d'un facteur 100 et plus.
+
+
++++ Format
+
+Les blocs de type <b>hash!</b> doivent être construits en utilisant la fonction <b>make</b> ou la fonction <b>to-hash</b>. 
+Il n'y a pas de format spécifique.
+
++++ Création
+
+Utilisez <b>make</b> pour initialiser un hash : 
+
+	hsh: make hash! 10 ; alloue un espace pour 10 élements
+
+La fonction <b>to-hash</b> transforme une donnée en une valeur de type <b>hash!</b>.
+
+Transformer un bloc :
+
+	blk: [1 "one" 2 "two" 3 "three" 4 "four"]
+	probe hash: to-hash blk
+==	make hash! [1 "one" 2 "two" 3 "three" 4 "four"]
+	print select hash 2
+==	two
+
+Transformer diverses valeurs  : 
+
+	probe to-hash luke@rebol.com
+
+	probe to-hash 123.5
+
+	probe to-hash {123 10:30 "string" luke@rebol.com}
+
++++ Autres infos 
+
+Utilisez <b>hash?</b> pour tester le type de données. 
+
+	hsh: to-hash [1 "one" 2 "two" 3 "three" 4 "four"]
+	probe hash? Hsh
+==	true
+
+Le type <b>hash!</b> étant un sous-ensemble du type <b>series!</b>, la fonction <b>series?</b> peut là encore être utilisée : 
+
+	probe series? hsh
+==	true
+
+L'usage de la fonction <b>form</b> sur une valeur de type hash renvoie une chaîne de caractères composée avec le contenu 
+du hash : 
+
+	probe form hsh
+==	"1 one 2 two 3 three 4 four"
+
+Avec la fonction <b>mold</b>, on crée une chaîne de caractère avec la valeur hash et son contenu, mais celle-ci peut être 
+récupérable sous forme d'une valeur de type hash pour REBOL : 
+
+	probe mold hsh
+==	make hash! [1 "one" 2 "two" 3 "three" 4 "four"]
+
+
+--- Image
+
++++ Concept
+
+Le type de données <b>image!</b> permet la manipulation des images RGB. Ce datatype est utilisé avec REBOL/View. 
+Les formats d'image supportés sont le GIF, le JPEG, et le BMP. Les images chargées en mémoire peuvent être manipulées 
+comme des séries. 
+
++++ Format
+
+Les images sont en principe chargées à partir d'un fichier. Cependant, elles peuvent être exprimées sous forme de code source, ou aussi 
+fabriquées. L'exemple suivant illustre l'exemple d'une image exprimée sous forme d'un bloc incluant la taille de l'image et les données RGB. 
+
+
+	image: make image! [192x144 #{
+	    B34533B44634B44634B54735B7473
+	    84836B84836B84836BA4837BA4837
+	    BC4837BC4837BC4837BC4837BC483 ...
+	}
+
++++ Création
+
+Des images "vides" peuvent être créées avec les fonctions <b>make</b> ou <b>to-image</b> :
+
+	empty-img: make image! 300x300
+	empty-img: to-image 150x300
+
+La taille de l'image est fournie. 
+
+Les images peuvent aussi être créées avec des copies d'écran ou des objets de type <b>'face</b>. Par exemple, 
+en utilisant <b>make</b> ou <b>to-image</b> : 
+
+	face-shot: make image! face
+	face-shot: to-image face
+
+Utilisez la fonction <b>load</b> pour charger en mémoire une image à partir d'un fichier. Si le format 
+de l'image n'est pas supporté, le chargement n'aura pas lieu.
+
+Pour charger en mémoire une image : 
+
+	img: load %bay.jpg
+
++++ Autres informations 
+
+Utilisez la fonction <b>image?</b> pour savoir si une valeur est ou non du type <b>image!</b> :
+
+	probe image? img
+
+Les valeurs de type <b>image!</b> sont des séries : 
+
+	probe <b>series?</b> img
+
+Le raffinement <b>/size</b> renvoie la taille de l'image sous la forme d'une valeur de type <b>pair!</b> : 
+
+	probe img/size
+
+Les valeurs des pixels d'une image sont obtenus en utilisant la fonction <b>pick</b> et 
+modifiées avec <b>poke</b>. La valeur retournée par la fonction <b>pick</b> est un tuple RGB. (voir plus loin les tuples).
+La valeur remplacée avec la fonction <b>poke</b> doit elle aussi être un tuple RGB. 
+
+Récupérer des pixels spécifiques : 
+
+	probe pick img 1 
+
+	probe pick img 1500
+
+Modifier des pixels particuliers : 
+
+	poke img 1 255.255.255 
+	probe pick img 1 
+
+	poke img 1500 0.0.0 
+	probe pick img 1500
+
+
+--- Issue
+
++++ Concept
+
+Une valeur de type <b>issue!</b> consiste en une série de caractères utilisés pour mettre en forme des choses comme des numéros de téléphones, 
+des numéros de séries ou de modèles, des numéros de cartes de crédits.
+
+Les valeurs de type <b>issue!</b> sont un sous-ensemble de celles de type <b>series!</b>, et peuvent être manipulées comme telles : 
+
+	probe copy/part find #888-555-1212 "555" 3
+==	#555
+
++++ Format
+
+Les valeurs de type <b>issue!</b> commencent avec le signe dièse (#) et continuent avec une série de caractères jusqu'au premier  
+caractère délimiteur (comme l'espace) trouvé.
+
+	#707-467-8000
+	#A-0987654321-CD-09876
+	#1234-5678-4321-8765
+	#MG82/32-7
+
+Les valeurs qui contiennent des caractères délimiteurs devraient être écrites 
+sous forme de chaînes de caractères plutôt que sous forme d'"issues".
+
+
++++ Création
+
+La fonction <b>to-issue</b> transforme une donnée en une valeur de datatype <b>issue!</b>.
+
+	probe to-issue "1234-56-7890"
+==	#1234-56-7890
+
++++ Autres informations
+
+Utilisez <b>issue?</b> pour savoir si une valeur est ou non du type de donnée <b>issue!</b>.
+
+	probe issue? #1234-56-7890
+==	true
+
+Comme les valeurs "issues" sont un sous-ensemble de valeurs series, la fonction <b>series?</b> s'applique aussi : 
+
+	probe series? #1234-56-7890
+==	true
+
+La fonction <b>form</b> renvoie une chaîne de caractères constituée par la séquence de caractères de la valeur <b>issue!</b> 
+mais sans le signe (#):
+
+	probe form #1234-56-7890
+==	1234-56-7890
+
+La fonction <b>mold</b> s'utilise comme la fonction <b>form</b>, elle renvoie une chaîne pouvant être 
+interprétée par REBOL comme une valeur <b>issue!</b> :
+
+	probe mold #1234-56-7890
+==	#1234-56-7890
+
+La fonction <b>print</b> permet d'afficher une valeur de type <b>issue!</b> après un "<b>reform</b>" sur celle-ci :
+
+	print #1234-56-7890
+==	1234-56-7890
+
+
+--- List
+
++++ Concept
+
+Les listes sont des énumérations sous formes de blocs qui permettent des ajouts et des suppressions 
+très efficaces en terme de performances. Elles peuvent être utilisables dans les cas où de nombreuses modifications sont à effectuer 
+sur de grands volumes de données (grands blocs). 
+
+
++++ Format
+
+Les listes doivent être construites en utilisant la fonction <b>make</b> ou la fonction <b>to-list</b>. 
+Il n'y a pas de format lexical spécifique.
+
+Les valeurs de type <b>list!</b> ne sont pas des subsituts aux valeurs <b>block!</b>.  Il existe quelques différences entre 
+les blocs et les listes : 
+
+L'insertion dans une liste modifie son index, que se positionne juste après le point d'insertion.
+La suppression d'un élément référencé dans une liste conduit à remettre à jour la position finale de la liste (tail).
+
+Les exemples suivants montre la différence de comportement entre l'insertion dans un bloc et dans une liste.
+
+Initialisation d'un bloc et d'une liste :
+
+	blk: [1 2 3]
+
+	lst: to-list [1 2 3]
+
+Insertion dans un bloc et dans une liste :
+
+	insert blk 0
+
+	insert lst 0
+
+Regardez le mot dans le bloc et dans la liste juste après l'insertion. Remarquez que 
+le bloc blk pointe sur la tête du bloc (<b>head</b>), comme avant l'insertion de la valeur 0, mais 
+la liste lst pointe sur la position juste <i>après</i> le point d'insertion : 
+
+
+	print blk
+==	0 1 2 3
+	print lst
+==	1 2 3
+	print head lst
+==	0 1 2 3
+
+Les exemples suivants montrent la différence entre un bloc et une liste, lors de la suppression d'un élément.
+
+Initialisation du bloc et de la liste : 
+
+	blk: [1 2 3]
+
+	lst: to-list [1 2 3]
+
+Suppression au sein du bloc et de la liste : 
+
+	remove blk
+
+	remove lst
+
+Si on regarde l'état du bloc et de la liste, on constate qu'à présent 
+la liste lst pointe sur la fin de la série (<b>tail</b>) : 
+
+	print blk
+==	2 3
+	print tail? lst
+==	true
+	print head lst
+==	2 3
+
+Si vous ne voulez pas pointer sur la fin de la série, après avoir supprimé une valeur, il 
+convient de vous déplacer dans la série et d'enlever la valeur après l'index courant. 
+L'exemple suivant illustre cela : 
+
+Initialisation de la liste : 
+
+	lst: to-list [1 2 3]
+
+Déplacement dans la série et suppression de la valeur après l'index courant : 
+
+	remove back (lst: next lst)
+
+Si on regarde à l'endroit où la valeur a été supprimée : 
+
+	probe lst
+==	make list! [2 3]
+	print tail? lst
+==	false
+
++++ Création
+
+Il faut utiliser la fonction <b>make</b> pour initialiser une valeur de type <b>list!</b> :
+
+	lst: make list! 10 ; alloue de l'espace pour 10 éléments
+
+La fonction <b>to-list</b> convertit son argument en une valeur de type de donnée <b>list!</b> :
+
+Pour transformer un bloc : 
+
+	blk: [1 "one" 2 "two" 3 "three" 4 "four"]
+	probe to-list blk
+==	make list! [1 "one" 2 "two" 3 "three" 4 "four"]
+
+
++++ Informations complémentaires 
+
+Utilisez <b>list?</b> pour déterminer si une valeur est ou non du type de données <b>list!</b>.
+
+	lst: to-list [1 "one" 2 "two" 3 "three" 4 "four"]
+	probe list? Lst
+==	true
+
+Puisque les listes sont aussi des séries, la fonction <b>series?</b> est aussi utile : 
+
+	probe series? lst
+==	true
+
+L'usage de la fonction <b>form</b> sur une liste génère une chaîne de caractères composée à partir du contenu de la liste :
+
+	probe form lst
+==	"1 one 2 two 3 three 4 four"
+
+Avec la fonction <b>mold</b>, c'est presque comme pour <b>form</b>, si ce n'est que le résultat peut être immédiatement 
+récupérable par REBOL sous forme d'une valeur <b>list!</b>  : 
+
+
+	probe mold lst
+	make list! [1 "one" 2 "two" 3 "three" 4 "four"]
+
+
+--- Paren
+
++++ Concept
+
+Une valeur de type <b>paren!</b> est un bloc (Ndt : avec usage de <b>paren</b>thèses) qui est immédiatement évalué. Cette valeur est en tous points identique à un bloc, 
+à l'exception du fait qu'elle est évaluée lorsqu'elle est rencontrée, et que le résultat de l'évaluation est retourné. 
+Lorsqu'on l'utilise à l'intérieur d'une expression à évaluer, une valeur de type <b>paren!</b> permet de contrôler l'ordre de 
+l'évaluation. 
+
+	print 1 + (2 * 3)
+==	7
+	print 1 + 2 * 3
+==	9
+
+Comme pour un bloc, une valeur de type <b>paren!</b> peut être modifiée. 
+Cependant, si on souhaite faire référence à cette valeur <b>paren!</b>, des précautions doivent être prises pour 
+éviter qu'elle soit évaluée. 
+
+Si vous stockez une valeur <b>paren!</b> dans une variable, vous devrez utilisez la forme <b>get-word</b> (c'est-à-dire <b>:word</b>) pour 
+prévenir une éventuelle évaluation. 
+Les "parens" étant un sous-ensemble des séries, ce qui peut être fait avec une série est aussi possible avec une valeur <b>paren!</b>.
+
+
+	paren: first [(1 + 2 * 3 / 4)]
+==	(1 + 2 * 3 / 4)
+	print type? :paren
+==	paren
+	print length :paren
+==	7
+	print first :paren
+==	1
+	print last :paren
+==	4
+	insert :paren [10 + 5 *]
+	probe :paren
+==	(10 + 5 * 1 + 2 * 3 / 4)
+	print paren
+==	12.75
+
++++ Format
+
+Les valeurs de type <b>paren!</b> sont identifiées par des parenthèses ouvrantes et fermantes. 
+Elles peuvent s'étendre sur plusieurs lignes et contenir n'importe quelle donnée, dont d'autres valeurs <b>paren!</b>.
+
++++ Création
+
+Le fonction <b>make</b> peut être utilisée pour définir une valeur <b>paren!</b> :
+
+	paren: make paren! 10
+	insert :paren 10
+	insert :paren `+
+	insert :paren 20
+
+	print :paren
+==	20 + 10
+	print paren
+==	30
+
+La fonction <b>to-paren</b> transforme une donnée en une valeur de datatype <b>paren!</b> :
+
+	probe to-paren "123 456"
+==	(123 456)
+	probe to-paren [123 456]
+==	(123 456)
+
++++ En plus 
+
+Utilisez <b>paren?</b> pour tester le type de la donnée.
+
+	blk: [(3 + 3)]
+	probe pick blk 1
+==	(3 + 3)
+	probe paren? pick blk 1
+==	true
+
+Comme les <i>parens</i> sont un sous-ensemble de celui des séries, il est possible d'utiliser <b>series?</b> : 
+
+	probe series? pick blk 1
+==	true
+
+L'utilisation de <b>form</b> sur une valeur de type <b>paren!</b> crée une chaîne de caractères à partir 
+du contenu de cette valeur : 
+
+	probe form pick blk 1
+	3 + 3
+
+
+--- Path
+
++++ Concept
+
+Les paths (<b>NdT</b> : on pourrait traduire par "chemins", l'idée générale étant d'avoir une valeur en REBOL qui 
+traduit l'idée de se déplacer dans une arborescence, ou de préciser une particularité d'une fonction, par exemple) 
+sont un ensemble de mots et de valeurs délimités par des slashs (/). 
+
+Les paths sont utilisés pour naviguer vers quelque chose, préciser ou trouver quelque chose. 
+
+Les mots et les valeurs d'un path sont appelés des raffinements, et ils sont assemblés pour donner une direction, 
+un sens de "navigation"  au travers d'une valeur ou d'une fonction. 
+Les paths sont utilisés avec les blocs, les fichiers, les chaînes de caractères, les listes, les hashs, 
+les fonctions, et les objets. 
+
+La façon dont les paths agissent dépend du type de données avec lesquels ils sont utilisés. 
+
+Les paths peuvent être utilisés pour sélectionner des valeurs dans des blocs, ou des caractères dans 
+une chaîne, accéder à des variables dans des objets, donner un comportement particulier à une fonction : 
+
+
+\table
+
+Type de path
+
+Action
+
+=row
+
+USA/CA/Ukiah/size 
+
+sélection dans un bloc
+
+=row
+
+names/12          
+
+position dans une chaîne
+
+=row
+
+account/balance   
+
+fonction dans un objet
+
+=row
+
+match/any
+
+raffinement d'une fonction
+
+/table
+
+
+L'exemple ci-dessous montre la simplicité d'usage qu'offre un path 
+pour accéder aux informations d'une mini base de données créées à partir de quelques blocs : 
+
+
+	towns: [
+	    Hopland [
+		phone #555-1234
+		web   http://www.hopland.ca.gov
+	    ]
+
+	    Ukiah [
+		phone #555-4321
+		web   http://www.ukiah.com
+		email info@ukiah.com
+	    ]
+	]
+
+	print towns/ukiah/web
+==	http://www.ukiah.com
+
+Résumé des concepts de paths : 
+
+\table
+
+
+Type de path
+
+Type de mot
+
+Type de Test
+
+Fonction de conversion
+
+=row 
+
+path/word:
+
+set-path!
+
+set-path?
+
+to-set-path
+
+=row
+
+path/word
+
+path!
+
+path?
+
+to-path
+
+
+=row
+
+'path/word
+
+lit-path!
+
+lit-path?
+
+to-lit-path
+
+
+/table
+
+
+<b><u>Exemples de paths</u></b> :
+
+Pour évaluer une fonction (une méthode) liée à un objet :
+
+	obj: make object! [
+	    hello: func [] [print "hello! hello!"]
+	]
+	obj/hello
+==	hello! hello!
+
+Pour évaluer un attribut d'un objet : 
+
+	obj: make object! [
+	    text: "do you believe in magic?"
+	]
+	probe obj/text
+==	do you believe in magic?
+
+Des raffinements de fonction : 
+
+	hello: func [/again] [
+	    print either again ["hello again!"]["hello"]
+	]
+==	hello/again
+==	hello again!
+
+Pour effectuer une sélection à partir de blocs : 
+
+	USA: [
+	    CA [
+		Ukiah [
+		    population 15050
+		    elevation [610 feet]
+		]
+		Willits [
+		    population 5073
+		    elevation [1350 feet]
+		]
+	    ]
+	]
+	print USA/CA/Ukiah/population
+==	15050
+	print form USA/CA/Willits/elevation
+==	1350 feet
+
+Pour récupérer des élements à partir d'une série, via leur position numérique dans celle-ci : 
+
+
+	string-series: "abcdefg"
+	block-series: ["John" 21 "Jake" 32 "Jackson" 43 "Joe" 52]
+	block-with-sub-series: [ "abc" [4 5 6 [7 8 9]]]
+	probe string-series/4
+==	#"d"
+	probe block-series/3
+==	Jake
+	probe block-series/6
+==	43
+	probe block-with-sub-series/1/2
+==	#"b"
+	probe block-with-sub-series/2/2
+==	5
+	probe block-with-sub-series/2/4/2
+==	8
+
+Les mots fournis en tant que paths sont symboliques, et par conséquent ne sont pas évalués. 
+Ceci permet de construire la forme la plus intuitive pour référencer un objet. 
+
+Pour utiliser la référence au mot, une référence explicite à la valeur du mot est requise : 
+
+	city: 'Ukiah
+	probe USA/CA/:city     ; << :city fait ici référence à 'Ukiah
+==	[
+==	    population 15050 
+==	    elevation "610 feet"
+==	]
+
+Les chemins dans les blocs, les hashs, ou les objets sont évalués en 
+utilisant la correspondance avec le mot au plus haut niveau dans le path, et 
+en vérifiant si le mot est de type <b>block!</b>, <b>hash!</b> ou <b>object!</b>.
+Ensuite le mot suivant est recherché en tant que mot présent dans le bloc, le 
+hash ou l'objet, et une sélection se fait. La valeur qui suit le mot recherché est renvoyée.
+Quand la valeur retournée est un bloc, un hash, ou un objet, le path peut être exprimé ainsi : 
+
+
+
+Récupération de la valeur associée au mot CA dans USA : 
+
+	probe USA/CA
+==	[
+==	    Ukiah [
+==		population 15050 
+==		elevation "610 feet"
+==	    ] 
+==	    Willits [
+==		population 9935 
+==		elevation "1350 feet"
+==	    ]
+==	]
+
+Récupération de la valeur associée avec Willits dans USA/CA :
+
+	probe USA/CA/Willits
+==	[
+==	    population 9935 
+==	    elevation "1350 feet"
+==	]
+
+Récupération de la valeur associée au mot "population" dans USA/CA/Willits :
+
+
+	probe USA/CA/Willits/population
+==	9935
+
+Quand un mot utilisé dans un path n'existe pas à un endroit donné de la stucture, 
+une erreur se produit : 
+
+
+	probe USA/CA/Mendocino
+==	** Script Error: Invalid path value: Mendocino.
+==	** Where: probe USA/CA/Mendocino
+
+Les paths peuvent être utilisés pour modifier des valeurs dans des 
+blocs et des objets : 
+
+	USA/CA/Willits/elevation: "1 foot, after the earthquake"
+	probe USA/CA/Willits
+==	[
+==	    population 9935 
+==	    elevation "1 foot, after the earthquake"
+==	]
+	obj/text: "yes, I do believe in magic."
+	probe obj
+==	make object! [
+==	    text: "yes, I do believe in magic."
+==	]
+
+Les blocs, les hashs, les fonctions et les objets peuvent 
+être mélangés dans les paths. 
+
+Pour choisir des éléments dans un bloc, lui-même dans un objet : 
+
+	obj: make object! [
+	    USA: [
+		CA [
+		    population "too many"
+		]
+	    ]
+	]
+	probe obj/USA/CA/population
+==	too many
+
+Utilisation de raffinements de fonctions au sein d'un objet : 
+
+	obj: make object! [
+	    hello: func [/again] [
+		print either again [
+		    "hello again"
+		] [
+		    "oh, hello"
+		]
+	    ]
+	]
+==	obj/hello/again
+==	hello again
+
+Les paths sont aussi des séries, de sorte que ce qui peut être réalisé avec une série peut 
+aussi l'être avec une valeur de type <b>path!</b> : 
+
+
+	root: [sub1 [sub2 [
+	    word "a word at the end of the path"
+	    num 55
+	]   ]   ]
+	path: 'root/sub1/sub2/word
+	probe :path
+==	root/sub1/sub2/word
+
+Dans l'exemple précédent, la notation :path a été utilisée pour récupérer le path lui-même, 
+et non sa valeur : 
+
+
+
+	probe path
+==	a word at the end of the path
+
+Pour connaître la longueur d'un path : 
+
+	probe length? :path
+==	4
+
+Trouver un mot à l'intérieur d'un path : 
+
+	probe find :path 'sub2
+==	sub2/word
+
+Modifier un mot dans un path : 
+
+	change find :path 'word 'num
+	probe :path
+==	root/sub1/sub2/num
+	probe path
+==	55
+
++++ Format
+
+Les paths sont exprimés relativement à un mot-racine, en fournissant un certain nombre de 
+raffinements, chacun étant séparé des autres par le symbole slash (/). 
+
+Ces raffinements peuvent être des mots ou des valeurs. Leur interprétation particulière 
+dépend du type de données du mot situé à la racine. 
+
+Les mots fournis comme raffinement dans les paths sont symboliques et ne sont pas évalués. 
+Ceci est nécessaire pour garder une forme de référencement assez intuitive. 
+Pour utilisez la référence d'un mot, une référence explicite est nécessaire comme vu précédemment : 
+
+	root/:word
+
+Cet exemple utilise la valeur de la variable, plutôt 
+que son nom. 
+
++++ Création
+
+Vous pouvez créer un path vierge d'une taille donnée comme dans l'exemple suivant : 
+
+	path: make path! 10
+	insert :path `test
+	insert tail :path `this
+	print :path
+==	test/this
+
+La fonction <b>to-path</b> transforme son argument en une valeur de type <b>path!</b>. 
+
+	probe to-path [root sub]
+==	root/sub
+	probe to-path "root sub"
+==	root/sub
+
+La fonction <b>to-set-path</b> convertit des valeurs en type <b>set-word</b> (mot défini) : 
+
+
+	probe to-set-path "root sub"
+	root/sub:
+
+La fonction <b>to-lit-path</b> convertit des valeurs en type <b>lit-word</b> (mot litéral): 
+
+	probe to-lit-path "root sub"
+	'root/sub
+
++++ Informations complémentaires
+
+Utilisez <b>path?</b>, <b>set-path?</b>, et <b>lit-path?</b> pour déterminer le type de données d'une valeur.
+
+	probe path? second [1 two "3"]
+==	false
+	blk: [sub1 [sub2 [word 1]]]
+	blk2: [blk/sub1/sub2/word: 2]
+	if set-path? (pick blk2 1) [print "it is set"]
+==	it is set
+	probe lit-path? first ['root/sub]
+==	true
+
+Comme les paths sont un sous-ensemble du pseudo type <b>series!</b>, la fonction <b>series?</b> peut également être utilisée :  
+
+	probe series? pick [root/sub] 1
+	true
+
+L'application de la fonction <b>form</b> sur un path génére une chaîne de 
+caractères à partir du path : 
+
+	probe form pick [root/sub] 1
+	root/sub
+
+Avec la fonction <b>mold</b>, on crée aussi une chaîne de caractère comme pour <b>form</b>, 
+mais celle-ci peut être rechargée sous forme d'un path REBOL : 
+
+
+	probe mold pick [root/sub] 1
+	root/sub
+
+--- String
+
++++ Concept
+
+Les chaînes (strings) sont des séries de caractères. Toutes les opérations possibles sur les valeurs de type 
+série peuvent également être faites avec des chaînes de caractère.
+
++++ Format
+
+Les valeurs de type <b>string!</b> se présentent sous la forme d'une séquence de caractères entourés par des 
+apostrophes " " ou des accolades {}. Les chaînes incluses entre des apostrophes sont limitées à une unique ligne, 
+et ne peuvent contenir certains caractères non imprimables. 
+
+	"This is a short string of characters."
+
+Les chaînes comprises entre accolades sont utilisées pour de grands morceaux de texte, pouvant s'étaler 
+sur plusieurs lignes. 
+Tous les caractères de la chaîne, comme les espaces, les tabulations, les apostrophes, et les sauts de 
+ligne font partie de la chaîne.
+
+	{This is a long string of text that will 
+	not easily fit on a single line of source.
+	These are often used for documentation
+	purposes.}
+
+Les accolades sont comptées dans la chaîne, de sorte qu'une chaîne de 
+caractères peut inclure d'autres accolades à condition que le nombre 
+d'accolades ouvrantes soit identique au nombre d'accolades fermantes.
+
+	{
+	This is another long string of text that would
+	never fit on a single line. This string also
+	includes braces { a few layers deep { and is 
+	valid because there are as many closing braces }
+	as there are open braces } in the string.
+	}
+
+Vous pouvez inclure des caractères spéciaux et effectuer certaines opérations dans les 
+chaînes de caractères en préfixant ces caractères spéciaux par le symbole (^) : 
+
+
+Inclusion de caractères spéciaux : 
+
+        
+\table 
+
+Caractère
+
+Définition
+
+=row 
+
+^"
+
+Insère une double quote (").
+
+=row 
+
+^}
+
+Insère une accolade fermante (}).
+
+=row
+
+^^
+
+Insère le symbole <i>caret</i> (^).
+
+=row 
+
+^/
+
+Insère le symbole slash
+
+=row
+
+^(line)
+
+Débute une nouvelle ligne.
+
+=row
+
+^-
+
+Insère une tabulation.
+
+
+=row
+
+^(tab)
+
+Insère aussi une tabulation.
+
+
+=row
+
+^(page)
+
+Démarre une nouvelle page
+
+
+=row
+
+^(back)
+
+Efface un caractère à gauche du point d'insertion.
+
+
+=row
+
+^(null)
+
+Insère le caractère "null".
+
+
+=row
+
+^(escape)
+
+Insère le caractère "escape".
+
+
+=row
+
+^(letter)
+
+Insère un caractère de contrôle (A-Z).
+
+=row
+
+^(xx)
+
+Insère un caractère ASCII via son équivalent hexadécimal (xx). Ce format permettra 
+une extension pour les caractères Unicode dans le futur.
+
+/table
+
++++ Création
+
+Utilisez <b>make</b> pour allouer une quantité d'espace mémoire 
+pour une chaîne de caractères vide : 
+
+	make string! 40'000 ; espace pour 40k (caractères)
+
+La fonction <b>to-string</b> transforme le type de la donnée fournie en argument, en type de donnée <b>string!</b>.
+
+
+	probe to-string 29-2-2000
+==	"29-Feb-2000"
+	probe to-string 123456.789
+==	"123456.789"
+	probe to-string #888-555-2341
+==	"888-555-2341"
+
+Transformer un bloc de données en une chaîne, avec la fonction <b>to-string</b>, a pour 
+conséquence de concaténer les élements du bloc, mais sans les évaluer : 
+
+
+	probe to-string [123 456]
+==	"123456"
+	probe to-string [225.225.225.0 none true 'word]
+==	"225.225.225.0nonetrueword"
+
++++ Informations connexes
+
+Utilisez <b>string?</b> ou <b>series?</b> pour déterminer si une valeur 
+est de type <b>string!</b> :
+
+	print string? "123"
+==	true
+	print series? "123"
+==	true
+
+Les fonctions <b>form</b> et <b>mold</b> sont fortement corrélées aux chaînes, dans le sens 
+où elles génèrent des chaînes de caractères à partir de données d'autres types. 
+La fonction <b>form</b> permet l'obtention d'une forme humainement lisible d'un type de 
+donnée spécifique, tandis que la fonction <b>mold</b> fabrique une version utilisable par le langage.
+
+
+	probe form "111 222 333"
+==	"111 222 333"
+	probe mold "111 222 333"
+==	{"111 222 333"}
+
+
+--- Tag
+
++++ Concept
+
+Les tags (balises) sont utilisés dans les langages à balises pour indiquer comment des zones 
+de texte doivent être traitées. Par exemple, le tag &lt;HTML&gt; au début d'un fichier 
+indique qu'il devrait être analysé au moyen des régles du langage HTML. 
+
+Une balise avec un slash (/), tel que &lt;/HTML&gt; indique la fermeture du tag.
+
+Les tags, en tant que sous-ensemble des séries peuvent être manipulés comme tels : 
+
+
+	a-tag: <img src="mypic.jpg">
+	probe a-tag
+==	<img src="mypic.jpg">
+	append a-tag { alt="My Picture!"}
+	probe a-tag
+==	<img src="mypic.jpg" alt="My Picture!">
+
++++ Format
+
+Les tags valides commencent par le symbole (&lt;) et se termine avec (&gt;). 
+
+Par exemple : 
+
+	<a href="index.html">
+	<img src="mypic.jpg" width="150" height="200">
+
++++ Création
+
+La fonction <b>to-tag</b> convertit une donnée en une autre de type <b>tag!</b> :
+
+	probe to-tag "title"
+==	<title>
+
+Vous pouvez utiliser la fonction <b>build-tag</b> pour construire des tags, et y inclure des 
+attributs. La fonction  <b>build-tag</b> prend un seul argument, un bloc. 
+Dans ce bloc, le premier mot est utilisé pour nommer le tag, et les mots suivants servent 
+à définir des paires d'attributs : 
+
+
+	probe build-tag [a href http://www.rebol.com/]
+==	<a href="http://www.rebol.com/">
+	probe build-tag [
+	    img src %mypic.jpg width 150 alt "My Picture!"
+	]
+==	<img src="mypic.jpg" width="150" alt="My Picture!">
+
++++Autres infos 
+
+L'usage de la fonction <b>tag?</b> permet de déterminer si une valeur 
+est bien de type de données <b>tag!</b> .
+
+	probe tag? <a href="http://www.rebol.com/">
+==	true
+
+Comme les tags sont aussi des séries, la fonction <b>series?</b> peut être appelée : 
+
+	probe series? <a href="http://www.rebol.com/">
+==	true
+
+La fonction <b>form</b> renvoie le tag qui lui est fourni, sous la forme d'une chaîne : 
+
+	probe form <a href="http://www.rebol.com/">
+==	{<a href="http://www.rebol.com/">}
+
+La fonction <b>mold</b> renvoie elle aussi une chaîne : 
+
+	probe mold <a href="http://www.rebol.com/">
+==	{<a href="http://www.rebol.com/">}
+
+La fonction <b>print</b> affiche un tag sur la sortie standard : 
+
+	print <a href="http://www.rebol.com/">
+==	<a href="http://www.rebol.com/">
+
+
+--- URL
+
++++ Concept
+
+Le terme "URL" est l'acronyme de Uniform Ressource Locator, un standard Internet utilisé 
+pour accéder à des ressources comme des pages Web, des images, des fichiers, et du 
+courrier électronique au travers du réseau.
+
+Le type d'URL la plus connue est celle utilisée pour le Web comme http://www.rebol.com.
+Les valeurs URLs sont des séries, et peuvent être manipulées comme telles : 
+
+
+	url: http://www.rebol.com/reboldoc.html
+	probe to-file find/reverse (tail url) "rebol"
+==	%reboldoc.html
+
++++ Format
+
+La première partie d'un URL indique son protocole de communication, appelé le "scheme". 
+Le langage REBOL supporte plusieurs types de protocoles, pour les pages web  (HTTP:), 
+le transfert de fichier (FTP:), les newsgroups (NNTP:), le courrier électronique (MAILTO:), les fichiers (FILE:), 
+finger (FINGER:), whois (WHOIS:), daytime (DAYTIME:), post office  (POP:), 
+le protocole de transmission (TCP:) et celui de résolution des noms de domaines (DNS:). 
+Ces noms de protocoles, ces "schemes" sont suivis dans l'URL par une série de caractères dépend ant 
+du protocole utilisé : 
+
+	http://host.dom/path/file
+	ftp://host.dom/path/file
+	nntp://news.some-isp.net/some.news.group
+	mailto:name@domain
+	file://host/path/file
+	finger://user@host.dom
+	whois://rebol@rs.internic.net
+	daytime://everest.cclabs.missouri.edu
+	pop://user:passwd@host.dom/
+	tcp://host.dom:21
+	dns://host.dom
+
+Certains champs sont optionnels. Par exemple, le nom d'hôte peut être suivi par un numéro 
+de port, si ce dernier est différent de celui par défaut. Une URL FTP peut aussi comprendre un
+mot de passe : 
+
+	ftp://user:password@host.dom/path/file
+
+Les caractères dans l'URL doivent respectés les conventions Internet. 
+Certains caractères doivent être encodés en hexadécimal, en les faisant 
+précéder du caractère d'échappement "%" : 
+
+	probe http://www.somesite.dom/odd%28dir%29/odd%7Bfile%7D.txt
+==	http://www.somesite.dom/odd%28dir%29/odd%7Bfile%7D.txt
+	print http://www.somesite.dom/odd%28dir%29/odd%7Bfile%7D.txt
+==	http://www.somesite.dom/odd(dir)/odd{file}.txt
+
++++ Création
+
+La fonction <B>to-url</B> transforme un bloc en une valeur de type <B>url!</B>, 
+le premier élément dans le bloc est le "scheme", le second élement est le domaine 
+(avec ou sans user:pass et le port), les éléments suivants sont le path et le nom du fichier.
+
+
+	probe to-url [http www.rebol.com reboldoc.html]
+==	http://www.rebol.com/reboldoc.html
+	probe to-url [http www.rebol.com %examples "websend.r"]
+==	http://www.rebol.com/examples/websend.r
+	probe to-url [http usr:pass@host.com:80 "(path)" %index.html]
+==	http://usr:pass@host.com:80/%28path%29/index.html
+
++++ Autres infos
+
+La fonction <B>url?</B> permet de tester si le type de données est bien <B>url!</B>. 
+
+	probe url? ftp://ftp.rebol.com/
+==	true
+
+La fonction <b>series?</b> est également utilisable pour vérifier le type de données.
+
+	probe series? http://www.rebol.com/
+==	true
+
+
+===Autres valeurs
+
+
+--- Character
+
++++ Concept
+
+Les caractères ne sont pas des chaînes (strings); ce sont les valeurs unitaires à partir desquelles 
+les chaînes sont construites. 
+Un caractère peut être imprimable, non imprimable, ou encore être un caractère de contrôle.
+
+
++++ Format
+
+Une valeur <b>char!</b> est écrite avec le signe dièse (#) suivi par une chaîne comprise entre deux 
+apostrophes. 
+
+Le signe (#) est nécessaire pour distinguer un caractère d'une chaîne : 
+
+* #"R"    ; le caractère : R
+
+* "R"     ; une chaîne de caractère a un seul caractère : R
+
+Les caractères peuvent inclure des séquences d'échappement, qui commence avec le symbole (^) et 
+sont suivis par un ou plusieurs caractères. Cette codification va inclure les caractères 
+#"^A" to #"^Z", c'est-à-dire du "contrôle A" au "contrôle Z" (majuscule et minuscule sont identiques).
+
+	#"^A" #"^Z"
+
+De plus, si des parenthèses sont utilisées au sein du caractère, elles signifient 
+qu'il s'agit d'une valeur spéciale. Par exemple, le caractère "nul" peut être écrit ainsi : 
+
+	"^@"
+	"^(null)"
+	"^(00)"
+
+La dernière ligne est écrite en format hexadécimale (base 16). Les parenthèses 
+autour de la valeur permettent de prévoir l'extension en Unicode (16 bits) du type char! 
+dans le futur.
+
+La table ci-dessous présente les caractères de contrôle pouvant être utilisés avec 
+REBOL : 
+
+\table 
+
+Character
+
+Definition
+
+=row
+
+&#35;"(null)" or #"@"
+
+nul (zero)
+
+
+=row
+
+&#35;"(line)", #"/" or, #"."
+
+fin de ligne
+
+
+=row
+
+&#35;"(tab)" or #"-"
+
+tabulation horizontale
+
+
+=row
+
+&#35;"(page)"
+
+nouvelle page (et  page eject)
+
+
+=row
+
+&#35;"(esc)"
+
+escape
+
+
+=row
+
+&#35;"(back)"
+
+retour arrière (backspace)
+
+
+=row
+
+&#35;"(del)"
+
+delete
+
+
+=row
+
+&#35;"^"
+
+caractére "caret"
+
+
+=row
+
+&#35;"^""
+
+apostrophe
+
+
+=row
+
+&#35;"(00)" to #"(FF)"
+
+formes hexa des caractères
+
+/table
+
+
++++ Création
+
+Les caractères peuvent être convertis depuis et vers d'autres types de données avec la 
+fonction <b>to-char</b> : 
+
+	probe to-char "a"
+==	#"a"
+	probe to-char "z"
+==	#"z"
+
+Les caractères suivent le standard ASCII, et peuvent être 
+construits en spécifiant leurs équivalents ASCII  : 
+
+	probe to-char 65
+==	#"A"
+	probe to-char 52
+==	#"4"
+	probe to-char 52.3
+==	#"4"
+
+Une autre méthode pour obtenir un caractère est de récupérer le premier caractère d'une 
+chaîne : 
+
+	probe first "ABC"
+==	#"A"
+
+Alors que les caractères dans les chaînes ne sont sensibles à la casse, 
+ils le deviennent lorsqu'ils sont sous forme de caractères individuels :
+
+	probe "a" = "A"    ; insensibles à la casse : MAJ = min
+==	true
+	probe #"a" = #"A"    ; sensibles à la casse :  MAJ <> min
+==	false
+
+Cependant, dans la plupart des fonctions, lorsqu'ils sont utilisés, 
+la comparaison n'est pas sensible à la casse à moins de spécifier cette option. 
+Par exemple : 
+
+	select [#"A" 1] #"a"
+==	1
+	select/case [#"A" 1] #"a"
+==	none
+	find "abcde" #"B"
+==	"bcde"
+	find/case "abcde" #"B"
+==	none
+	switch #"A" [#"a" [print true]]
+==	true
+
++++Autres informations
+
+Utilisez <b>char?</b> pour déterminer si une valeur est de type <b>char!</b>.
+
+	probe char? "a"
+==	false
+	probe char? #"a"
+==	true
+
+La fonction <b>form</b> retourne le caractère sans le symbole (#).
+
+
+	probe form #"A"
+==	"A"
+
+La fonction <b>mold</b> renvoie le caractère avec le signe (#), les apostrophes (double quotes), 
+et aussi les séquences d'échappement pour les caractères qui le nécessitent :
+
+	probe mold #"A"
+==	{#"A"}
+
+
+--- Date
+
++++ Concept
+
+Tout autour de la planète, les dates sont écrites dans divers formats. 
+Malgré tout, la plupart des pays utilisent le format jour-mois-année (JJ-MM-AA). 
+L'une des exceptions à cela sont les Etats-Unis, qui utilisent couramment 
+le format mois-jour-année (MM-JJ-AA). <br />
+Par exemple, une date écrite sous la forme 2/1/1999 est ambiguë. Le mois pourrait être 
+interprété soit comme février soit comme janvier. Certains pays utilisent le trait d'union 
+(-) comme séparateur, d'autres le symbole slash (/), et encore d'autres utilisent le point (.). 
+
+Et pour finir, les ordinateurs personnels utilisent souvent des dates dans le 
+format ISO année-mois-jour (AA-MM-JJ). 
+
+
++++ Format
+
+Le langage REBOL est flexible, et il permet au type de données date! d'être exprimé 
+dans des formats divers. Par exemple, le premier jour de mars peut s'écrire sous l'un 
+ou l'autre des formats suivants : 
+
+	probe 1/3/1999
+==	1-Mar-1999
+	probe 1-3-1999
+==	1-Mar-1999
+	probe 1999-3-1  ;ISO format
+==	1-Mar-1999
+
+L'année peut aller de 1 jusqu'à 9999. (<b>NdT</b> : si quelqu'un veut bien patienter jusque là 
+pour voir s'il n'y a pas un bug ;-)).<br />
+Les jours relatifs aux années bissextiles (le 29 février) n'existent que pour ces années-là. 
+
+	probe 29-2-2000
+==	29-Feb-2000
+	probe 29-2-2004
+==	29-Feb-2004
+	probe 29-2-2002
+==	** Syntax Error: Invalid date -- 29-2-2002
+==	** Near: (line 1) probe 29-2-2002
+
+Les champs des dates peuvent être séparés avec le symbole "slash" (/) ou "tiret" (-). 
+Les dates peuvent être écrites soit au format "année-mois-jour", soit au format "jour-mois-année" : 
+
+	probe 1999-10-5
+==	5-Oct-1999
+	probe 1999/10/5
+==	5-Oct-1999
+	probe 5-10-1999
+==	5-Oct-1999
+	probe 5/10/1999
+==	5-Oct-1999
+
+Parce que les formats de date internationaux ne sont pas beaucoup utilisés aux Etats-Unis, 
+un nom de mois ou son abréviation peuvent aussi être utilisés :
+
+	probe 5/Oct/1999
+==	5-Oct-1999
+	probe 5-October-1999
+==	5-Oct-1999
+	probe 1999/oct/5
+==	5-Oct-1999
+
+Quand l'année correspond au dernier champ, elle peut écrite avec 2 ou 4 chiffres : 
+
+
+	probe 5/oct/99
+==	5-Oct-1999
+	probe 5/oct/1999
+==	5-Oct-1999
+
+Cependant, il est préférable d'écrire l'année sur 4 chiffres.
+En effet, des problèmes peuvent survenir sinon, lors de comparaison de dates ou 
+en effectuant des opérations de tris. 
+
+Quand deux chiffres sont utilisés pour exprimer l'année, l'interprétation de 
+celle-ci est relative à l'année en cours et est uniquement valide pour une période 
+de 50 ans dans le passé ou dans le futur. 
+
+	probe 28-2-66   ; fait référence à 1966
+==	28-Feb-1966
+	probe 12-Mar-20 ; fait référence à 2020
+==	12-Mar-2020
+	probe 11-3-45   ; fait référence à 2045, pas à 1945
+==	11-Mar-2045
+
+Il est recommandé d'utiliser une année sur 4 chiffres afin d'éviter les problèmes potentiels. 
+Pour représenter les dates dans le premier siècle (rarement fait puisque le calendrier Grégorien 
+n'existait pas), utilisez des zéros supplémentaires pour représenter le siècle (comme dans 9-4-0029).
+
+L'heure est séparée de la date par le symbole slash (/).
+Le fuseau horaire est ajouté ensuite en utilisant les signes (+) ou (-) 
+sans aucun espace. Les fuseaux horaires sont écrits sous forme de décalage horaire (plus ou moins) 
+relativement à l'heure GMT. La résolution pour le fuseau horaire est d'une demi-heure. 
+Si le décalage horaire est un nombre entier, on suppose qu'il s'agit d'heures : 
+
+
+	probe 4/Apr/2000/6:00+8:00
+==	4-Apr-2000/6:00+8:00
+	probe 1999-10-2/2:00-4:00
+==	2-Oct-1999/2:00-4:00
+	probe 1/1/1990/12:20:25-6
+==	1-Jan-1990/12:20:25
+
+Il ne peut y avoir d'espaces au sein d'une date. Par exemple, l'expression  
+
+	10 - 5 - 99
+
+sera être interprétée comme une soustraction, pas une date.
+
+
++++ Accéder aux données d'une variable date!
+
+Quelques raffinements peuvent être utilisés avec une valeur de type <b>date!</b> 
+pour récupérer l'un ou l'autre des champs prédéfinis :
+
+\table
+        
+Raffinement
+
+Description
+
+=row
+
+<b>/day</b>
+
+retourne le jour.
+
+=row
+
+<b>/month</b>
+
+retourne le mois.
+
+=row
+
+<b>/year</b>
+
+retourne l'année.
+
+=row
+
+<b>/julian</b>
+
+retourne le jour de l'année.
+
+=row
+
+<b>/weekday</b>
+
+renvoie le jour dans la semaine (1-7/Mon-Sun).
+
+=row
+
+<b>/time</b>
+
+retourne l'heure (si elle existe).
+
+=row
+
+<b>/hour</b>
+
+retourne l'heure (si elle existe).
+
+=row
+
+<b>/minute</b>
+
+retourne les minutes (si cette information existe).
+
+=row
+
+<b>/second</b>
+
+renvoie les secondes (si cette information existe).
+
+=row
+
+<b>/zone</b>
+
+renvoie le fuseau horaire (s'il existe).
+
+/table
+
+
+Voici comment ces raffinements fonctionnent : 
+
+	some-date: 29-Feb-2000
+	probe some-date/day
+==	29
+	probe some-date/month
+==	2
+	probe some-date/year
+==	2000
+	days: ["Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun"]
+	probe pick days some-date/weekday
+==	Tue
+
+Quand l'heure est fournie, les raffinements relatifs à l'heure peuvent être utilisés. 
+Les raffinements <b>/hour</b>, <b>/minute</b> et <b>/second</b> peuvent être utilisés avec le raffinement <b>/time</b> 
+qui isole les données horaires, afin de les manipuler : 
+
+
+	lost-time: 29-Feb-2000/11:33:22.14-8:00
+	probe lost-time/time
+==	11:33:22.14
+	probe lost-time/time/hour
+==	11
+	probe lost-time/time/minute
+==	33
+	probe lost-time/time/second
+==	22.14
+	probe lost-time/zone
+==	-8:00
+
++++ Création
+
+Utilisez la fonction <b>to-date</b> pour convertir des valeurs en dates : 
+
+	probe to-date "5-10-1999"
+==	5-Oct-1999
+	probe to-date "5 10 1999 10:30"
+==	5-Oct-1999/10:30
+	probe to-date [1999 10 5]
+==	5-Oct-1999
+	probe to-date [5 10 1999 10:30 -8:00]
+==	5-Oct-1999/10:30-8:00
+
+\note 
+
+Pour la conversion vers une date, l'année DOIT être spécifiée avec 4 chiffres. 
+
+/note
+
+Diverses opérations mathématiques peuvent être réalisées sur les dates : 
+
+	probe 5-Oct-1999 + 1
+==	6-Oct-1999
+	probe 5-10-1999 - 10
+==	25-Sep-1999
+	probe 5-Oct-1999/23:00 + 5:00
+==	6-Oct-1999/4:00
+
++++ Autres informations 
+
+Utilisez la fonction <b>date?</b> pour déterminer si une valeur appartient à ce type de données.
+
+
+	probe date? 5/1/1999
+==	true
+
+La fonction <b>to-idate</b> renvoie la date sous forme d'une chaîne au format standard en vigueur sur Internet. 
+
+Le format de date pour Internet est : jour de la semaine, jour dans le mois, mois,  année, 
+l'heure (sur 24 heures), et le décalage horaire vis-à-vis de l'heure GMT, soit : 
+
+	probe to-idate now
+==	Fri, 30 Jun 2000 14:42:26 -0700
+
+La fonction <b>now</b> renvoie la date et l'heure courante (au format long incluant le décalage horaire) : 
+
+	probe now
+==	30-Jun-2000/14:42:26-7:00
+
+
+--- Logic
+
++++Concept
+
+Le type de données <b>logic!</b> permet de représenter deux états : <b>true</b> ou <b>false</b>, c'est-à-dire : vrai ou faux.
+
+Ce type de donnée est souvent utilisé pour des comparaison comme avec : 
+
+
+	age: 100
+	probe age = 100
+==	true
+	time: 10:31:00
+	probe time < 10:30
+==	false
+	str: "this is a string"
+	probe (length? str) > 10
+==	true
+
+Le type de données <b>logic!</b> est couramment utilisé avec des fonctions conditionnelles 
+telles que <b>if</b>, <b>while</b>, et <b>until</b> : 
+
+
+	if age = 100 [print "Centennial human"]
+==	Centennial human
+	while [time > 6:30] [
+	    send person "Wake up!"
+	    wait [0:10]
+	]
+
+Le complément d'une valeur logique est obtenue avec la fonction <b>not</b> : 
+
+	there: place = "Ukiah" 
+	if not there [...]
+
++++ Format
+
+Normalement, les valeurs logiques sont récupérées à partir de la comparaison d'expression. 
+Cependant, des mots peuvent être définis comme valeurs logiques et utilisés comme expressions logiques : 
+"<b>on</b>" ou "<b>off</b>".
+
+
+	print-me: false
+	print either print-me ["turned on"]["turned off"]
+==	turned off
+	print-me: true
+	print either print-me ["turned on"]["turned off"]
+==	turned on
+
+La valeur <b>false</b> n'est pas équivalente au nombre entier zéro, ni non plus 
+à <b>none</b>. Cependant, dans les expressions conditionnelles, <b>false</b> et <b>none</b> ont le même effet : 
+
+	print-me: none
+	print either print-me ["turned on"]["turned off"]
+==	turned off
+
+N'importe quelle valeur assignée à un mot conduit au même 
+effet que si vous aviez <b>true</b> : 
+
+	print-me: "just a string"
+	print either print-me ["turned on"]["turned off"]
+==	turned on
+	print-me: 11-11-1999
+	print either print-me ["turned on"]["turned off"]
+==	turned on
+
+Les mots suivants sont prédéfinis pour manipuler des valeurs logiques : 
+
+	true
+	on     ;identique à true
+	yes    ;identique à true
+	false
+	off    ;identique à false
+	no     ;identique à false
+
+Donc, au lieu de <b>true</b> et <b>false</b>, lorsque cela a du sens, les mots <b>on</b> et <b>off</b>, ou 
+<b>yes</b> et <b>no</b> peuvent aussi être utilisés : 
+
+	print-me: yes
+	print either print-me ["turned on"]["turned off"]
+==	turned on
+	print-me: no
+	print either print-me ["turned on"]["turned off"]
+==	turned off
+	print-me: on
+	print either print-me ["turned on"]["turned off"]
+==	turned on
+	print-me: off
+	print either print-me ["turned on"]["turned off"]
+==	turned off
+
++++ Création
+
+La fonction <b>to-logic</b> transforme des valeurs de type <b>integer!</b> ou <b>none!</b> 
+en type de données <b>logic!</b> : 
+
+	probe to-logic 0
+==	false
+	probe to-logic 200
+==	true
+	probe to-logic none
+==	false
+	probe to-logic []
+==	true
+	probe to-logic "a"
+==	true
+	probe to-logic none
+==	false
+
++++ Informations complémentaires
+
+La fonction <b>logic?</b> permet de savoir si la valeur testée est bien de ce type : 
+
+	probe logic? 1
+==	false
+	probe logic? on
+==	true
+	probe logic? false
+==	true
+
+Utilisez les fonctions <b>form</b>, <b>print</b>, et <b>mold</b> pour afficher une valeur <b>logic!</b> : 
+
+	probe form true
+==	true
+	probe mold false
+==	false
+	print true
+==	true
+
+
+---Money
+
++++ Concept
+
+Il existe divers symboles internationaux pour les valeurs monétaires.
+Certains de ses symboles apparaissent avant le montant, et d'autres après.
+Comme standard pour représenter des valeurs monétaires internationales, 
+le langage REBOL utilise le format monétaire des États-Unis, mais permet aussi d'inclure des 
+caractéristiques spécifiques.
+
+
+
++++ Format
+
+Le type de données <b>money!</b> utilise la notation en virgule flottante standardisée par l'IEEE, 
+qui fournit une précision sur 15 chiffres, centimes inclus.
+
+Le langage limite la longueur de la valeur à 64 caractères. Les valeurs qui sont en dehors 
+(trop grandes ou trop petites) ou qui ne peuvent être représentées sur 64 caractères génèrent une erreur.
+
+Les valeurs monétaires sont préfixées avec un indicateur (optionnel) pour la devise, 
+suivies d'un signe dollar ($).
+Un signe plus (+) ou moins (-) peut apparaître, immédiatement suivi par le premier caractère 
+(indication de la devise, ou signe dollar), afin d'indiquer le signe.
+
+
+	$123
+	-$123
+	$123.45
+	US$12
+	US$12.34
+	-US$12.34
+	$12,34
+	-$12,34
+	DEM$12,34
+
+Pour simplifier la lisibilité des grands nombres, et les mettre en morceaux lisibles, 
+une simple quote (`) peut être placée n'importe où entre deux chiffres à l'intérieur du 
+nombre, mais pas avant le nombre.
+
+	probe $1'234.56
+==	$1234.56
+	probe $1'234'567,89
+==	$1234567.89
+
+N'utilisez pas de virgules ou de points pour couper des valeurs monétaires, car ces deux caractères 
+représentent le séparateur décimal. 
+Le datatype <b>money!</b> est un type de données hybride. Conceptuellement, le montant est un scalaire. 
+Cependant, parce que la désignation de la devise est stockée sous forme de chaîne, le type de données <b>money!</b> 
+possède deux éléments : 
+
+:string! - l'élément désignant le type de devise (USD, EUR, YEN, etc.), qui peut avoir 3 caractères maximum. 
+
+
+:decimal! - le montant
+
+Pour illustrer ceci, la valeur monétaire suivante est préfixée avec la chaîne USD pour "dollar US" :
+
+	my-money: USD$12345.67
+
+Voici ces deux composantes : 
+
+	probe first my-money
+==	USD
+	probe second my-money
+==	12345.67
+	probe pick my-money 3       ; seulement deux éléments
+==	none
+
+Si aucun indicateur de devise n'est employé, l'élément qui y fait référence est vide.
+
+
+	my-money: $12345.67
+
+	probe first my-money
+==	""
+	probe second my-money
+==	12345.67
+
+Les devises internationales peuvent être spécifiées avec l'indicateur de devises, comme ici : 
+
+
+	my-money: DKM$12'345,67
+
+	probe first my-money
+==	DKM
+	probe second my-money
+==	12345.67
+
++++ Création
+
+Utilisez la fonction <b>to-money</b> pour transformer des valeurs de type <b>string!</b>, <b>integer!</b>, <b>decimal!</b>, 
+ou <b>block!</b> en valeurs de type <b>money!</b>.
+
+	probe to-money 123
+==	$123.00
+	probe to-money "123"
+==	$123.00
+	probe to-money 12.34
+==	$12.34
+	probe to-money [DEM 12.34]
+==	DEM$12.34
+	probe to-money [USA 12 34]
+==	USA$12.34
+
+Les valeurs de type <b>money!</b> peuvent être ajoutées, 
+soustraites, et comparées avec d'autres monnaies de la même devise. 
+Une erreur se produit si des devises différentes sont mélangées pour ce genre d'opérations 
+(les conversions automatiques ne sont pas prévues actuellement).
+
+	probe $100 + $10
+==	$110.00
+	probe $100 - $50
+==	$50.00
+	probe equal? DEM$100.11 DEM$100.11
+==	true
+
+Les valeurs monétaires peuvent être multipliées et divisées avec des nombres entiers ou décimaux.
+
+Les valeurs monétaires peuvent aussi être divisées par d'autres valeurs monétaires, le résultat 
+étant un nombre entier ou décimal. 
+
+	probe $100 + 11
+==	$111.00
+	probe $100 / 4
+==	$25.00
+	probe $100 * 5
+==	$500.00
+	probe $100 - 20.50
+==	$79.50
+	probe 10 + $1.20
+==	$11.20
+	probe 10 - $0.25
+==	$9.75
+	probe $10 / .50
+==	$20.00
+	probe 10 * $0.75
+==	$7.50
+
++++Autres informations
+
+Vous pouvez utilisez <b>money?</b> pour savoir si 
+une valeur est de type de données <b>money!</b>. 
+
+	probe money? USD$12.34
+==	true
+
+Utilisez les fonctions <b>form</b>, <b>print</b>, et <b>mold</b> avec un argument de type <b>money!</b> pour afficher une 
+valeur monétaire, avec l'indicateur de devise et le signe dollar ($), sous forme d'un nombre décimal 
+avec une précision à deux chiffres. 
+
+
+	probe form USD$12.34
+==	USD$12.34
+	probe mold USD$12.34
+==	USD$12.34
+	print USD$12.34
+==	USD$12.34
+
+
+--- None
+
++++ Concept
+
+Le datatype <b>none!</b> contient une unique valeur qui représente "rien" ou "aucune valeur". 
+Le concept de <b>none</b> est différent de celui d'un bloc vide, d'une chaîne vide, 
+ou d'un caractère nul. C'est une valeur qui représente une <i>non-existence</i>. 
+
+Une valeur <b>none!</b> peut être renvoyée par des fonctions très différentes, en particulier 
+celles qui sont utilisées avec des séries (par exemple, <b>pick</b> et <b>find</b>).
+
+Le mot REBOL <b>none</b> est défini comme faisant partie du type de donnée <b>none!</b> et il 
+fait référence à une valeur <b>none!</b>. Le mot <b>none</b> n'est pas équivalent à <b>zero</b> ou à <b>false</b>. 
+
+Cependant, <b>none</b> va être interprété comme <b>false</b> par beaucoup de fonctions. 
+Une valeur <b>none!</b> autorise beaucoup d'usages comme par exemple servir de valeur de retours à des fonctions relatives aux 
+séries comme <b>pick</b>, <b>find</b>, et <b>select</b> : 
+
+
+	if (pick series 30) = none [...]
+	
+Dans des bases de données, une valeur <b>none</b> peut être un moyen de remplacer des valeurs manquantes : 
+
+
+	email-database: [
+	    "Bobby" bob@rebol.com 40
+	    "Linda" none 23
+	    "Sara"  sara@rebol.net 33
+	]
+
+<b>None</b> peut aussi être utilisée comme valeur logique : 
+
+	secure none
+
++++ Format
+
+Le mot <b>none</b> est prédéfini pour manipuler une valeur de type <b>none!</b>.
+Bien que <b>none</b> ne soit pas équivalent à <b>zero</b> ou <b>false</b>, elle est valide dans des expressions conditionnelles 
+et a le même effet que <b>false</b> : 
+
+	probe find "abcd" "e"
+==	none
+	if find "abcd" "e" [print "found"]
+
++++ Création
+
+
++++Autres informations
+
+Il est possible d'utiliser <b>none?</b> pour déterminer si une valeur est ou non du type 
+<b>none!</b>.
+
+	print none? 1
+==	false
+	print none? find [1 2 3] 4
+==	true
+
+Les fonctions <b>form</b>, <b>print</b> et <b>mold</b> retournent la valeur <b>none</b> 
+lorsqu'un argument <b>none</b> leur est fourni :
+
+
+	probe form none
+==	none
+	probe mold none
+==	none
+	print none
+==	none
+
+
+
+---Pair
+
++++ Concept
+
+Le type de données <b>pair!</b> est utilisé pour indiquer des coordonnées dans l'espace, comme par exemple des 
+positions à l'écran. Les "pairs" peuvent être utilisées aussi pour définir des tailles en plus des positions. 
+
+Les valeurs de type <b>pair!</b> sont en particulier utilisées dans REBOL/View.
+
++++ Format
+
+Une valeur de type <b>pair!</b> est définie par deux nombres entiers séparés par un caractère "x".
+
+
+	100x50
+
+	1024x800
+
+	-50x200
+
++++ Création
+
+Utilisez la fonction <b>to-pair</b> pour transformer des blocs ou 
+des chaînes de caractères : 
+
+	p: to-pair "640x480" 
+	probe p
+==	640x480
+	p: to-pair [800 600] 
+	probe p
+==	800x600
+
++++ Autres
+
+La fonction <b>pair?</b> permet de savoir si la valeur qui lui est fournie en argument 
+est bien de ce type de données : 
+
+	probe pair? 400x200
+==	true
+	probe pair? pair
+==	true
+
+Les pairs peuvent être utilisées avec la plupart des opérateurs mathématiques 
+associés aux nombres entiers : 
+
+	100x200 + 10x20
+
+	10x20 * 2x4
+
+	100x30 / 10x3
+
+	100x100 * 3
+
+	10x10 + 3
+
+Il est possible d'extraire des valeurs de type <b>pair!</b> leurs composantes individuelles : 
+
+	pair: 640x480
+	probe first pair
+==	640
+	probe second pair
+==	480
+
+Toutes les valeurs de type <b>pair!</b> supportent les raffinements <b>/x</b> et <b>/y</b>. 
+Ces raffinements permettent la consultation et la manipulation, de façon spécifique, des coordonnées x et y.
+
+Pour récupérer individuellement chaque coordonnée : 
+
+	probe pair/x
+==	640
+	probe pair/y
+==	480
+
+Pour modifier l'une ou l'autre des coordonnées : 
+
+	pair/x: 800
+	pair/y: 600
+	probe pair
+==	800x600
+
+
+--- Raffinement
+
++++ Concept
+
+Les raffinements sont des "modificateurs", comme peuvent l'être les adjectifs 
+utilisés dans les langages humains. Un raffinement indique une variation dans l'usage, ou une 
+extension dans le sens, d'une fonction, d'un objet, d'un nom de fichier, d'une URL, ou d'un chemin (path). 
+Les raffinements sont toujours symboliques dans leurs valeurs. 
+
+Ils sont utilisés dans les fonctions : 
+
+
+	block: [1 2]
+	append/only block [3 4]
+
+mais aussi avec les objets :
+
+	print system/version
+
+ou les fichiers : 
+
+	dir: %docs/core
+	print read dir/file.txt
+
+ou encore les urls :
+
+	site: http://www.rebol.com
+	print read site/index.html
+
++++ Format
+
+Les raffinements sont formés par l'association d'un slash {/} et d'un mot REBOL valide (voir la section 
+sur les mots ci-dessous). Par exemple : 
+
+	/only
+	/test1
+	/save-it
+
+Les raffinements sont habituellement concaténés à d'autres mots, 
+comme dans le cas de : 
+
+	port: open/binary file
+
+Mais les raffinements peuvent aussi être écrits seuls, comme lorsqu'ils apparaissent 
+dans la spécification d'une fonction : 
+
+	save-data: function [file data /limit /reload] ...
+
++++ Création
+
+Les raffinements peuvent aussi être créés directement dans le code source : 
+
+	/test
+
+ou être composés avec la fonction <b>to-refinement</b> : 
+
+	probe to-refinement "test"
+==	/test
+
++++ Et aussi...
+
+Pour tester une valeur, la fonction <b>refinement?</b> est utilisable :
+
+	probe refinement? /test
+==	true
+	probe refinement? 'word
+==	false
+
+
+--- Time
+
++++ Concept
+
+Le langage REBOL supporte une expression standard du temps en heures,  
+minutes, secondes, jusqu'à la milliseconde et plus. Des valeurs de temps négatives ou positives 
+sont permises. 
+
+Le type de donnée <b>time!</b> utilise un affichage relatif, plutôt que l'heure absolue. 
+
+Par exemple, 10:30 représente 10 heures et 30 minutes, plutôt que 10:30 A.M. ou P.M.
+
+
++++ Format
+
+Les valeurs de type <b>time!</b> se présentent sous la forme d'un ensemble de nombres entiers 
+séparés par le symbole (:). 
+Les heures et les minutes sont nécessaires, mais les secondes sont optionnelles. : 
+Pour chaque champ (heure:minutes:secondes), les zéros additionnels sont ignorés 
+
+	10:30
+	0:00
+	18:59
+	23:59:50
+	8:6:20
+	8:6:2
+
+Les valeurs de minutes et de secondes peuvent être supérieures à 60. 
+
+Ces valeurs plus grandes que 60 sont automatiquement converties. Ainsi, 
+0:120:00 est la même chose que 2:00.
+
+	probe 00:120:00
+==	2:00
+
+Les diziémes ou centiémes de seconde sont définis en utilisant 
+le séparateur décimal dans le champ des secondes. (Utilisez un point ou une virgule comme séparateur décimal).
+
+Les champs heures et minutes deviennent optionnels quand un nombre décimal est fourni. 
+Les éléments inférieurs à la seconde sont encodés en nanosecondes, soit 
+au milliardième de seconde : 
+
+	probe 32:59:29.5
+	32:59:29.5
+	probe 1:10,25
+	0:01:10.25
+	probe 0:0.000000001
+	0:00:00.000000001
+	probe 0:325.2
+	0:05:25.2
+
+Les valeurs de type <b>time!</b> peuvent être suivies par les chaînes AM ou PM, mais AUCUN n'espace n'est permis dans ce cas. 
+
+L'ajout de la chaîne PM revient à ajouter 12 heures à l'heure indiquée :
+
+	probe 10:20PM
+	22:20
+	probe 3:32:20AM
+	3:32:20
+
+Les valeurs <b>time!</b> retournées se présentent avec un format standard en heures, minutes, secondes, 
+et fractions de secondes, indépendamment de la façon dont elles ont été saisies :
+
+	probe 0:87363.21
+	24:16:03.21
+
++++ Accès aux champs
+
+Les valeurs de type <b>time!</b> possèdent trois raffinements qui servent à retourner des informations 
+spécifiques : 
+
+\table
+
+Raffinement
+
+Description
+
+
+=row 
+
+<b>/hour</b>
+
+Renvoie la valeur de l'heure
+
+=row
+
+<b>/minute</b>
+
+Renvoie la valeur pour les minutes
+
+
+=row
+
+<b>/second</b>
+
+Renvoie la valeur des secondes
+
+/table
+
+
+Voici comment utiliser ces raffinements : 
+
+	lapsed-time: 91:32:12.14
+	probe lapsed-time/hour
+==	91
+	probe lapsed-time/minute
+==	32
+	probe lapsed-time/second
+==	12.14
+
+Les données horaires avec des fuseaux horaires peuvent uniquement 
+être utilisées dans des valeurs de type <b>date!</b>.
+
++++ Création
+
+Les valeurs <b>time!</b> peuvent être créées avec la fonction <b>to-time</b> : 
+
+	probe to-time "10:30"
+==	10:30
+	probe to-time [10 30]
+==	10:30
+	probe to-time [0 10 30]
+==	0:10:30
+	probe to-time [10 30 20.5]
+==	10:30:20.5
+
+Dans les exemples précédents, les valeurs ne sont pas évaluées. 
+Pour évaluer des valeurs comme des expressions mathématiques, utilisez la fonction <b>reduce</b>. 
+
+
+	probe to-time reduce [10 30 + 5]
+==	10:35
+
+Dans les différentes opérations mathématiques mettant en oeuvre des 
+valeurs de type <b>time!</b>, celles-ci ou les nombres entiers et décimaux impliqués sont manipulés ainsi : 
+
+	probe 10:30 + 1
+==	10:30:01
+	probe 10:00 - 10
+==	9:59:50
+	probe 0:00 - 10
+==	-0:00:10
+	probe 5:10 * 3
+==	15:30
+	probe 0:0:0.000000001 * 1'500'600
+==	0:00:00.0015006
+	probe 8:40:20 / 4
+==	2:10:05
+	probe 8:40:20 / 2:20:05
+==	3
+	probe 8:40:20 // 4:20
+==	0:00:20
+
++++ Autres informations
+
+La fonction <b>time?</b> permet de savoir si son argument a pour datatype <b>time?</b> :
+
+	probe time? 10:30
+==	true
+	probe time? 10.30
+==	false
+
+Utilisez la fonction <b>now</b> avec le raffinement <b>/time</b> 
+pour retourner la date et l'heure courante : 
+
+	print now/time
+==	14:42:15
+
+La fonction <b>wait</b> est utilisée pour attendre quelque chose, une certain durée, ou un port, ou les deux. 
+Si la valeur est de type <b>time!</b>, <b>wait</b> permet une temporisation égale au temps indiqué. 
+Si la valeur est de type <b>date!/time!</b>, la fonction <b>wait</b> permet une temporisation jusqu'à la date et 
+l'heure indiquée. <br />
+Si la valeur est de type <b>integer!</b> ou <b>decimal!</b>, <b>wait</b> permet d'attendre le nombre de secondes indiqué. 
+
+Si la valeur est un port, la fonction <b>wait</b> attendra un événement sur ce port.
+
+Si un bloc est fourni en argument à <b>wait</b>, l'attente se fera pour chacun des 
+arguments (ports ou valeurs de temps) indiqués. 
+Si un événement s'est produit sur un port, <b>wait</b> retourne ce port, ou retourne none si 
+un time-out s'est produit. Par exemple : 
+
+	probe now/time
+==	14:42:16
+	wait 0:00:10
+	probe now/time
+==	14:42:26
+
+
+---Tuple
+
++++ Concept
+
+Il est courant de représenter des numéros de versions, des adresses Internet, ou encore des valeurs 
+de couleurs (RGB) sous la forme d'une séquence de trois ou quatre nombres entiers. 
+Ces types de valeurs sont appelées des tuples (<b>tuple!</b>) (comme dans quin<b>tuple</b>) 
+et sont représentées sous forme d'entiers séparés par des points. 
+
+
+	1.3.0 2.1.120 1.0.2.32     ; version
+	199.4.80.250 255.255.255.0 ; adresse ou masque réseau
+	0.80.255 200.200.60        ; couleurs en RGB (rouge/vert/bleu)
+
++++ Format
+
+Chaque entier dans une valeur de type <b>tuple!</b> peut être comprise entre 0 et 255. 
+Les nombres entiers négatifs génèrent une erreur. De trois à dix entiers peuvent être spécifiés dans un tuple. 
+
+Dans le cas où seulement deux entiers sont donnés, il doit y avoir au moins <i>deux</i> points, 
+sinon la valeur sera assimilée à un nombre décimal. 
+
+
+	probe 1.2     ; décimal
+==	1.2
+	probe type? 1.2
+==	decimal!
+	probe 1.2.3   ; un tuple
+==	1.2.3
+	probe 1.2.    ; un autre tuple
+==	1.2.0
+	probe type? 1.2.
+==	tuple!
+
++++ Création
+
+Utilisez la fonction <b>to-tuple</b> pour convertir des données en tuple : 
+
+	probe to-tuple "12.34.56"
+==	12.34.56
+	probe to-tuple [12 34 56]
+==	12.34.56
+
++++ Et aussi
+
+La fonction <b>tuple?</b> permet de déterminer si une valeur est ou non du type <b>tuple!</b>. 
+
+	probe tuple? 1.2.3.4
+==	true
+
+Utilisez la fonction <b>form</b> pour afficher un tuple sous la forme d'une chaîne de caractères : 
+
+	probe form 1.2.3.4
+==	1.2.3.4
+
+La fonction <b>mold</b> permet de convertir un tuple en chaîne de caractère, 
+mais de façon à ce que celle-ci soit récupérable en tant que tuple : 
+
+	probe mold 1.2.3.4
+==	1.2.3.4
+
+La fonction <b>print</b> affiche le tuple sur la sortie standard : 
+
+	print 1.2.3.4
+==	1.2.3.4
+
+
+--- Words
+
++++ Concept
+
+Les mots (words) sont les symboles utilisés par REBOL. Un mot peut être ou non une variable, selon la façon dont 
+il est utilisé. Les mots sont souvent utilisés comme symboles. 
+
+REBOL n'a pas de mots clés, il n'y a pas de restrictions sur les mots utilisés et la façon dont ils sont 
+utilisés. 
+
+Par exemple, vous pouvez définir votre propre fonction appelée <b>print</b> et vous en servir à 
+la place de la fonction prédéfinie dans le langage. 
+
+Il y a quatre formats différents pour l'utilisation des mots, selon l'opération qui est requise.
+
+\table
+        
+Action
+
+Type de Mot
+
+Type de Test
+
+Conversion
+
+=row
+
+word:
+
+set-word!
+
+set-word?
+
+to-set-word
+
+=row
+
+&#58;word
+
+get-word!
+
+get-word?
+
+to-get-word
+
+=row
+
+word
+
+word!
+
+word?
+
+to-word
+
+=row
+
+'word
+
+lit-word!
+
+lit-word?
+
+to-lit-word
+
+/table
+
+
++++ Format
+
+Les mots sont composés de caractères alphabétiques, de nombres, et de n'importe lequel des caractères suivants : 
+
+
+	? ! . ' + - * & | = _ ~ 
+
+Un mot ne peut pas commencer par un nombre, et il existe aussi quelques restrictions sur les mots 
+qui pourraient être interprétés comme des nombres. Par exemple, -1 et +1 sont des nombres, pas des mots.
+La fin d'un mot est marquée par un espace, un caractère de fin de ligne, ou l'un des caractères suivants : 
+
+
+	[ ] ( ) { } " : ; /
+
+Par ailleurs, les crochets d'un bloc ne sont pas compris dans un mot : 
+
+	[test]
+
+Les caractères suivants ne sont pas autorisés dans des mots : 
+
+	@ # $ % ^ ,
+
+Les mots peuvent être de n'importe quelle longueur, mais ne peuvent pas dépasser une ligne. 
+
+
+	this-is-a-very-long-word-used-as-an-example
+
+Voici quelques exemples de mots : 
+
+	Copy print test
+
+	number?  time?  date!
+
+	image-files  l'image
+
+	++ -- == +-
+
+	***** *new-line*
+
+	left&right left|right
+
+Le langage REBOL n'est pas sensible à la casse des caractères. Les mots suivants : 
+
+	blue
+
+	Blue
+
+	BLUE
+
+font tous référence au même mot. 
+
+La casse des caractères est préservée lorsque le mot est affiché. 
+Les mots peuvent être réutilisés. La signification d'un mot dépend de son contexte, de sorte qu'un 
+mot peut être réutilisé dans différents contextes. 
+
+Vous pouvez réutiliser n'importe quel mot, même les mots REBOL prédéfinis. 
+Par exemple, le mot REBOL <b>if</b> peut être réutilisé dans votre code différemment de la façon 
+dont l'interpréteur REBOL l'utilise. 
+
+
++++ Création
+
+La fonction <b>to-word</b> convertit son argument en une valeur de type <b>word!</b>.
+
+	probe to-word "test"
+==	test
+
+La fonction <b>to-set-word</b> convertit des valeurs en valeurs de type <b>set-word!</b> (mot défini).
+
+	probe make set-word! "test"
+==	test:
+
+La fonction <b>to-get-word</b> renvoie des valeurs de type <b>to-get-word!</b>.
+
+	probe to-get-word "test"
+==	:test
+
+La fonction <b>to-lit-word</b> renvoie des valeurs de type <b>lit-word!</b> (mot littéral).
+
+	probe to-lit-word "test"
+==	'test
+
++++ Autres informations
+
+Utilisez les fonctions <b>word?</b>, <b>set-word?</b>, <b>get-word?</b>, et <b>lit-word?</b> pour tester 
+le datatype : 
+
+	probe word? second [1 two "3"]
+==	true
+	if set-word? first [word: 10] [print "it is set"]
+==	it is set
+	probe get-word? second [pr: :print]
+==	true
+	probe lit-word? first ['foo bar]
+==	true
+
+
+
+
+
+
+=date 8-Apr-2005 
+
+
+
+
+
+
+
+
+
+
+

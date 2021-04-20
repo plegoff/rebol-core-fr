@@ -1,0 +1,2366 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Chapitre 6 - Les Séries</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Chapitre 6 - Les Séries</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Chapitre 6 - Les Séries</h1>
+<div class="header">
+Ce document est la traduction française du Chapitre 6 du User Guide de REBOL/Core,<br />qui concerne les Séries.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-6.html#section-1">1. Historique de la traduction</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-2">2. Concepts de base</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-2.1">2.1 Parcourir une série</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-2.2">2.2 Sauts de valeurs</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-2.3">2.3 Extraire des valeurs</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-2.4">2.4 Extraire une sous-série</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-2.5">2.5 Insertion et Ajout</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-2.6">2.6 Enlever des valeurs</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-2.7">2.7 Modifier des valeurs</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-3">3. Fonctions relatives aux séries</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-3.1">3.1 Fonctions de création</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-3.2">3.2 Fonction de navigation</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-3.3">3.3 Fonctions d'Information</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-3.4">3.4 Fonctions d'extraction</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-3.5">3.5 Fonction de modification</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-3.6">3.6 Fonctions de recherche</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-3.7">3.7 Fonctions de tri</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-3.8">3.8 Fonctions de groupes de données</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-4">4. Types de données des séries</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-4.1">4.1 Types bloc</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-4.2">4.2 Types Chaîne de caractères</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-4.3">4.3 Pseudo-types</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-4.4">4.4 Fonction pour tester le type</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-5">5. Information sur les séries</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-5.1">5.1 Length?</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-5.2">5.2 Head?</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-5.3">5.3 Tail?</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-5.4">5.4 Empty?</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-5.5">5.5 Index?</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-5.6">5.6 Offset?</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-6">6. Créer et copier une série</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-6.1">6.1 Copie partielle</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-6.2">6.2 Copies de sous-séries</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-6.3">6.3 Copie afin d'initialiser</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-7">7. Iteration sur une série</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-7.1">7.1 Boucle Foreach</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-7.2">7.2 Boucle While</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-7.3">7.3 Boucle Forall</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-7.4">7.4 Boucle Forskip</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-7.5">7.5 La fonction Break</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-8">8. Recherche dans une série</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.1">8.1 Recherche simple</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.2">8.2 Résumé des raffinements</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.3">8.3 Recherche partielle</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.4">8.4 Position finale</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.5">8.5 Recherche en arrière</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.6">8.6 Recherches multiples</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.7">8.7 Correspondances</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.8">8.8 Recherche avec des caractères jokers (wildcards)</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.9">8.9 Fonction select</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-8.10">8.10 Recherche et remplacement</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-9">9. Trier une série</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-9.1">9.1 Tri simple</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-9.2">9.2 Tri par groupe</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-9.3">9.3 Fonctions de comparaison</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-10">10. Série en tant qu'ensemble de données</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-10.1">10.1 Unique</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-10.2">10.2 Intersect</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-10.3">10.3 Union</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-10.4">10.4 Difference</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-10.5">10.5 Exclude</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-11">11. Multiples variables de série</a><br />
+<a class="toc1" href="fr-rebolcore-6.html#section-12">12. Raffinements de modification</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-12.1">12.1 Part</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-12.2">12.2 Only</a><br />
+<a class="toc2" href="fr-rebolcore-6.html#section-12.3">12.3 Dup</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>11 avril 2005 7:15</p>
+</td><td>
+<p>1.0.0</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+<p><br />
+<br /></p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Concepts de base</h2>
+<blockquote>
+<p>Le concept de série est simple, et c'est un concept fondamental employé partout dans REBOL.
+Afin de comprendre REBOL, vous devez comprendre comment créer et manipuler une série.</p>
+<p>Une série est un ensemble de valeurs arrangées selon un ordre spécifique.
+C'est aussi simple que cela.</p>
+<pre>
+1 2 3 4
+A B C D
+"ABCD"
+10:30 4:20 7:11
+</pre>
+<p>Il existe différents types de séries en REBOL. <br />
+Un bloc, une chaîne de caractères, une liste, 
+une URL, un chemin (path), un email, un fichier, une balise, un binaire, 
+un jeu de caractères, un port, une table de hachage, une structure codée, et une image : voilà des 
+séries qui peuvent être manipulées avec le même ensemble commun de fonctions.</p>
+</blockquote>
+<p>
+<h3 id="section-2.1">2.1 Parcourir une série</h3>
+<blockquote>
+<p>Une série est un ensemble ordonné de valeurs, vous pouvez la 
+parcourir d'une position à une autre. <br />En guise d'exemple, prenons une série de trois couleurs 
+définie par le bloc suivant :</p>
+<pre>
+colors: [red green blue]
+</pre>
+<p>Il n'y a rien de particulier concernant ce bloc. <br />C'est une série contenant 
+trois mots. Elle constitue un ensemble de valeurs : red, green, et blue.<br />
+Les valeurs sont organisées selon cet ordre : red est en premier, green en second, 
+et blue en troisième.</p>
+<p>La première position dans le bloc est appelée son début : <b>head</b>. <br />C'est la position qu'occupe 
+le mot : red. La dernière position dans le bloc est appelée sa fin : <b>tail</b>. 
+C'est une position située immédiatement après le dernier mot dans le bloc.</p>
+<p>Si vous dessiniez un diagramme du bloc, il ressemblerait à ceci :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-11.gif"></p>
+<p>Remarquez que la fin (<b>tail</b>) est juste <b><u>après</u></b> la fin du bloc. 
+Ce point est important, il sera clarifié un peu plus loin.</p>
+<p>La variable "colors" est utilisée pour faire référence au bloc. Elle est actuellement positionnée 
+sur le début <b>head</b> du bloc :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-12.gif"></p>
+<pre>
+print head? colors
+<span class="output">true</span>
+</pre>
+<p>La variable "colors" est analogue à un curseur de position pour le bloc.</p>
+<pre>
+print index? colors
+<span class="output">1</span>
+</pre>
+<p>Le bloc a une longueur de : trois .</p>
+<pre>
+print length? colors
+<span class="output">3</span>
+</pre>
+<p>Le premier élément dans le bloc est :</p>
+<pre>
+print first colors
+<span class="output">red</span>
+</pre>
+<p>Le second élément dans le bloc est :</p>
+<pre>
+print second colors
+<span class="output">green</span>
+</pre>
+<p>Vous pouvez déplacer la variable "colors", notre curseur de position, le long du bloc en utilisant 
+différentes fonctions.</p>
+<p>Pour déplacer la variable "colors" à la position suivante dans le bloc 
+de couleurs, utilisez la fonction : <b>next </b></p>
+<pre>
+colors: next colors
+</pre>
+<p>La fonction <b>next </b> permet de se déplacer d'une valeur plus loin dans le bloc et retourne 
+la nouvelle position comme résultat. La variable "colors" est donc maintenant mise sur cette 
+nouvelle position :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-13.gif"></p>
+<p>La position de la variable "colors" a donc été changée. Maintenant cette variable ne pointe plus 
+sur le début (<b>head</b>) du bloc :</p>
+<pre>
+print head? colors
+<span class="output">false</span>
+</pre>
+<p>Elle pointe sur la deuxième position dans le bloc :</p>
+<pre>
+print index? colors
+<span class="output">2</span>
+</pre>
+<p>D'autre part, si vous cherchez à obtenir le premier item de "colors", vous aurez :</p>
+<pre>
+print first colors
+<span class="output">green</span>
+</pre>
+<p><b>La position de la valeur retournée par la fonction first est relative à la position 
+courante de la variable "colors", le curseur, dans le bloc.</b></p>
+<p>La valeur retournée n'est pas la première couleur 
+dans le bloc, mais la première couleur qui suit <b>immédiatement</b> la position courante du curseur "colors" dans 
+le bloc.<br />
+De la même manière, si vous recherchez la longueur du bloc ou la seconde couleur, celles-ci sont 
+aussi relatives à la position courante :</p>
+<pre>
+print length? Colors
+<span class="output">2</span>
+print second colors
+<span class="output">blue</span>
+</pre>
+<p>Vous pouvez encore vous déplacer à la position suivante, et observer un fonctionnement similaire :</p>
+<pre>
+colors: next colors
+print index? colors
+<span class="output">3</span>
+print first colors
+<span class="output">blue</span>
+print length? colors
+<span class="output">1</span>
+</pre>
+<p>Le schéma du bloc ressemble à présent à ceci :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-14.gif"></p>
+<p>La variable "colors" est maintenant sur la dernière couleur dans le bloc, 
+mais elle n'est pas encore à la position finale (<b>tail</b>).</p>
+<pre>
+print tail? colors
+<span class="output">false</span>
+</pre>
+<p>Pour atteindre la fin, il faut encore se déplacer, avec <b>next</b>, à la position suivante :</p>
+<pre>
+colors: next colors
+</pre>
+<p>Maintenant, la variable "colors" pointe sur la fin du bloc (<b>tail</b>). Elle n'est plus 
+positionnée sur une couleur valide. La dernière couleur du bloc a été dépassée.</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-15.gif"></p>
+<p>Si vous essayez le code suivant, vous obtiendrez :</p>
+<pre>
+print tail? colors
+<span class="output">true</span>
+print index? colors
+<span class="output">4</span>
+print length? Colors
+<span class="output">0</span>
+print first colors
+<span class="output">** Script Error: Out of range or past end.
+** Where: print first colors</span>
+</pre>
+<p>Vous recevez une erreur dans le dernier cas parce qu'il n'y a plus d'item 
+valide lorsque la fin du bloc a été dépassée.</p>
+<p>Il est aussi possible de se déplacer en arrière dans le bloc. Si vous écrivez :</p>
+<pre>
+colors: back colors
+</pre>
+<p>vous vous déplacerez d'une position en arrière dans la série.</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-16.gif"></p>
+<p>Tout le code suivant fonctionnera comme auparavant :</p>
+<pre>
+print index? colors
+<span class="output">3</span>
+print first colors
+<span class="output">blue</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-2.2">2.2 Sauts de valeurs</h3>
+<blockquote>
+<p>Les exemples précédents montraient comment se déplacer d'un élèment à la fois 
+dans la série. <br />
+Cependant, vous voudrez parfois parcourir la série en sautant plusieurs 
+items à la fois, avec la fonction <b>skip</b>. <br />
+Supposons que la variable "colors", notre curseur, soit placée au début de la série :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-17.gif"></p>
+<p>Vous pouvez aller en avant par saut de deux éléments avec le code suivant :</p>
+<pre>
+colors: skip colors 2
+</pre>
+<p>La fonction <b>skip</b> est similaire à la fonction <b>next</b> en ceci qu'elle retourne également la série 
+à la nouvelle position.</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-18.gif"></p>
+<p>Pour contrôler l'index de la nouvelle position :</p>
+<pre>
+print index? colors
+<span class="output">3</span>
+print first colors
+<span class="output">blue</span>
+</pre>
+<p>Pour un déplacement en arrière, utilisez <b>skip</b> avec une valeur négative :</p>
+<pre>
+colors: skip colors -1
+</pre>
+<p>Ce code ci-dessus a le même effet que la fonction <b>back</b>. En effet, un saut de -1 fait se déplacer 
+d'un élément en arrière.</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-19.gif"></p>
+<pre>
+print first colors
+<span class="output">green</span>
+</pre>
+<p>Notez que vous ne pouvez pas dépasser la fin ou le début d'une série.<br /> 
+Si vous essayez de faire cela, <b>skip</b> ira seulement aussi loin que possible. La fonction 
+ne génerera pas d'erreur. Si vous vous déplacez trop loin en avant, <b>skip</b> ira à la fin de la série :</p>
+<pre>
+colors: skip colors 20
+print tail? colors
+<span class="output">true</span>
+</pre>
+<p>Si vous allez trop loin en arrière, <b>skip</b> renverra la série à son début :</p>
+<pre>
+colors: skip colors -100
+print head? colors
+<span class="output">true</span>
+</pre>
+<p>Pour sauter directement au début de la série, utilisez plutôt la fonction <b>head</b> :</p>
+<pre>
+colors: head colors
+print head? colors
+<span class="output">true</span>
+print first colors
+<span class="output">red</span>
+</pre>
+<p>Vous pouvez retourner à la fin avec la fonction <b>tail</b>:</p>
+<pre>
+colors: tail colors
+print tail? colors
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-2.3">2.3 Extraire des valeurs</h3>
+<blockquote>
+<p>Certains des exemples précédents faisaient usage des fonctions <b>first</b> et <b>second</b> 
+pour extraire d'une série des valeurs spécifiques. L'ensemble des fonctions ordinales est :</p>
+<pre>
+first
+second
+third
+fourth
+fifth
+sixth
+seventh
+eighth
+ninth
+tenth
+last
+</pre>
+<div class="note"><p><b></b></p>
+<p>N.d.T.: les fonctions ordinales supérieures à fifth ont été rajoutées dans les dernières mises à jour de Core.</p>
+</div>
+<p>Ces fonctions ordinales sont fournies pour rendre plus pratique la récupération de valeurs 
+à partir de positions simples dans une série. Voici quelques exemples :</p>
+<pre>
+colors: [red green blue gold indigo teal]
+print first colors
+<span class="output">red</span>
+print third colors
+<span class="output">blue</span>
+print fifth colors
+<span class="output">indigo</span>
+print last colors
+<span class="output">teal</span>
+</pre>
+<p>Pour une extraction à partir d'une position numérique, utilisez la fonction <b>pick</b> :</p>
+<pre>
+print pick colors 3
+<span class="output">blue</span>
+print pick colors 5
+<span class="output">indigo</span>
+</pre>
+<p>Une écriture simplifiée consiste à utiliser un "path" :</p>
+<pre>
+print colors/3
+<span class="output">blue</span>
+print colors/5
+<span class="output">indigo</span>
+</pre>
+<p>Rappelez-vous, comme vu plus tôt, que la récupération d'une valeur est effectuée <b>relativement</b> 
+à la variable de série (le curseur) que vous fournissez. <br />
+Si la variable "colors" pointait une autre position dans la série, votre résultat aurait été différent.</p>
+<p>L'extraction d'une valeur après la fin de la série retournerait une erreur avec les fonctions ordinales, 
+et <b>none</b> avec la fonction <b>pick</b> ou un "path" utilisant <b>pick</b>.</p>
+<pre>
+print pick colors 10
+<span class="output">none</span>
+print colors/10
+<span class="output">none</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-2.4">2.4 Extraire une sous-série</h3>
+<blockquote>
+<p>Vous pouvez extraire plusieurs valeurs d'une série avec la fonction <b>copy</b>.<br />
+Pour cela, utilisez <b>copy</b> avec le raffinement <b>/part</b>, en spécifiant le nombre de 
+valeurs à extraire :</p>
+<pre>
+colors: [red green blue]
+sub-colors: copy/part colors 2
+probe sub-colors
+<span class="output">[red green]</span>
+</pre>
+<p>Schématiquement, ceci devrait donner quelque chose comme :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-20.gif"></p>
+<p>Pour copier une sous-série depuis n'importe quelle position à l'intérieur de la série, 
+il faut d'abord se positionner sur une position de départ. <br />
+L'exemple suivant montre comment se déplacer à la seconde position dans la série, 
+avec la fonction <b>next</b>, avant d'effectuer la copie :</p>
+<pre>
+sub-colors: copy/part next colors 2
+probe sub-colors
+<span class="output">[green blue]</span>
+</pre>
+<p>Ce qui devrait ressembler à :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-21.gif"></p>
+<p>la longueur de la liste à copier peut être indiquée comme position de fin, tout comme un nombre d'exemplaires.<br />
+Noter que la position indique où la copie devrait s'arrêter, pas la position de fin.</p>
+<pre>
+probe copy/part colors next colors
+<span class="output">[red]</span>
+probe copy/part colors back tail colors
+<span class="output">[red green]</span>
+probe copy/part next colors back tail colors
+<span class="output">[green]</span>
+</pre>
+<p>Ceci peut être utile avec la fonction <b>find</b> qui retourne comme résultat la position de la série :</p>
+<pre>
+file: %image.jpg
+print copy/part file find file "."
+<span class="output">image</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-2.5">2.5 Insertion et Ajout</h3>
+<blockquote>
+<p>Vous pouvez insérer une ou plusieurs nouvelles valeurs à n'importe quel endroit 
+dans la série en utilisant la fonction <b>insert</b>.</p>
+<p>Quand on insére une valeur à une position dans la série, un espace est créé en décalant 
+les valeurs qui suivent vers la fin de la série.</p>
+<p>Par exemple, le bloc :</p>
+<pre>
+colors: [red green]
+</pre>
+<p>devrait ressembler à :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-22.gif"></p>
+<p>Pour insérer une nouvelle valeur au début du bloc, là où le curseur (la variable "colors") est à présent positionné :</p>
+<pre>
+insert colors 'blue
+</pre>
+<p>Les mots 'red et 'green sont décalés et le mot 'blue est inséré au début de la liste (il a été préfixé par une apostrophe car il s'agit d'un mot, 
+à ne pas évaluer).</p>
+<p>Notez que la variable "colors" demeure positionnée sur le début de la liste.</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-23.gif"></p>
+<pre>
+probe colors
+<span class="output">[blue red green]</span>
+</pre>
+<p>Notez encore que la valeur de retour de la fonction <b>insert</b> n'a pas été utilisée : <br />
+elle n'est pas passée à une variable ou à une fonction.</p>
+<p>La ligne suivante permettrait d'affecter cette valeur retournée par <b>insert</b> à 
+la variable "colors" :</p>
+<pre>
+colors: insert colors 'blue
+</pre>
+<p>En ce cas, l'action sur le bloc serait identique à l'insertion de l'exemple précédent, mais 
+la position du curseur "colors" changerait. En effet, sa position devient ici la valeur retournée par <b>insert</b>.</p>
+<p>La position renvoyée à partir d'<b>insert</b> est celle suivant immédiatement le point d'insertion.</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-24.gif"></p>
+<p>Une insertion peut être faite n'importe où dans la série. La position de l'insertion peut être 
+spécifiée, et elle peut inclure la fin (<b>tail</b>).</p>
+<p>Insérer une valeur en fin de série revient à faire un <u>ajout</u> à celle-ci.</p>
+<pre>
+colors: tail colors
+insert colors 'gold
+probe colors
+<span class="output">[blue red green gold]</span>
+</pre>
+<p>Avant l'insertion :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-25.gif"></p>
+<p>Après l'insertion :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-26.gif"></p>
+<p>Le mot 'gold a été inséré en fin de série.</p>
+<p>Un autre moyen d'insérer des valeurs à la fin d'une série est d'utiliser la fonction <b>append</b>.</p>
+<p><b>Append</b> fonctionne comme <b>insert</b> mais insére toujours les valeurs en 
+fin de liste. L'exemple précédent deviendrait :</p>
+<pre>
+append colors 'gold
+</pre>
+<p>Le résultat est identique.</p>
+<p>Les fonctions <b>insert</b> et <b>append</b> accepte aussi un bloc d'argument à insérer.
+Par exemple,</p>
+<pre>
+colors: [red green]
+insert colors [blue yellow orange]
+probe colors
+<span class="output">[blue yellow orange red green]</span>
+</pre>
+<p>Si vous voulez insérer de nouvelles valeurs entre les mots red et green :</p>
+<pre>
+colors: [red green]
+insert next colors [blue yellow orange]
+probe colors
+<span class="output">[red blue yellow orange green]</span>
+</pre>
+<p>Les fonctions <b>insert</b> et <b>append</b> possédent d'autres possibilités, avec leurs raffinements, 
+qui seront détaillées ultérieurement dans un autre section.</p>
+</blockquote>
+<p>
+<h3 id="section-2.6">2.6 Enlever des valeurs</h3>
+<blockquote>
+<p>Vous pouvez ôter une ou plusieurs valeurs depuis n'importe quel endroit de la série 
+en utilisant la fonction <b>remove</b>.</p>
+<p>Par exemple, avec le bloc :</p>
+<pre>
+colors: [red green blue gold]
+</pre>
+<p>comme schématisé ici :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-27.gif"></p>
+<p>vous pouvez enlever le premier élément du bloc avec la ligne :</p>
+<pre>
+remove colors
+</pre>
+<p>Le bloc devient :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-28.gif"></p>
+<p>Son contenu peut être édité avec :</p>
+<pre>
+probe colors
+<span class="output">[green blue gold]</span>
+</pre>
+<p>La fonction <b>remove</b> ôte des valeurs relativement à la position courante 
+de notre curseur, la variable "colors". <br />
+Vous pouvez enlever des valeurs depuis n'importe quel endroit dans la série en indiquant la position.</p>
+<pre>
+remove next colors
+</pre>
+<p>Le bloc ressemble à présent à :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-29.gif"></p>
+<p>Plusieurs éléments peuvent être ôtés en utilisant le raffinement <b>/part</b>.</p>
+<pre>
+remove/part colors 2
+</pre>
+<p>Ceci enlève les valeurs restantes, laissant un bloc vide :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-30.gif"></p>
+<p>Comme pour <b>insert/part</b>, l'argument fourni à <b>remove/part</b> peut aussi être une position à 
+l'intérieur du bloc.</p>
+<p>Effacer toutes les valeurs restantes est une opération courante. <br />
+La fonction <b>clear</b> permet de faire cela directement.<br />
+<b>Clear</b> enlève toutes les valeurs depuis la position courante jusqu'à la fin.</p>
+<p>Par exemple :</p>
+<pre>
+Colors: [blue red green gold]
+</pre>
+<p>comme montré ici :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-31.gif"></p>
+<p>Tout ce qui se trouve après le mot blue peut être ôté avec :</p>
+<pre>
+clear next colors
+</pre>
+<p>Le bloc devient :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-32.gif"></p>
+<p>Vous pouvez entièrement vider le bloc avec :</p>
+<pre>
+clear colors
+</pre>
+</blockquote>
+<p>
+<h3 id="section-2.7">2.7 Modifier des valeurs</h3>
+<blockquote>
+<p>Un jeu suplémentaire de fonctions est fourni pour 
+permettre la modification de valeurs dans une série.</p>
+<p>La fonction <b>change</b> remplace une ou plusieurs valeurs par des nouvelles. 
+Quoique ceci puisse être fait avec les fonctions <b>insert</b> et <b>append</b>, il est plus efficace 
+d'utiliser <b>change</b>.</p>
+<p>Le bloc suivant est défini :</p>
+<pre>
+colors: [blue red green gold]
+</pre>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-33.gif"></p>
+<p>Sa deuxième valeur peut être changée avec la ligne :</p>
+<pre>
+change next colors 'yellow
+</pre>
+<p>et le bloc devient :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-34.gif"></p>
+<p>Le bloc est devenu à présent :</p>
+<pre>
+probe colors
+<span class="output">[blue yellow green gold]</span>
+</pre>
+<p>La fonction <b>poke</b> vous permet d'effectuer un changement à une position particulière, 
+relativement au curseur, la variable "colors".<br />
+La fonction <b>poke</b> est similaire à la fonction <b>pick</b> décrite précédemment.</p>
+<pre>
+poke colors 3 'red
+</pre>
+<p>Le bloc est à présent :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-35.gif"></p>
+<p>avec :</p>
+<pre>
+probe colors
+<span class="output">[blue yellow red gold]</span>
+</pre>
+<p>La fonction <b>change</b> possède des raffinements qui seront décrits plus loin.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. Fonctions relatives aux séries</h2>
+<blockquote>
+<p>Voici un résumé des fonctions relatives aux séries.</p>
+<p>La plupart d'entre elles ont déjà été décrites en détail dans les sections précédentes. D'autres 
+seront explicitées plus loin.</p>
+</blockquote>
+<p>
+<h3 id="section-3.1">3.1 Fonctions de création</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Fonction</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>make</b></p>
+</td><td>
+<p>Crée une nouvelle série d'un certain type.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>copy</b></p>
+</td><td>
+<p>Copie une série</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-3.2">3.2 Fonction de navigation</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Fonction</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>next</b></p>
+</td><td>
+<p>Retourne la position suivante dans la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>back</b></p>
+</td><td>
+<p>Retourne la position précédente dans la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>head</b></p>
+</td><td>
+<p>Retourne la position du début dans la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>tail</b></p>
+</td><td>
+<p>Retourne la position de fin dans la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>skip</b></p>
+</td><td>
+<p>Retourne la position plus ou moins un entier.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>at</b></p>
+</td><td>
+<p>Retourne la position plus ou moins un entier, mais en utilisant la même indexation 
+que la fonction <b>pick</b>.</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-3.3">3.3 Fonctions d'Information</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Fonction</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>head?</b></p>
+</td><td>
+<p>Retourne true si le curseur est sur le début de la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>tail?</b></p>
+</td><td>
+<p>Retourne true si le curseur est sur la fin de la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>index?</b></p>
+</td><td>
+<p>retourne l'index par-rapport au début de la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>length?</b></p>
+</td><td>
+<p>retourne la longueur d'une série à partir de la position courante.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>offset?</b></p>
+</td><td>
+<p>retourne la distance entre deux positions dans la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>empty?</b></p>
+</td><td>
+<p>retourne true si la série est vide à partir de cette position.</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-3.4">3.4 Fonctions d'extraction</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Fonction</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>pick</b></p>
+</td><td>
+<p>extrait une valeur unique à partir d'une position dans une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>copy/part</b></p>
+</td><td>
+<p>extrait une sous-série à partir d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>first</b></p>
+</td><td>
+<p>extrait la première valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>second</b></p>
+</td><td>
+<p>extrait la seconde valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>third</b></p>
+</td><td>
+<p>extrait la troisième valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>fourth</b></p>
+</td><td>
+<p>extrait la quatrième valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>fifth</b></p>
+</td><td>
+<p>extrait la cinquième valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>sixth</b></p>
+</td><td>
+<p>extrait la sixième valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>seventh</b></p>
+</td><td>
+<p>extrait la septième valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>eigth</b></p>
+</td><td>
+<p>extrait la huitième valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>ninth</b></p>
+</td><td>
+<p>extrait la neuvième valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>tenth</b></p>
+</td><td>
+<p>extrait la dixième valeur d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>last</b></p>
+</td><td>
+<p>extrait la dernière valeur d'une série.</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-3.5">3.5 Fonction de modification</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Fonction</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>insert</b></p>
+</td><td>
+<p>insére des valeurs dans une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>append</b></p>
+</td><td>
+<p>ajoute des valeurs à la fin d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>remove</b></p>
+</td><td>
+<p>ôte des valeurs d'une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>clear</b></p>
+</td><td>
+<p>efface les valeurs de la position courante jusqu'à la fin de la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>change</b></p>
+</td><td>
+<p>modifie les valeurs dans une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>poke</b></p>
+</td><td>
+<p>modifie les valeurs à une position donnée, dans une série.</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-3.6">3.6 Fonctions de recherche</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Fonction</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>find</b></p>
+</td><td>
+<p>recherche une valeur dans une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>select</b></p>
+</td><td>
+<p>recherche une valeur dans une série et en cas de succés renvoie les valeurs qui suivent</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>replace</b></p>
+</td><td>
+<p>cherche et remplace des valeurs dans une série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>parse</b></p>
+</td><td>
+<p>parse les valeurs dans une série.</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-3.7">3.7 Fonctions de tri</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Fonction</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>sort</b></p>
+</td><td>
+<p>trie les valeurs d'une série dans un ordre.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>reverse</b></p>
+</td><td>
+<p>inverse l'ordre des valeurs dans une série</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-3.8">3.8 Fonctions de groupes de données</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Fonction</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>unique</b></p>
+</td><td>
+<p>retourne un ensemble de données uniques, en ayant supprimé les doublons.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>intersect</b></p>
+</td><td>
+<p>renvoie seulement les valeurs trouvées communes aux deux séries.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>union</b></p>
+</td><td>
+<p>retourne l'union de deux séries.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>difference</b></p>
+</td><td>
+<p>renvoie les valeurs non communes à chaque série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>exclude</b></p>
+</td><td>
+<p>retourne toutes les valeurs de la <i>première</i> série en argument, <br />
+moins celles, communes aux deux, de la deuxième série</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-4">4. Types de données des séries</h2>
+<blockquote>
+<p>Tous les types de données des séries peuvent être regroupés en deux grandes catégories.  
+Chaque catégorie comprend la valeur du type de données (<i>datatype</i>) et la fonction testant ce type.</p>
+</blockquote>
+<p>
+<h3 id="section-4.1">4.1 Types bloc</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Type du bloc</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Block!</b></p>
+</td><td>
+<p>blocs de valeurs</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Paren!</b></p>
+</td><td>
+<p>blocs de valeurs entre parenthèses</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Path!</b></p>
+</td><td>
+<p>paths de valeurs</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>List!</b></p>
+</td><td>
+<p>listes</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Hash!</b></p>
+</td><td>
+<p>tableaux associatifs</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-4.2">4.2 Types Chaîne de caractères</h3>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Type de chaîne</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>String!</b></p>
+</td><td>
+<p>chaînes de caractères</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Binary!</b></p>
+</td><td>
+<p>suite d'octets</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Tag!</b></p>
+</td><td>
+<p>balises HTML et XML</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>File!</b></p>
+</td><td>
+<p>noms de fichiers</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>URL!</b></p>
+</td><td>
+<p>urls</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Email!</b></p>
+</td><td>
+<p>emails</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Image!</b></p>
+</td><td>
+<p>données d'Image</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>Issue!</b></p>
+</td><td>
+<p>codes particuliers</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-4.3">4.3 Pseudo-types</h3>
+<blockquote>
+<p>Les types de données de séries sont regroupés aussi en quelques pseudo-types 
+qui rendent plus facile le test d'un type et la gestion des arguments de fonctions :</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Pseudo-type</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>series!</b></p>
+</td><td>
+<p>un type de donnée "series"</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>any-block!</b></p>
+</td><td>
+<p>n'importe que type de donnés "bloc"</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>any-string!</b></p>
+</td><td>
+<p>n'importe quel type de données "chaîne"</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-4.4">4.4 Fonction pour tester le type</h3>
+<blockquote>
+<p>Tests du type Bloc :</p>
+<pre>
+block? paren? path? list? hash?
+</pre>
+<p>Tests du type chaîne :</p>
+<pre>
+string? binary? tag? file? url? email? image? issue?
+</pre>
+<p>Autres fonctions de tests de pseudo-type :</p>
+<pre>
+series? any-block? any-string?
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-5">5. Information sur les séries</h2>
+<blockquote>
+</blockquote>
+<p>
+<h3 id="section-5.1">5.1 Length?</h3>
+<blockquote>
+<p>La longueur d'une série est le nombre d'items (éléments pour 
+un bloc, ou caractères pour une chaîne) depuis la position courante jusqu'à la fin de 
+la série. <br />
+La fonction <b>length?</b> renvoie le nombre d'items jusqu'à la fin.</p>
+<pre>
+colors: [blue red green]
+print length? colors
+<span class="output">3</span>
+</pre>
+<p>Les trois éléments sont comptabilisés pour le calcul de la longueur :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-36.gif"></p>
+<p>Si la variable "colors" est avancée à la position suivante,</p>
+<pre>
+colors: next colors
+print length? colors
+<span class="output">2</span>
+</pre>
+<p>la longueur devient : deux .</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-37.gif"></p>
+<p>Autres exemples d'usage de <b>length?</b> :</p>
+<pre>
+print length? "Ukiah"
+<span class="output">5</span>
+print length? []
+<span class="output">0</span>
+print length? ""
+<span class="output">0</span>
+data: [1 2 3 4 5 6 7 8]
+print length? data
+<span class="output">8</span>
+data: next data
+print length? data
+<span class="output">7</span>
+data: skip data 5
+print length? data
+<span class="output">2</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.2">5.2 Head?</h3>
+<blockquote>
+<p>Le début de la série est la position de sa première valeur. <br />
+Si une série est à son début, la fonction <b>head?</b> renvoie <i>true</i> :</p>
+<pre>
+data: [1 2 3 4 5]
+print head? data
+<span class="output">true</span>
+data: next data
+print head? data
+<span class="output">false</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.3">5.3 Tail?</h3>
+<blockquote>
+<p>La fin de la série est la position qui suit immédiatement la dernière valeur valide. <br />
+Si la variable de série pointe sur la fin, la fonction <b>tail?</b> renverra <i>true</i> :</p>
+<pre>
+data: [1 2 3 4 5]
+print tail? data
+<span class="output">false</span>
+data: tail data
+print tail? data
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.4">5.4 Empty?</h3>
+<blockquote>
+<p>La fonction <b>empty?</b> est équivalente à la fonction <b>tail?</b>.</p>
+<pre>
+print empty? data
+<span class="output">true</span>
+</pre>
+<p>Si la fonction <b>empty?</b> renvoie <i>true</i>, cela signifie qu'il n'y a plus de valeurs entre la  
+position courante et la fin de la série.<br />
+Cependant, <i>il peut rester des valeurs dans la série</i>. <br />
+Ces valeurs peuvent être présentes avant la position courante.<br /> 
+Si vous voulez déterminer si la série est vide <i>du début à la fin</i>, utilisez :</p>
+<pre>
+print empty? head data
+<span class="output">false</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.5">5.5 Index?</h3>
+<blockquote>
+<p>L'index est la position dans la série relativement à son début. Afin de connaître cette information 
+pour une variable de série, il faut utiliser la fonction <b>index?</b> :</p>
+<pre>
+data: [1 2 3 4 5]
+print index? data
+<span class="output">1</span>
+data: next data
+print index? data
+<span class="output">2</span>
+data: tail data
+print index? data
+<span class="output">6</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.6">5.6 Offset?</h3>
+<blockquote>
+<p>L'écart entre deux positions au sein d'une série peut être déterminé avec la fonction <b>offset?</b>.</p>
+<pre>
+data: [1 2 3 4]
+data1: next data
+data2: back tail data
+print offset? data1 data2
+<span class="output">4</span>
+</pre>
+<p>Dans cet exemple, l'écart est la différence entre la position 2 et la position 4 :</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-38.gif"></p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-6">6. Créer et copier une série</h2>
+<blockquote>
+<p>Une nouvelle série peut être créée avec les fonctions <b>make</b> et <b>copy</b>.</p>
+<p>La fonction <b>make</b> peut servir à créer une nouvelle série à partir 
+d'un type de données et d'une taille initiale. 
+La taille est une estimation de ce qui serait nécessaire pour la série. <br />
+Si la taille initiale est trop petite, celle-ci sera automatiquement augmentée, 
+mais avec une petite perte de performances.</p>
+<pre>
+block: make block! 50
+
+string: make string! 10000
+list: make list! 128
+file: make file! 64
+</pre>
+<p>La fonction <b>copy</b> crée une nouvelle série en dupliquant une série existante :</p>
+<pre>
+string: copy "Message in a bottle"
+new-string: copy string
+block: copy [1 2 3 4 5]
+new-block: copy block
+</pre>
+<p>La fonction <b>copy</b> est également importante, en pratique, avec les fonctions qui modifient le contenu d'une série.</p>
+<p>Par exemple, si vous voulez changer la casse d'une chaîne de caractères sans modifier l'original, employez <b>copy</b> :</p>
+<pre>
+string: uppercase copy "Message in a bottle"
+</pre>
+</blockquote>
+<p>
+<h3 id="section-6.1">6.1 Copie partielle</h3>
+<blockquote>
+<p>La fonction <b>copy</b> utilise le raffinement <b>/part</b> qui prend un seul et unique argument, 
+pouvant être soit un nombre entier (le nombre à copier d'éléments de la série ), 
+soit une position dans la série indiquant la dernière position pour la copie.</p>
+<pre>
+str: "Message in a bottle"
+print str
+<span class="output">Message in a bottle</span>
+print copy/part str find str " "
+<span class="output">Message</span>
+new-str: copy/part (find str "in") (find str "bottle")
+print new-str
+<span class="output">in a</span>
+blk: [ages [10 12 32] sizes [100 20 30]]
+new-blk: copy/part blk 2
+probe new-blk
+<span class="output">[ages [10 12 32]]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-6.2">6.2 Copies de sous-séries</h3>
+<blockquote>
+<p>Des blocs peuvent contenir d'autres blocs, et/ou des chaînes. 
+Quand un tel bloc est copié, ses sous-series ne le sont pas. <br />
+Les sous-séries sont référencées directement et ont les mêmes données de série que le bloc original.
+Si vous modifiez l'une ou l'autre de ces sous-séries, vous les modifiez également dans le bloc d'origine.</p>
+<p>Le raffinement <b>copy/deep</b> forcera la copie de toutes les sous-séries à l'intérieur d'un bloc :</p>
+<pre>
+blk-one: ["abc" [1 2 3]]
+probe blk-one
+<span class="output">["abc" [1 2 3]]</span>
+</pre>
+<p>L'exemple suivant effectue une copie normale de "blk-one" vers "blk-two" :</p>
+<pre>
+blk-two: copy blk-one
+probe blk-one
+<span class="output">["abc" [1 2 3]]</span>
+probe blk-two
+<span class="output">["abc" [1 2 3]]</span>
+</pre>
+<p>Si la chaîne (ou le bloc) contenue dans "blk-two"  est modifiée, les valeurs contenues dans la série blk-one 
+sont elles aussi modifiées.</p>
+<pre>
+append blk-two/1 "DEF"
+append blk-two/2 [4 5 6]
+probe blk-one
+<span class="output">["abcDEF" [1 2 3 4 5 6]]</span>
+probe blk-two
+<span class="output">["abcDEF" [1 2 3 4 5 6]]</span>
+</pre>
+<p>Utiliser <b>copy/deep</b> permet la copie de toutes les valeurs de type "série" trouvées dans le bloc :</p>
+<pre>
+blk-two: copy/deep blk-one
+append blk-two/1 "ghi"
+append blk-two/2 [7 8 9]
+<span class="output">probe blk-one</span>
+["abcDEF" [1 2 3 4 5 6]]
+probe blk-two
+<span class="output">["abcDEFghi" [1 2 3 4 5 6 7 8 9]]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-6.3">6.3 Copie afin d'initialiser</h3>
+<blockquote>
+<p>L'utilisation de <b>copy</b> sur une série de type chaîne ou bloc permet de créer une série unique :</p>
+<pre>
+str: copy ""
+blk: copy []
+</pre>
+<p>En utilisant <b>copy</b>, on s'assure qu'une nouvelle série sera initialisée pour un mot 
+chaque fois que ce mot sera initialisé.</p>
+<p>Voici un exemple qui illustre l'importance de cela :</p>
+<pre>
+print-it: func [/local str] [
+    str: ""
+    insert str "ha"
+    print str
+]
+print-it
+<span class="output">ha</span>
+print-it
+<span class="output">haha</span>
+print-it
+<span class="output">hahaha</span>
+</pre>
+<p>Dans cet exemple, parce que <b>copy</b> n'a pas été utilisé, la série vide "str", de type chaîne, 
+est modifiée à chaque appel de la fonction "print-it". <br />
+La chaîne "ha" est insérée dans la série "str" chaque  fois que "print-it" est appelée.</p>
+<p>L'examen du code source de print-it montre le noeud du problème :</p>
+<pre>
+source print-it
+print-it: func [/local str] [
+    str: "hahaha"         &lt;-- ici
+    insert str "ha"
+    print str
+]
+</pre>
+<p>Bien que "str" soit une variable locale, sa valeur est globale.  
+Pour éviter ce problème, la fonction devrait copier une chaîne vide ou utiliser <b>make string!</b>.</p>
+<pre>
+print-it: func [/local str] [
+    str: copy ""
+    insert str "ha"
+    print str
+]
+print-it
+<span class="output">ha</span>
+print-it
+<span class="output">ha</span>
+print-it
+<span class="output">ha</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-7">7. Iteration sur une série</h2>
+<blockquote>
+<p>Une boucle est nécessaire pour parcourir la série. Il existe quelques fonctions pour cela 
+qui peuvent aider à automatiser ce processus d'itération.</p>
+</blockquote>
+<p>
+<h3 id="section-7.1">7.1 Boucle Foreach</h3>
+<blockquote>
+<p>La fonction <b>foreach</b> permet de parcourir une série en ayant définit un mot ou plusieurs mots 
+décrivant les valeurs dans la série.<br />
+La fonction <b>foreach</b> prend trois arguments : un mot ou un bloc de mots qui manipule les valeurs 
+pour chaque itération, la série, et finalement un bloc à évaluer lors de chaque itération.</p>
+<pre>
+colors: [red green blue yellow orange gold]
+foreach color colors [print color]
+<span class="output">red
+green
+blue
+yellow
+orange
+gold</span>
+foreach [c1 c2] colors [print [c1 c2]]
+<span class="output">red green
+blue yellow
+orange gold</span>
+foreach [c1 c2 c3] colors [print [c1 c2 c3]]
+<span class="output">red green blue
+yellow orange gold</span>
+</pre>
+<p>Ceci est très pratique avec des blocs contenant des données reliées entre elles :</p>
+<pre>
+people: [
+    "Bob" bob@example.com 12
+    "Tom" tom@example.net 40
+    "Sam" sam@example.org 22
+]
+foreach [name email age] people [
+    print [name email age]
+]
+<span class="output">Bob bob@example.com 12
+Tom tom@example.net 40
+Sam sam@example.org 22</span>
+</pre>
+<p>Remarquez que la fonction <b>foreach</b> n'avance pas l'index courant 
+dans la série, de sorte qu'il n'est pas nécessaire de remettre à zéro la variable représentant la série.</p>
+</blockquote>
+<p>
+<h3 id="section-7.2">7.2 Boucle While</h3>
+<blockquote>
+<p>L'approche la plus flexible est d'utiliser une boucle <b>while</b>, 
+qui vous permet de faire sans problèmes ce que vous voulez avec la série :</p>
+<pre>
+colors: [red green blue yellow orange]
+while [not tail? colors] [
+    print first colors
+    colors: next colors
+]
+<span class="output">red
+green
+blue
+yellow
+orange</span>
+</pre>
+<p>La méthode ci-dessous montre comment insérer des valeurs sans saisir de doublons :</p>
+<pre>
+colors: head colors
+while [not tail? colors] [
+    if colors/1 = 'yellow [
+        colors: insert colors 'blue
+    ]
+    colors: next colors
+]
+</pre>
+<p>L'exemple illustre aussi comment <b>insert</b> renvoie la position immédiatement suivant l'insertion.</p>
+<p>Pour effacer une valeur sans en sauter accidentellement une , utilisez le code suivant :</p>
+<pre>
+colors: head colors
+while [not tail? colors] [
+    either colors/1 = 'blue [
+        remove colors
+    ][
+        colors: next colors
+    ]
+]
+</pre>
+<p>Remarquez que si <b>remove</b> a été utilisée, la fonction <b>next</b> n'est pas appelée.</p>
+</blockquote>
+<p>
+<h3 id="section-7.3">7.3 Boucle Forall</h3>
+<blockquote>
+<p>La fonction <b>forall</b> est identique à <b>while</b>, mais simplifie encore l'approche.<br /> 
+La boucle avec <b>forall</b> démarre à partir de l'index courant et parcourt la série jusqu'à la fin 
+en évaluant un bloc à chaque itération.
+La fonction <b>forall</b> prend deux arguments : une variable de série et le bloc à évaluer à chaque itération.</p>
+<pre>
+colors: [red green blue yellow orange]
+forall colors [print first colors]
+<span class="output">red
+green
+blue
+yellow
+orange</span>
+</pre>
+<p><b>Forall</b> parcourt la série en avancant le curseur à chaque itération, de sorte que 
+la variable de série "colors" sera positionnée sur la fin de la série, lorsque la boucle sera terminée :</p>
+<pre>
+print tail? colors
+<span class="output">true</span>
+</pre>
+<p>Par conséquent, cette variable de série "colors" doit être remise à zéro avant d'être à nouveau employée :</p>
+<pre>
+colors: head colors
+</pre>
+<p>Egalement, si un bloc évalué modifie la série, attention à éviter les trous ou les répétitions de valeurs.</p>
+<p>La fonction <b>forall</b> fonctionne bien dans la plupart des cas; mais si vous avez un doute, utilisez <b>while</b> à la place.</p>
+<pre>
+forall colors [
+    if colors/1 = 'blue [remove colors]
+    print first colors
+]
+<span class="output">red
+green
+yellow
+orange</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.4">7.4 Boucle Forskip</h3>
+<blockquote>
+<p>Tout comme <b>forall</b>, la fonction <b>forskip</b> parcourt la série en partant de la position courante, 
+mais saute un nombre spécifié de valeurs à chaque fois.</p>
+<p>La fonction <b>forskip</b> prend trois arguments : une variable de série, le nombre de valeurs à sauter 
+entre deux itérations, et le bloc à évaluer à chaque itération.</p>
+<pre>
+colors: [red green blue yellow orange]
+forskip colors 2 [print first colors]
+<span class="output">red
+blue
+orange</span>
+</pre>
+<p>La fonction <b>forskip</b> laisse la série à sa fin, nécessitant de la remettre au début si besoin.</p>
+<pre>
+print tail? colors
+<span class="output">true</span>
+colors: head colors
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.5">7.5 La fonction Break</h3>
+<blockquote>
+<p>N'importe laquelle de ces boucles peut être arrêtée à tout moment avec la fonction <b>break</b> 
+placée dans le bloc d'évaluation.</p>
+<p>Voyez <a href="fr-rebolcore-4.html">le chapitre du Manuel Utilisateur concernant les Expressions</a> 
+pour plus d'informations sur la fonction <b>break</b>.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-8">8. Recherche dans une série</h2>
+<blockquote>
+<p>La fonction <b>find</b> recherche au travers d'une série de type bloc ou chaîne une valeur ou un modèle.  
+Cette fonction possède de nombreux raffinements qui permettent beaucoup de variations dans les paramètres de recherche.</p>
+</blockquote>
+<p>
+<h3 id="section-8.1">8.1 Recherche simple</h3>
+<blockquote>
+<p>L'usage le pus courant et le plus simple pour la fonction <b>find</b> est de rechercher 
+une valeur dans un bloc ou une chaîne. Dans ce cas, <b>find</b> nécessite seulement deux arguments : <br />
+la série où chercher et la valeur à trouver.</p>
+<p>Un exemple d'utilisation de <b>find</b> sur un bloc :</p>
+<pre>
+colors: [red green blue yellow orange]
+where: find colors 'blue
+probe where
+<span class="output">[blue yellow orange]</span>
+print first where
+<span class="output">blue</span>
+</pre>
+<p>La fonction <b>find</b> peut aussi rechercher des valeurs selon le type de données.</p>
+<p>Ceci peut être très utile :</p>
+<pre>
+items: [10:30 20-Feb-2000 Cindy "United"]
+where: find items date!
+print first where
+<span class="output">20-Feb-2000</span>
+where: find items string!
+print first where
+<span class="output">United</span>
+</pre>
+<p>Un exemple d'utilisation de <b>find</b> sur une chaîne est :</p>
+<pre>
+colors: "red green blue yellow orange"
+where: find colors "blue"
+print where
+<span class="output">blue yellow orange</span>
+</pre>
+<p>Lorsqu'une recherche échoue, la valeur <b>none</b> est renvoyée.</p>
+<pre>
+colors: [red green blue yellow orange]
+probe find colors 'indigo
+<span class="output">none</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.2">8.2 Résumé des raffinements</h3>
+<blockquote>
+<p><b>Find</b> possède plusieurs raffinements qui autorisent une grande variété de 
+paramétres de recherche :</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Raffinement</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>/part</b></p>
+</td><td>
+<p>limite la recherche dans une série à une longueur donnée ou une position de fin.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>/only</b></p>
+</td><td>
+<p>Manipule une valeur de série comme une valeur unique</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>/case</b></p>
+</td><td>
+<p>Utilise une comparaison de chaînes sensible à la casse (maj/min).</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>/any</b></p>
+</td><td>
+<p>Permet d'utiliser des caractères jokers ("wildcards") autorisant des correspondances avec n'importe quel(s) caractère(s) :
+un astérisque (*) dans le modéle signifie : n'importe quelle chaîne, et un point d'interrogation (?) 
+correspond à : n'importe quel caractère.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>/with</b></p>
+</td><td>
+<p>Permet l'usage de caractères jokers ("wildcards") avec des caractères différents de l'astérisque (*) et du 
+point d'interrogation (?). Ceci permet d'avoir un modéle contenant des astérisques et des points d'interrogation.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>/match</b></p>
+</td><td>
+<p>Recherche un modéle commencant à la position courante de la série, 
+plutôt que de chercher la première occurence d'une valeur ou d'une chaîne.
+Renvoie la position de fin de la correspondance si celle-ci est trouvée.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>/tail</b></p>
+</td><td>
+<p>renvoie la position qui suit la correspondance sur une recherche fructueuse, 
+plutôt que de renvoyer la position de la correspondance.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>/last</b></p>
+</td><td>
+<p>Recherche en arrière d'une correspondance, en commencant à la fin de la série.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>/reverse</b></p>
+</td><td>
+<p>Recherche en arrière d'une correspondance, en commencant à la position courante.</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-8.3">8.3 Recherche partielle</h3>
+<blockquote>
+<p>Le raffinement <b>/part</b> permet que la recherche soit limitée à une portion spécifique de la série.</p>
+<p>par exemple, vous pouvez vouloir restreindre une recherche à une ligne donnée 
+ou à une portion de texte.
+Tout comme <b>insert/part</b> et <b>remove/part</b>,
+<b>find/part</b> prend en argument soit un nombre, soit une position de fin . 
+L'exemple suivant restreint la recherche aux trois premiers items :</p>
+<pre>
+colors: [red green blue yellow blue orange gold]
+probe find/part colors 'blue
+<span class="output">[blue yellow blue orange gold]</span>
+</pre>
+<p>La recherche suivante sur une chaîne est restreinte aux 15 premiers caractères:</p>
+<pre>
+text: "Keep things as simple as you can."
+print find/part text "as" 15
+<span class="output">as simple as you can.</span>
+</pre>
+<p>L'exemple ci-dessous utilise un marquage de positions. <br />
+La recherche est réduite à une seule ligne de texte :</p>
+<pre>
+text: {
+    This is line one.
+    This is line two.
+}
+start: find text "this"
+end: find start newline
+item: find/part start "line" end
+print item
+<span class="output">line one.</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.4">8.4 Position finale</h3>
+<blockquote>
+<p>La fonction <b>find</b> retourne la position dans la série où un item a été trouvé.</p>
+<p>Le raffinement <b>/tail</b> renverra la position qui suit immédiatement l'item trouvé.</p>
+<p>Voici un exemple :</p>
+<pre>
+filename: %script.txt
+print find filename "."
+<span class="output">.txt</span>
+print find/tail filename "."
+<span class="output">txt</span>
+clear change find/tail filename "." "r"
+print filename
+<span class="output">script.r</span>
+</pre>
+<p>Dans cet exemple, <b>clear</b> est nécessaire pour enlever "xt" qui suit "t".</p>
+</blockquote>
+<p>
+<h3 id="section-8.5">8.5 Recherche en arrière</h3>
+<blockquote>
+<p>Le dernier exemple de la section précédente ne marcherait pas si le 
+nom du fichier possédait plus d'un point "." 
+Par exemple :</p>
+<pre>
+filename: %new.script.txt
+print find filename "."
+<span class="output">.script.txt</span>
+</pre>
+<p>Dans cet exemple, nous voulons la dernière occurence (la dernière correspondance trouvée) 
+du point "." dans la chaîne. <br />
+Celle-ci peut être trouvée en utilisant le raffinement <b>/last</b>.</p>
+<p>Le raffinement <b>/last</b> permet une rechercher arrière au travers d'une série.</p>
+<pre>
+print find/last filename "."
+<span class="output">.txt</span>
+</pre>
+<p>Le raffinement <b>/last</b> peut être combiné avec <b>/tail</b> pour produire :</p>
+<pre>
+print find/last/tail filename "."
+<span class="output">txt</span>
+</pre>
+<p>Si vous voulez continuer à rechercher en arrière dans la chaîne, vous aurez besoin du raffinement <b>/reverse</b>.
+Ce raffinement permet une recherche arrière à partir de la position courante jusqu'au début de la série, 
+plutôt qu'une recherche depuis le début jusqu'à la fin.</p>
+<pre>
+where: find/last filename "."
+print where
+<span class="output">.txt</span>
+print find/reverse where "."
+<span class="output">.script.txt</span>
+</pre>
+<p>Notez que <b>/reverse</b> continue la recherche juste après la position de la dernière correspondance.
+Ceci évite de retrouver deux fois le même point "." encore .</p>
+</blockquote>
+<p>
+<h3 id="section-8.6">8.6 Recherches multiples</h3>
+<blockquote>
+<p>Vous pouvez facilement réutiliser la fonction <b>find</b> pour chercher des occurrences multiples d'une valeur 
+ou d'une chaîne.<br />
+Voici un exemple qui devrait afficher toutes les chaînes rencontrées dans un bloc :</p>
+<pre>
+blk: load %script.r
+while [blk: find blk string!] [
+    print first blk
+    blk: next blk
+]
+</pre>
+<p>L'exemple suivant compte le nombre de nouvelles lignes dans un script.</p>
+<p>Il utilise juste le raffinement <b>/tail</b> pour éviter  une boucle infinie et 
+renvoie donc la position qui est immédiatement après la correspondance.</p>
+<pre>
+text: read %script.r
+count: 0
+while [text: find/tail text newline] [count: count + 1]
+</pre>
+<p>Pour effectuer une recherche répétée en arrière, utiliser le raffinement <b>/reverse</b>.</p>
+<p>L'exemple suivant affiche toutes les index de positions dans l'ordre inverse pour le texte d'un script :</p>
+<pre>
+while [text: find/reverse tail text newline] [
+    print index? text
+]
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.7">8.7 Correspondances</h3>
+<blockquote>
+<p>Le raffinement <b>/match</b> modifie le comportement de <b>find</b> pour effectuer une rechercher de modéle 
+à la position courante de la série.
+Ce raffinement permet aux opérations de parsing d'être effectuées en recherchant dans la suite de la série des correspondances 
+avec le modéle fourni. <br />
+Voir <a href="fr-rebolcore-15.html">le chapitre concernant le Parsing</a> pour la recherche d'items.</p>
+<p>Un simple exemple de recherche de correspondance est le suivant :</p>
+<pre>
+blk: [1432 "Franklin Pike Circle"]
+probe find/match blk integer!
+<span class="output">["Franklin Pike Circle"]</span>
+probe find/match blk 1432
+<span class="output">["Franklin Pike Circle"]</span>
+probe find/match blk "test"
+<span class="output">none</span>
+str: "Keep things simple."
+probe find/match str "keep"
+<span class="output">" things simple."</span>
+print find/match str "things"
+<span class="output">none</span>
+</pre>
+<p>Remarquez dans cet exemple qu'aucune recherche n'est réalisée. 
+Soit le commencement de la série correspond, soit il ne correspond pas.
+Si il y a une correspondance, la variable de série est alors avancée à la position qui 
+suit immédiatement l'item trouvé, permettant l'analyse de la  séquence suivante.</p>
+<p>Voici un exemple d'analyseur écrit avec <b>find/match</b> :</p>
+<pre>
+grammar: [
+    ["keep" "make" "trust"]
+    ["things" "life" "ideas"]
+    ["simple" "smart" "happy"]
+]
+parse-it: func [str /local new] [
+    foreach words grammar [
+        foreach word words [
+            if new: find/match str word [break]
+        ]
+       if none? new [return false]
+       str: next new  ;skip space
+   ]
+   true
+]
+print parse-it "Keep things simple"
+<span class="output">true</span>
+print parse-it "Make things smart"
+<span class="output">true</span>
+print parse-it "Trust life well"
+<span class="output">false</span>
+</pre>
+<p>La recherche de modéle peut être rendue sensible à la casse avec le raffinement <b>/case</b> ( distinction majuscules/minuscules).
+Les possibilités de <b>/match</b> peuvent être grandement étendues avec l'usage du raffinement <b>/any</b>.</p>
+</blockquote>
+<p>
+<h3 id="section-8.8">8.8 Recherche avec des caractères jokers (wildcards)</h3>
+<blockquote>
+<p>Le raffinement <b>/any</b> permet d'utiliser des caractères jokers (wildcards) pour une recherche.</p>
+<p>Le point d'interrogation (?) et l'astérisque (*) agissent comme des caractères de substitution 
+pour remplacer respectivement  "un caractère quelconque" et "un ensemble quelconque de plusieurs caractères".</p>
+<p>Le raffinement <b>/any</b> peut être utilisé en conjonction avec <b>find</b> (avec ou sans le raffinement <b>/match</b>)</p>
+<p>Exemples:</p>
+<pre>
+str: "abcdefg"
+print find/any str "c*f"
+<span class="output">cdefg</span>
+print find/any str "??d"
+<span class="output">bcdefg</span>
+email-list: [
+    mack@REBOL.dom
+    judy@somesite.dom
+    jack@REBOL.dom
+    biff@REBOL.dom
+    jenn@somesite.dom
+]
+foreach email email-list [
+    if find/any email *@REBOL.dom [print email]
+]
+<span class="output">mack@REBOL.dom 
+jack@REBOL.dom
+biff@REBOL.dom</span>
+</pre>
+<p>L'exemple suivant utilise le raffinement <b>/match</b> 
+pour tenter de trouver une correspondance à un modéle sur l'ensemble de la série:</p>
+<pre>
+file-list: [
+    %REBOL.exe
+    %notes.html
+    %setup.html
+    %feedback.r
+    %nntp.r
+    %rebdoc.r
+    %REBOL.r
+    %user.r
+]
+foreach file file-list [
+    if find/match/any file %reb*.r [print file]
+]
+<span class="output">rebdoc.r
+REBOL.r
+none</span>
+</pre>
+<p>Si l'un ou l'autre des caractères jokers standards (*) et (?) font partie de ce 
+qui devrait être à trouver, des caractères de substitution différents peuvent être spécifiés 
+avec le raffinement <b>/with</b>.</p>
+</blockquote>
+<p>
+<h3 id="section-8.9">8.9 Fonction select</h3>
+<blockquote>
+<p>Une variante commode de la fonction <b>find</b> est la fonction <b>select</b>, 
+qui retourne la valeur qui suit celle trouvée.</p>
+<p>La fonction <b>select</b> est souvent utilisée pour consulter une valeur dans des  
+blocs de données. La fonction <b>select</b> prend les mêmes types d'arguments que la fonction <b>find</b> : 
+la série où chercher et la valeur à trouver.</p>
+<p>Cependant, contrairement à <b>find</b>, qui renvoie une position dans la série, la fonction <b>select</b> 
+retourne la <i>valeur</i> qui suit la correspondance.</p>
+<pre>
+colors: [red green blue yellow orange]
+print select colors 'green
+<span class="output">blue</span>
+</pre>
+<p>La fonction <b>select</b> peut être utilisée pour accéder au contenu d'une petite  
+base de données :</p>
+<pre>
+email-book: [
+    "George" harrison@guru.org
+    "Paul" lefty@bass.edu
+    "Ringo" richard@starkey.dom
+    "Robert" service@yukon.dom
+]
+</pre>
+<p>Le code suivant détermine une adresse email spécifique :</p>
+<pre>
+print select email-book "Paul"
+<span class="output">lefty@bass.edu</span>
+</pre>
+<p>Il est possible d'employer la fonction <b>select</b> pour extraire un bloc d'expressions, qui peut être évalué ensuite. 
+Par exemple, avec les données suivantes :</p>
+<pre>
+cases: [
+    10 [print "ten"]
+    20 [print "twenty"]
+    30 [print "thirty"]
+]
+</pre>
+<p>un bloc peut ainsi être évalué grâce à <b>select</b> :</p>
+<pre>
+do select cases 10
+<span class="output">ten</span>
+do select cases 30
+<span class="output">thirty</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.10">8.10 Recherche et remplacement</h3>
+<blockquote>
+<p>Pour remplacer des valeurs au sein d'une série, vous pouvez utiliser la fonction <b>replace</b>.<br />
+Cette fonction recherche une valeur particulière dans une série, puis la remplace par une autre.</p>
+<p>La fonction <b>replace</b> prend trois arguments : la série où chercher, la valeur à remplacer, et la nouvelle valeur.</p>
+<pre>
+str: "hello world hello"
+probe replace str "hello" "aloha"
+<span class="output">"aloha world hello"</span>
+data: [1 2 8 4 5]
+probe replace data 8 3
+<span class="output">[1 2 3 4 5]</span>
+probe replace data 4 `four
+<span class="output">[1 2 3 four 5]</span>
+probe replace data integer! 0
+<span class="output">[0 2 3 four 5]</span>
+</pre>
+<p>Utiliser le raffinement <b>/all</b> pour remplacer toutes les occurences trouvées depuis la position courante 
+jusqu'à la fin de la série.</p>
+<pre>
+probe replace/all data integer! 0
+[0 0 0 four 0]
+code: [print "hello" print "world"]
+replace/all code 'print 'probe
+probe code
+<span class="output">[probe "hello" probe "world"]</span>
+do code
+<span class="output">helloworld</span>
+str: "hello world hello"
+probe replace/all str "hello" "aloha"
+<span class="output">"aloha world aloha"</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-9">9. Trier une série</h2>
+<blockquote>
+<p>La fonction <b>sort</b> offre une méthode simple et rapide de trier des séries.<br /> 
+Elle est plus pratique pour des blocs de données, mais peut aussi être 
+utilisée sur des chaînes de caractères.</p>
+</blockquote>
+<p>
+<h3 id="section-9.1">9.1 Tri simple</h3>
+<blockquote>
+<p>Les exemples de tris les plus simples sont :</p>
+<pre>
+names: [Eve Luke Zaphod Adam Matt Betty]
+probe sort names
+<span class="output">[Adam Betty Eve Luke Matt Zaphod]</span>
+print sort [321.3 78 321 42 321.8 12 98]
+<span class="output">12 42 78 98 321 321.3 321.8</span>
+print sort "plosabelm"
+<span class="output">abellmops</span>
+</pre>
+<p>Remarquez que <b>sort</b> a un effet <b>destructeur</b> sur la série fournie en argument. 
+Elle modifie l'ordre des données d'origine. Pour éviter cela, utilisez <b>copy</b>, comme dans 
+l'exemple suivant :</p>
+<pre>
+probe sort copy names
+</pre>
+<p>Par défaut, le tri est insensible à la casse :</p>
+<pre>
+print sort ["Fred" "fred" "FRED"]
+<span class="output">Fred fred FRED</span>
+print sort "G4C28f9I15Ed3bA076h"
+<span class="output">0123456789AbCdEfGhI</span>
+</pre>
+<p>Mais avec le raffinement <b>/case</b>, le tri devient sensible aux majuscules/minuscules :</p>
+<pre>
+print sort/case "gCcAHfiEGeBIdbFaDh"
+<span class="output">ABCDEFGHIabcdefghi</span>
+print sort/case ["Fred" "fred" "FRED"]
+<span class="output">FRED Fred fred</span>
+print sort/case "g4Dc2BI8fCF9i15eAd3bGaE07H6h"
+<span class="output">0123456789ABCDEFGHIabcdefghi</span>
+</pre>
+<p>Beaucoup d'autres types de données peuvent être triées :</p>
+<pre>
+print sort [1.3.3.4 1.2.3.5 2.2.3.4 1.2.3.4]
+<span class="output">1.2.3.4 1.2.3.5 1.3.3.4 2.2.3.4</span>
+print sort [$4.23 $23.45 $62.03 $23.23 $4.22]
+<span class="output">$4.22 $4.23 $23.23 $23.45 $62.03</span>
+print sort [11:11:43 4:12:53 4:14:53 11:11:42]
+<span class="output">4:12:53 4:14:53 11:11:42 11:11:43</span>
+print sort [11-11-1999 10-11-9999 11-4-1999 11-11-1998]
+<span class="output">11-Nov-1998 11-Apr-1999 11-Nov-1999 10-Nov-9999</span>
+print sort [john@doe.dom jane@doe.dom jack@jill.dom]
+<span class="output">jack@jill.dom jane@doe.dom john@doe.dom</span>
+print sort [%user.r %REBOL.r %history.r %notes.html]
+<span class="output">history.r notes.html REBOL.r user.r</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-9.2">9.2 Tri par groupe</h3>
+<blockquote>
+<p>Souvent, il est nécessaire de trier un ensemble de données comme des enregistrements comprenant plus d'une valeur.</p>
+<p>Le raffinement <b>/skip</b> permet de trier des enregistrements ayant une longueur fixe.
+Ce raffinement prend un argument supplémentaire : un nombre entier indiquant la longueur de chaque enregistrement.</p>
+<p>Voici un exemple qui trie un bloc contenant des prénoms, noms, âges, et emails.
+Le bloc est tri selon la première colonne, le prénom.</p>
+<pre>
+names: [
+    "Evie" "Jordan" 43 eve@jordan.dom
+    "Matt" "Harrison" 87 matt@harrison.dom
+    "Luke" "Skywader" 32 luke@skywader.dom
+    "Beth" "Landwalker" 104 beth@landwalker.dom
+    "Adam" "Beachcomber" 29 adam@bc.dom
+]
+sort/skip names 4
+foreach [first-name last-name age email] names [
+    print [first-name last-name age email]
+]
+<span class="output">Adam Beachcomber 29 adam@bc.dom
+Beth Landwalker 104 beth@landwalker.dom
+Evie Jordan 43 eve@jordan.dom
+Luke Skywader 32 luke@skywader.dom
+Matt Harrison 87 matt@harrison.dom</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-9.3">9.3 Fonctions de comparaison</h3>
+<blockquote>
+<p>Le raffinement <b>/compare</b> permet de réaliser des comparaisons spécifiques sur les données 
+au cours du tri.</p>
+<p>Ce raffinement nécessite un argument supplémentaire, qui est la 
+fonction de comparaison à utiliser pour trier les données.</p>
+<p>Une fonction de comparaison est écrite comme une fonction normale, mais prend deux arguments.</p>
+<p>Ces arguments sont les valeurs à comparer. Une fonction de comparaison renvoie <i>true</i> si la 
+première valeur doit être placée <i>avant</i> la seconde et <i>false</i> si elle doit être 
+mise <i>après</i> .</p>
+<p>Une comparaison classique place des données dans l'ordre croissant :</p>
+<pre>
+ascend: func [a b] [a &lt; b]
+</pre>
+<p>Si la première valeur est inférieure à la deuxième, alors <i>true</i> est retourné par la fonction, et 
+la première valeur est placée avant la deuxième valeur.</p>
+<pre>
+data: [100 101 -20 37 42 -4]
+probe sort/compare data :ascend
+<span class="output">[-20 -4 37 42 100 101]</span>
+</pre>
+<p>Pareillement :</p>
+<pre>
+descend: func [a b] [a &gt; b]
+</pre>
+<p>Si la première valeur est supérieure à la seconde , alors la valeur <i>true</i> est renvoyée et les données sont 
+triées avec les plus grandes valeurs d'abord. Le tri s'effectue dans l'ordre décroissant.</p>
+<pre>
+probe sort/compare data :descend
+<span class="output">[101 100 42 37 -4 -20]</span>
+</pre>
+<p>Noter que dans chacun des cas la fonction de comparaison est passée avec son nom précédé de deux points.
+Le nom précédé de deux points force la fonction à être passée à <b>sort</b> sans être d'abord évaluée.
+La fonction de comparaison peut aussi être fournie directement :</p>
+<pre>
+probe sort/compare data func [a b] [a &amp;gt; b]
+<span class="output">[101 100 42 37 -4 -20]</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-10">10. Série en tant qu'ensemble de données</h2>
+<blockquote>
+<p>Quelques fonctions travaillent sur les séries en tant qu'ensemble de données.</p>
+<p>Ces fonctions permettent de réaliser des opérations comme trouver l'intersection ou l'union de deux séries.</p>
+</blockquote>
+<p>
+<h3 id="section-10.1">10.1 Unique</h3>
+<blockquote>
+<p>La fonction <b>unique</b> renvoie un ensemble de valeurs sans doublons.</p>
+<p>Exemples:</p>
+<pre>
+data: [Bill Betty Bob Benny Bart Bob Bill Bob]
+probe unique data
+<span class="output">[Bill Betty Bob Benny Bart]</span>
+print unique "abracadabra"
+<span class="output">abrcd</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-10.2">10.2 Intersect</h3>
+<blockquote>
+<p>La fonction <b>intersect</b> prend deux séries en arguments et retourne 
+une série contenant leurs valeurs communes .</p>
+<p>Exemples:</p>
+<pre>
+probe intersect [Bill Bob Bart] [Bob Ted Fred]
+<span class="output">[Bob]</span>
+lunch: [ham cheese bread carrot]
+dinner: [ham salad carrot rice]
+probe intersect lunch dinner
+<span class="output">[ham carrot]</span>
+print intersect [1 3 2 4] [3 5 4 6]
+<span class="output">3 4</span>
+string1: "CBAD"    ; A B C D scrambled
+string2: "EDCF"    ; C D E F scrambled
+print sort intersect string1 string2
+<span class="output">CD</span>
+</pre>
+<p><b>Intersect</b> peut être utilisée entre "bitsets" :</p>
+<pre>
+all-chars: "ABCDEFGHI"
+charset1: charset "ABCDEF"
+charset2: charset "DEFGHI"
+charset3: intersect charset1 charset2
+print find charset3 "E"
+<span class="output">true</span>
+print find charset3 "B"
+<span class="output">false</span>
+</pre>
+<p>Le raffinement  <b>/case</b> permet d'extraire les valeurs communes aux deux séries, en tenant 
+compte de la casse :</p>
+<pre>
+probe intersect/case [Bill bill Bob bob] [Bart bill Bob]
+<span class="output">[bill Bob]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-10.3">10.3 Union</h3>
+<blockquote>
+<p>La fonction <b>union</b> prend deux séries en arguments et renvoie une série réunissant les  
+valeurs de chacune , mais sans doublons.</p>
+<p>Exemples :</p>
+<pre>
+probe union [Bill Bob Bart] [Bob Ted Fred]
+<span class="output">[Bill Bob Bart Ted Fred]</span>
+lunch: [ham cheese bread carrot]
+dinner: [ham salad carrot rice]
+probe union lunch dinner
+<span class="output">[ham cheese bread carrot salad rice]</span>
+print union [1 3 2 4] [3 5 4 6]
+<span class="output">1 3 2 4 5 6</span>
+string1: "CBDA"    ; A B C D scrambled
+string2: "EDCF"    ; C D E F scrambled
+print sort union string1 string2
+<span class="output">ABCDEF</span>
+</pre>
+<p>La fonction <b>union</b> peut aussi travailler avec des "bitsets" :</p>
+<pre>
+charset1: charset "ABCDEF"
+charset2: charset "DEFGHI"
+charset3: union charset1 charset2
+print find charset3 "C"
+<span class="output">true</span>
+print find charset3 "G"
+<span class="output">true</span>
+</pre>
+<p>Le raffinement <b>/case</b> donne à la fonction <b>union</b> une sensibilité 
+à la casse, les majuscules et minuscules seront distinguées :</p>
+<pre>
+probe union/case [Bill bill Bob bob] [bill Bob]
+<span class="output">[Bill bill Bob bob]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-10.4">10.4 Difference</h3>
+<blockquote>
+<p>La fonction <b>difference</b> prend deux séries en arguments et renvoie une série qui 
+contient toutes les valeurs qui ne sont pas communes aux deux.</p>
+<p>Exemples:</p>
+<pre>
+probe difference [1 2 3 4] [1 2 3 5]
+<span class="output">[4 5]</span>
+probe difference [Bill Bob Bart] [Bob Ted Fred]
+<span class="output">[Bill Bart Ted Fred]</span>
+lunch: [ham cheese bread carrot]
+dinner: [ham salad carrot rice]
+probe difference lunch dinner
+<span class="output">[cheese bread salad rice]</span>
+string1: "CBAD"    ; A B C D scrambled
+string2: "EDCF"    ; C D E F scrambled
+print sort difference string1 string2
+<span class="output">ABEF</span>
+</pre>
+<p>Là encore, le raffinement <b>/case</b> permet d'utiliser la fonction <b>difference</b> avec une sensibilité aux 
+majuscules/minuscules.</p>
+<pre>
+probe difference/case [Bill bill Bob bob] [Bart bart bill Bob]
+<span class="output">[Bill bob Bart bart]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-10.5">10.5 Exclude</h3>
+<blockquote>
+<div class="note"><p><b></b></p>
+<p>NDT : ce paragraphe est le regroupement de deux parties du document original sur la fonction  exclude.</p>
+</div>
+<p>Une variante de la fonction <b>difference</b> est la fonction <b>exclude</b>.
+La fonction <b>exclude</b> prend deux séries en arguments et renvoie une série 
+qui va contenir toutes les valeurs de la <i>première</i> série, moins celles, communes aux deux, de la deuxième série.</p>
+<p>Exemples :</p>
+<pre>
+probe exclude [1 2 3 4] [1 2 3 5]
+<span class="output">[4]</span>
+</pre>
+<p>(Notez que le résultat ci-dessus ne contient pas 5 comme c'était le cas avec la fonction <b>difference</b> 
+vue précedemment.)</p>
+<pre>
+probe exclude [Bill Bob Bart] [Bob Ted Fred]
+<span class="output">[Bill Bart]</span>
+probe exclude "abcde" "ace"
+<span class="output">"bd"</span>
+lunch: [ham cheese bread carrot]
+dinner: [ham salad carrot rice]
+probe exclude lunch dinner
+<span class="output">[cheese bread]</span>
+string1: "CBAD"    ; A B C D scrambled
+string2: "EDCF"    ; C D E F scrambled
+print sort difference string1 string2
+<span class="output">AB</span>
+</pre>
+<p>Le raffinement <b>/case</b> permet une exclusion sensible à la casse :</p>
+<pre>
+probe exclude/case [Bill bill Bob bob] [Bart bart bill Bob]
+<span class="output">[Bill bob]</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-11">11. Multiples variables de série</h2>
+<blockquote>
+<p>Plusieurs variables de série peuvent référencer la même série.</p>
+<p>Par exemple :</p>
+<pre>
+data: [1 2 3 4 5]
+start: find data 3
+end: find start 4
+print first start
+<span class="output">2</span>
+print first end
+<span class="output">4</span>
+</pre>
+<p>Les variables "start" et "end" font réference à la même série.
+Elles pointent différentes positions, mais la série qu'elles référencent est la même.</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-39.gif"></p>
+<p>Si on utilise les fonctions <b>insert</b> ou <b>remove</b> sur une série, les valeurs dans la série sont décalées, 
+et les variables "start" et "end" peuvent ne plus se rapporter aux mêmes valeurs.</p>
+<p>Par exemple, si une valeur est enlevée de la série à la position de "start" :</p>
+<pre>
+remove start
+print first start
+<span class="output">3</span>
+print first end
+<span class="output">5</span>
+</pre>
+<p>La série a été décalée vers la gauche et les variables se rapportent à présent à différentes valeurs</p>
+<p align="center"><img src="http://www.rebol.com/docs/core23/rebolcore-40.gif"></p>
+<p>Notez que les positions d'index des variables n'ont pas changées, 
+mais ce sont les valeurs de la série qui ont changées. <br />
+La même situation peut se produire en utilisant la fonction <b>insert</b>.</p>
+<p>Parfois cet effet secondaire fonctionnera à votre avantage.  
+Parfois non, et cela vous obligera à modifier votre code.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-12">12. Raffinements de modification</h2>
+<blockquote>
+<p>Les fonctions <b>change</b>, <b>insert</b>, et  <b>remove</b> peuvent prendre 
+des raffinements supplémentaires pour modifier leur comportement.</p>
+</blockquote>
+<p>
+<h3 id="section-12.1">12.1 Part</h3>
+<blockquote>
+<p>Le raffinement <b>/part</b> accepte un nombre ou 
+une position de la série et l'utilise pour limiter l'effet de la fonction.</p>
+<p>Par exemple, avec la série suivante :</p>
+<pre>
+str: "abcdef"
+blk: [1 2 3 4 5 6]
+</pre>
+<p>vous pouvez changer une partie de "str" et "blk" en utilisant <b>change/part</b> :</p>
+<pre>
+change/part str [1 2 3 4] 3
+probe str
+<span class="output">1234def</span>
+change/part blk "abcd" 3
+probe blk
+<span class="output">["abcd" 4 5 6]</span>
+</pre>
+<p>Vous pouvez insérer une partie d'une série à la fin de "str" et de "blk" en utilisant <b>insert/part</b>.</p>
+<pre>
+insert/part tail str "-ghijkl" 4
+probe str
+<span class="output">1234def-ghi</span>
+insert/part tail blk ["--" 7 8 9 10 11 12] 4
+probe blk
+<span class="output">["abcd" 4 5 6 "--" 7 8 9]</span>
+</pre>
+<p>Pour ôter un morceau des séries "str" et "blk", utiliser <b>remove/part</b>. 
+Noter comment <b>find</b> est utilisé pour obtenir la position de la série :</p>
+<pre>
+remove/part (find str "d") (find str "-")
+probe str
+<span class="output">1234-ghi</span>
+remove/part (find blk 4) (find blk "--")
+probe blk
+<span class="output">["abcd" "--" 7 8 9]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-12.2">12.2 Only</h3>
+<blockquote>
+<p>Le raffinement <b>/only</b> modifie ou insére un bloc tel quel plutôt que ses valeurs propres.</p>
+<p>Exemples:</p>
+<pre>
+blk: [1 2 3 4 5 6]
+</pre>
+<p>Vous pouvez remplacer la valeur 2 dans le bloc "blk" avec le bloc 
+[a b c] et insérer le bloc  [$1 $2 $3] à la position du  5.</p>
+<pre>
+change/only (find blk 2) [a b c]
+probe blk
+<span class="output">[1 [a b c] 3 4 5 6]</span>
+insert/only (find blk 5) [$1 $2 $3]
+probe blk
+<span class="output">[1 [a b c] 3 4 [$1.00 $2.00 $3.00] 5 6]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-12.3">12.3 Dup</h3>
+<blockquote>
+<p>Le raffinement <b>/dup</b> modifie ou insére une valeur un certain nombre de fois</p>
+<p>Exemples:</p>
+<pre>
+str: "abcdefghi"
+blk: [1 2 3 4 5 6]
+</pre>
+<p>Vous pouvez changer les quatre premières valeurs dans la série "str" ou "blk" pour une astérisque (*) avec :</p>
+<pre>
+change/dup str "*" 4
+probe str
+<span class="output">****efghi</span>
+change/dup blk "*" 4
+probe blk
+<span class="output">["*" "*" "*" "*" 5 6]</span>
+</pre>
+<p>Pour insérer un tiret (-) quatre fois avant la dernière valeur dans la chaîne ou le bloc :</p>
+<pre>
+insert/dup (back tail str) #"-" 4
+probe str
+<span class="output">****efgh----i</span>
+insert/dup (back tail blk) #"-" 4
+probe blk
+<span class="output">["*" "*" "*" "*" 5 #"-" #"-" #"-" #"-" 6]</span>
+</pre>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 7-Apr-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!doctype html public "-//w3c//dtd html 3.2//fr">
+<html>
+
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+	<meta name="Author" Content="Carl Sassenrath">
+	<meta name="Translation" Content="Philippe Le Goof aka Philippe">
+	<title>Guide Utilisateur de REBOL/Core</title>
+
+	<style type="text/css">
+	<!--
+	BODY	 {
+			font-family : arial, helvetica ;
+			font-size : 9pt
+		}
+	p, td	 {
+			font-family : arial, helvetica ;
+			font-size : 9pt
+		}
+	td	 {
+			font-family : arial, helvetica ;
+			font-size : 9pt
+		}
+	-->
+	</style>
+
+</head>
+
+<body bgcolor="white">
+
+<p align="center" class="td"><a href="http://www.rebol.com/docs.html"><img src="http://www.rebol.com/graphics/doc-bar.gif"
+width="680" height="28" align="bottom" alt="REBOL Core Manual" border="0" usemap="#bar-map" ismap></a>
+<h2 align="center"></h2>
+<center>
+<p>
+<table border="0" cellpadding="5" width="640">
+	<tr>
+		<td height="120" colspan="2">
+			<p align="center"><img src="http://www.rebol.com/graphics/rcugcover-120.gif" width="92" height="120" align="bottom"
+			border="0">
+		</td>
+		<td height="120">
+			<h2><font color="maroon">Guide Utilisateur de REBOL/Core</font></h2>
+			<p><b>pour REBOL version 2.3</b></p>
+
+			<p><b>Copyright 2005 REBOL Technologies<br>
+			<a href="http://www.rebol.com/feedback.html">Envoyez vos commentaires/corrections</a></b>
+		</td>
+	</tr>
+	<tr height="8">
+		<td colspan="3">
+			<p>
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">1</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-1.html"><b><span style="font-size : 12pt">Introduction</span></b></a>
+		</td>
+		<td>
+			<p class="td">Une introduction à REBOL/Core, une information concernant ce manuel, le support technique, et  où 
+			envoyer les commentaires.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">2</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-2.html"><b><span style="font-size : 12pt">Les opérations</span></b></a>
+		</td>
+		<td>
+			<p class="td">Installation, démarrage, et sortie de REBOL. Utilisation de la console REBOL. L'aide en ligne. Les messages d'erreurs. Comment upgrader REBOL.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">3</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-3.html"><b><span style="font-size : 12pt">Une présentation rapide </span></b></a>
+		</td>
+		<td>
+			<p class="td">Une présentation rapide du langage qui décrit les valeurs, les mots, les blocs, les variables, l'évaluation, les fonctions, les paths, les objets, les scripts, et les aspects réseau.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">4</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-4.html"><b><span style="font-size : 12pt">Les expressions</span></b></a>
+		</td>
+		<td>
+			<p class="td">Comment les blocs, les valeurs et les mots sont évalués. Les expressions 
+			conditionnelles, sélectives, les boucles. Arrêter une évaluation. Gérer les erreurs.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">5</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-5.html"><b><span style="font-size : 12pt">Les scripts</span></b></a>
+		</td>
+		<td>
+			<p class="td">En-têtes de scripts. Les arguments en ligne de commande pour les scripts. Chargement, sauvegarde, et les commentaires dans les scripts. Un guide de style pour l'écriture des scripts.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">6</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-6.html"><b><span style="font-size : 12pt">Les séries</span></b></a>
+		</td>
+		<td>
+			<p class="td">Les séries sont la base de REBOL. Une description des fonctions et des types de données relatifs aux séries. Créer et copier des séries. Itération, recherche et tri. Les séries comme ensembles de données.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">7</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-7.html"><b><span style="font-size : 12pt">Les séries : blocs</span></b></a>
+		</td>
+		<td>
+			<p class="td">Particularité des séries de blocs. Les blocs de blocs. Les paths pour les blocs imbriqués. Les tableaux. La composition de blocs.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">8</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-8.html"><b><span style="font-size : 12pt">Les séries : chaînes </span></b></a>
+		</td>
+		<td>
+			<p class="td">Les fonctions spéciales propres aux chaînes de caractères et la conversion de valeurs en chaînes.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">9</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-9.html"><b><span style="font-size : 12pt">Les fonctions</span></b></a>
+		</td>
+		<td>
+			<p class="td">Evaluer des fonctions et leurs arguments. Définir des fonctions. Fonctions imbriquées, conduitionnelles, et anonymes. Attributs de fonction. Portée des variables. Réflectivité. Aide en ligne pour les fonctions. Voir le code source des fonctions.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">10</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-10.html"><b><span style="font-size : 12pt">Les objets</span></b></a>
+		</td>
+		<td>
+			<p class="td">Construire et cloner des objets. Accèder aux objets et à leurs attributs. Auto-réferencement (self). Encapsulation. Propriétés de réflectivité.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">11</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-11.html"><b><span style="font-size : 12pt">Maths</span></b></a>
+		</td>
+		<td>
+			<p class="td">Les types de données scalaires. L'ordre de l'évaluation. Les opérateurs et fonctions standards. Conversion de types. Comparaison. Fonctions logiques, trigonométriques, logarithmiques.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">12</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-12.html"><b><span style="font-size : 12pt">Les fichiers</span></b></a>
+		</td>
+		<td>
+			<p class="td">Noms des fichiers et chemins (paths). Lecture et écriture. Transformation de ligne et blocs de lignes. Accès aux répertoires et fonctions.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">13</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-13.html"><b><span style="font-size : 12pt">Les protocoles<BR>
+			réseau</span></b></a>
+		</td>
+		<td>
+			<p class="td">REBOL et le Réseau. Premier démarrage. DNS, Whois, Finger Daytime, HTTP, SMTP, POP, FTP, NNTP, CGI,
+			TCP, et UDP.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">14</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-14.html"><b><span style="font-size : 12pt">Les ports</span></b></a>
+		</td>
+		<td>
+			<p class="td">Les Ports I/O. Ouvrir, lire, écrire, fermer des ports. Mise à jour et mise en attente. Autres modes pour un port. Permissions de fichiers. Ports et répertoire.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#607040">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">15</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-15.html"><b><span style="font-size : 12pt">Le parsing</span></b></a>
+		</td>
+		<td>
+			<p class="td">Découper des chaînes. Régles de grammaire. Sauter des élèments. Correspondances. Récursivité et évaluation.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#3a4176">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">A1</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-a1.html"><b><span style="font-size : 12pt">Les valeurs</span></b></a>
+		</td>
+		<td>
+			<p class="td">Un résumé sur les type de données REBOL et les valeurs
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#3a4176">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">A2</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-a2.html"><b><span style="font-size : 12pt">Les erreurs</span></b></a>
+		</td>
+		<td>
+			<p class="td">Messages d'erreurs REBOL. Catégories d'erreurs. Captures des erreurs. L'objet erreur. Personnaliser ses erreurs.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#3a4176">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">A3</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="fr-rebolcore-a3.html"><b><span style="font-size : 12pt">La console</span></b></a>
+		</td>
+		<td>
+			<p class="td">Le prompt. Rappel de l'historique. Indicateur d'activité. Les opérations spécifiques à la console.
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#7b3537">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">C1</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="http://www.rebol.com/docs/changes.html"><b><span style="font-size : 12pt">Changements</span></b></a>
+		</td>
+		<td>
+			<p class="td">(en anglais) Ajouts à ce document couvrant les versions 2.3.0-2.5.X
+		</td>
+	</tr>
+	<tr>
+		<td width="32" bgcolor="#7b3537">
+			<p align="center" class="td"><b><span style="font-size : 12pt"><font color="white">C2</font></span></b>
+		</td>
+		<td  nowrap bgcolor="#eeeeee">
+			<p class="td"><a href="http://www.rebol.net/builds/"><b><span style="font-size : 12pt">Mises à jour</span></b></a>
+		</td>
+		<td>
+			<p class="td">Nouvelles versions de REBOL, qui incluent les version alpha et beta releases.
+		</td>
+	</tr>
+</table>
+</p>
+</center>
+<p align="center"><font size="1">Copyright REBOL Technologies. All Rights Reserved.</br>
+REBOL and the REBOL logo are trademarks of REBOL Technologies.</font>
+<p class="td">
+
+<map name="bar-map">
+<area shape="rect" coords = "0,0,150,28"  href="http://www.rebol.com">
+<area shape="rect" coords = "175,0,275,28"  href="http://www.rebol.com/docs.html">
+<area shape="rect" coords = "285,0,365,28"  href="http://www.rebol.com/docs/core23/rebolcore.html">
+<area shape="rect" coords = "375,0,445,28"  href="http://www.rebol.com/docs/dictionary.html">
+<area shape="rect" coords = "452,0,500,28"  href="http://www.rebol.com/library.html">
+<area shape="rect" coords = "510,0,575,28"  href="http://www.rebol.com/feedback.html">
+</map>
+
+</body>
+
+</html>

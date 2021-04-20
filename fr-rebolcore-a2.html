@@ -1,0 +1,1122 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Annexe 2 - Les Erreurs</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Annexe 2 - Les Erreurs</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Annexe 2 - Les Erreurs</h1>
+<div class="header">
+Ce document est la traduction française de l'Annexe 2 du User Guide de REBOL/Core,<br />qui concerne les erreurs.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-a2.html#section-1">1. Historique de la traduction</a><br />
+<a class="toc1" href="fr-rebolcore-a2.html#section-2">2. Présentation</a><br />
+<a class="toc1" href="fr-rebolcore-a2.html#section-3">3. Catégories d'erreurs</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-3.1">3.1 Erreurs de syntaxe</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-3.2">3.2 Erreurs de script</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-3.3">3.3 Erreurs mathématiques</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-3.4">3.4 Erreurs d'accès</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-3.5">3.5 Erreurs utilisateur</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-3.6">3.6 Erreurs internes</a><br />
+<a class="toc1" href="fr-rebolcore-a2.html#section-4">4. Capture des erreurs</a><br />
+<a class="toc1" href="fr-rebolcore-a2.html#section-5">5. L'objet erreur</a><br />
+<a class="toc1" href="fr-rebolcore-a2.html#section-6">6. Générer des erreurs</a><br />
+<a class="toc1" href="fr-rebolcore-a2.html#section-7">7. Messages d'erreurs</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-7.1">7.1 Erreur de syntaxe</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.1.1">7.1.1 invalid</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.1.2">7.1.2 missing</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.1.3">7.1.3 header</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-7.2">7.2 Erreurs de script</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.1">7.2.1 no-value</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.2">7.2.2 need-value</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.3">7.2.3 no-arg</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.4">7.2.4 expect-arg</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.5">7.2.5 expect-set</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.6">7.2.6 invalid-arg</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.7">7.2.7 invalid-op</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.8">7.2.8 no-op-arg</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.9">7.2.9 no-return</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.10">7.2.10 not-defined</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.11">7.2.11 no-refine</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.12">7.2.12 invalid-path</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.13">7.2.13 cannot-use</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.14">7.2.14 already-used</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.15">7.2.15 out-of-range</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.16">7.2.16 past-end</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.17">7.2.17 no-memory</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.18">7.2.18 wrong-denom</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.19">7.2.19 bad-press</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.20">7.2.20 bad-port-action</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.21">7.2.21 needs</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.22">7.2.22 locked-word</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.2.23">7.2.23 dup-vars</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-7.3">7.3 Erreurs d'accès</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.1">7.3.1 cannot-open</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.2">7.3.2 not-open</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.3">7.3.3 already-open</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.4">7.3.4 already-closed</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.5">7.3.5 invalid-spec</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.6">7.3.6 socket-open</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.7">7.3.7 no-connect</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.8">7.3.8 no-delete</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.9">7.3.9 no-rename</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.10">7.3.10 no-make-dir</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.11">7.3.11 timeout</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.12">7.3.12 new-level</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.13">7.3.13 security</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.3.14">7.3.14 invalid-path</a><br />
+<a class="toc2" href="fr-rebolcore-a2.html#section-7.4">7.4 Erreurs internes</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.4.1">7.4.1 bad-path</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.4.2">7.4.2 not-here</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.4.3">7.4.3 stack-overflow</a><br />
+<a class="toc3" href="fr-rebolcore-a2.html#section-7.4.4">7.4.4 globals-full</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>19 Septembre 2005 19:56</p>
+</td><td>
+<p>1.0.0</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Présentation</h2>
+<blockquote>
+<p>Les erreurs sont des exceptions qui se produisent lors de certaines situations anormales. 
+Ces situations peuvent se rencontrer pour des erreurs de syntaxe 
+jusqu'à des erreurs liées aux accès réseau ou fichiers.</p>
+<p>Voici quelques illustrations :</p>
+<pre>
+12-30
+<span class="output">** Syntax Error: Invalid date -- 12-30.
+** Where: (line 1) 12-30</span>
+1 / 0
+<span class="output">** Math Error: Attempt to divide by zero.
+** Where: 1 / 0</span>
+read %nofile.r
+<span class="output">** Access Error: Cannot open /example/nofile.r.
+** Where: read %nofile.r</span>
+</pre>
+<p>Les erreurs sont traitées au sein de langage comme des valeurs de datatype <b>error!</b>.
+Une erreur est un objet qui, s'il est évalué, affichera un message d'erreur et stoppera le programme. 
+Vous pouvez aussi capturer et manipuler des erreurs dans vos scripts. Les erreurs peuvent être passées 
+à des fonctions, ou récupérées depuis des fonctions, et affectées à des variables.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. Catégories d'erreurs</h2>
+<blockquote>
+<p>Il y a plusieurs catégories d'erreurs.</p>
+</blockquote>
+<p>
+<h3 id="section-3.1">3.1 Erreurs de syntaxe</h3>
+<blockquote>
+<p>Les erreurs de syntaxe surviennent quand un script REBOL utilise une syntaxe incorrecte. 
+Par exemple, si un crochet fermant est manquant ou qu'une apostrophe ne ferme pas une chaîne de 
+caractère, une erreur de syntaxe va être générée. Ces erreurs se produisent uniquement durant le 
+chargement ou l'évaluation d'un fichier ou d'une chaîne.</p>
+</blockquote>
+<p>
+<h3 id="section-3.2">3.2 Erreurs de script</h3>
+<blockquote>
+<p>Les erreurs de script sont en général des erreurs d'exécution. Par exemple, un argument invalide fourni 
+à une fonction causera une erreur de script.</p>
+</blockquote>
+<p>
+<h3 id="section-3.3">3.3 Erreurs mathématiques</h3>
+<blockquote>
+<p>Les erreurs mathématiques se produisent quand une opération mathématique ne peut être 
+effectuée. Par exemple, si une division par zéro est tentée, une erreur se produit.</p>
+</blockquote>
+<p>
+<h3 id="section-3.4">3.4 Erreurs d'accès</h3>
+<blockquote>
+<p>Les erreurs d'accès apparaissent quand un problème intervient lors de l'accès à un fichier, à un port 
+ou au réseau. Par exemple, une erreur d'accès se produira si vous essayez de lire un fichier qui n'existe pas.</p>
+</blockquote>
+<p>
+<h3 id="section-3.5">3.5 Erreurs utilisateur</h3>
+<blockquote>
+<p>Les erreurs utilisateurs sont générées explicitement par un script 
+en créant une valeur d'erreur et en la retournant.</p>
+</blockquote>
+<p>
+<h3 id="section-3.6">3.6 Erreurs internes</h3>
+<blockquote>
+<p>Les erreurs internes sont produites par l'interpréteur REBOL.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-4">4. Capture des erreurs</h2>
+<blockquote>
+<p>Vous pouvez récupérer les erreurs avec la fonction <b>try</b>.  
+La fonction <b>try</b> est similaire à la fonction <b>do</b>. Elle évalue un bloc, mais renvoie 
+toujours une valeur, même quand une erreur se produit. 
+Si aucune erreur n'est apparue, la fonction <b>try</b> retourne la valeur du bloc.</p>
+<p>Par exemple :</p>
+<pre>
+print try [100 / 10]
+<span class="output">10</span>
+</pre>
+<p>Quand une erreur apparaît, <b>try</b> renvoie cette erreur. Si vous écrivez :</p>
+<pre>
+print try [100 / 0]
+<span class="output">** Math Error: Attempt to divide by zero.
+** Where: 100 / 0</span>
+</pre>
+<p>l'erreur est renvoyée par la fonction <b>try</b> et la fonction <b>print</b> n'est pas effectuée.</p>
+<p>Pour manipuler les erreurs dans un script, vous devez empêcher REBOL d'évaluer l'erreur. 
+Vous pouvez éviter l'évaluation d'une erreur en la passant à une fonction. 
+Par exemple, la fonction <b>error?</b> renverra la valeur <b>true</b> si son argument est bien une erreur :</p>
+<pre>
+print error? try [100 / 0]
+<span class="output">true</span>
+</pre>
+<p>Vous pouvez aussi afficher le type de données de la valeur renvoyée par <b>try</b> :</p>
+<pre>
+print type? try [100 / 0]
+<span class="output">error!</span>
+</pre>
+<p>La fonction <b>disarm</b> convertit une erreur en un objet-erreur qui peut être examiné. 
+Dans l'exemple ci-dessous, la variable <i>error</i> fait référence à un objet renvoyé par <b>disarm</b> :</p>
+<pre>
+error: disarm try [100 / 0]
+</pre>
+<p>Quand une erreur est passée à la fonction <b>disarm</b>, elle est transformée en objet (type de données <b>object!</b>) 
+et n'est plus du type de données <b>error!</b>. L'évaluation de cet objet-erreur devient possible :</p>
+<pre>
+probe disarm try [100 / 0]
+make object! [
+    code: 400
+    type: 'math
+    id: 'zero-divide
+    arg1: none
+    arg2: none
+    arg3: none
+    near: [100 / 0]
+    where: none
+]
+</pre>
+<p>Les valeurs d'erreur peuvent être affectées à un mot avant d'être passées à la fonction <b>disarm</b>.
+Pour attribuer un mot à une erreur, celui-ci doit être précédé par une fonction afin d'éviter que l'erreur 
+soit réemployée ailleurs. Par exemple :</p>
+<pre>
+disarm err: try [100 / 0]
+</pre>
+<p>Associer l'erreur à un mot vous permet de récupérer sa valeur plus tard. L'exemple ci-dessous 
+illustre le cas où il peut y avoir ou non une erreur :</p>
+<pre>
+either error? result: try [100 / 0] [
+    probe disarm result
+][
+    print result
+]
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-5">5. L'objet erreur</h2>
+<blockquote>
+<p>L'objet erreur montré précédemment a la structure :</p>
+<pre>
+make object! [
+    code: 400
+    type: 'math
+    id: 'zero-divide
+    arg1: none
+    arg2: none
+    arg3: none
+    near: [100 / 0]
+    where: none
+]
+</pre>
+<p>avec les champs suivants :</p>
+<table cellspacing="6" border="0" width="95%">
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>code</b></td><td valign="top">Le numéro du code d'erreur. Obsolète, ne devrait plus être utilisé.
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>type</b></td><td valign="top">Le champ <b>type</b> identifie la catégorie d'erreur. Il s'agit toujours d'un mot comme 
+syntax, script, math, access, user, ou internal.
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>id</b></td><td valign="top">la champ id est le nom de l'erreur, sous forme de mot REBOL. Il identifie 
+spécifiquement l'erreur au sein de sa catégorie.
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>arg1</b></td><td valign="top">Ce champ contient le premier argument du message d'erreur. Par exemple, il peut 
+inclure le type de donnée de la valeur ayant causé l'erreur. 
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>arg2</b></td><td valign="top">Ce champ contient le second argument du message d'erreur.
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>arg3</b></td><td valign="top">Ce champ contient le troisième argument du message d'erreur.
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>near</b></td><td valign="top">Le champ near est un morceau de code censé indiquer l'endroit où 
+l'erreur s'est produite.
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>where</b></td><td valign="top">Ce champ est un champ reservé.
+</td></tr>
+</table>
+<p>Vous pouvez écrire du code qui va contrôler chacun des champs de l'objet erreur. 
+Dans cet exemple, l'erreur est affichée seulement si le champ <b><i>id</i></b> indique une 
+division par zéro :</p>
+<pre>
+error: disarm try [1 / 0]
+if error/id = 'zero-divide [
+    print {It is a Divide by Zero error}
+]
+<span class="output">It is a Divide by Zero error</span>
+</pre>
+<p>Le champ <b><i>id</i></b> de l'erreur fournit aussi le bloc qui sera affiché par l'interpréteur. 
+Par exemple :</p>
+<pre>
+error: disarm try [print zap]
+probe get error/id
+<span class="output">[:arg1 "has no value"]</span>
+</pre>
+<p>Ce bloc est défini par l'objet <b>system/error</b>.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-6">6. Générer des erreurs</h2>
+<blockquote>
+<p>Il est possible de fabriquer des erreurs pour votre propre usage. 
+Le moyen le plus simple est de les générer en faisant appel à la fonction <b>make</b>. 
+Voici un exemple :</p>
+<pre>
+make error! "this is an error"
+<span class="output">** User Error: this is an error.
+** Where: make error! "this is an error"</span>
+</pre>
+<p>N'importe quelle erreur existante peut être générée en la fabriquant avec un argument de type <b>block!</b>.
+Ce bloc doit contenir le nom de la catégorie d'erreur, et la désignation spécifique (id) de celle-ci. 
+Les arguments arg1, arg2, et arg3 définissent l'erreur dans l'objet erreur créé.</p>
+<p>Voici un exemple :</p>
+<pre>
+make error! [script expect-set series! number!]
+<span class="output">** Script Error: Expected one of: series! - not: number!.
+** Where: make error! [script expect-set series! number!]</span>
+</pre>
+<p><b>NdT</b> : ici <i>script</i> fait référence à la catégorie, <i>expect-set</i> à l'id, et <i>series!</i>, <i>number!</i> sont les 
+arguments.</p>
+<p>Les erreurs personnalisées peuvent être incluses dans l'objet <b>system/error</b>, et la catégorie "user".
+Ceci est réalisé en fabriquant une nouvelle catégorie "user" avec de nouvelles entrées. 
+Ces entrées sont utilisées lorsque des erreurs se produisent. Pour illustrer ceci, l'exemple suivant 
+ajoute une erreur dans la catégorie "user".</p>
+<pre>
+system/error/user: make system/error/user [
+    my-error: "a simple error"
+]
+</pre>
+<p>A présent, une erreur peut être produite, et utiliser le message de l'id <i>my-error</i> :</p>
+<pre>
+if error? err: try [
+    make error! [user my-error]
+] [probe disarm err]
+<span class="output">make object! [
+    code: 803
+    type: 'user
+    id: 'my-error
+    arg1: none
+    arg2: none
+    arg3: none
+    near: [make error! [user my-error]]
+    where: none
+]</span>
+</pre>
+<p>Pour créer des erreurs avec plus d'informations, définissez une erreur qui utilise les données 
+courantes lorsqu'elle est générée. Ces données seront incluses dans l'objet erreur, et affichées en tant 
+qu'éléments de cet objet. Par exemple, pour utiliser les trois champs d'arguments dans l'objet erreur :</p>
+<pre>
+system/error/user: make system/error/user [
+    my-error: [:arg1 "doesn't go into" :arg2 "using" :arg3]
+]
+
+if error? err: try [
+    make error! [user my-error [this] "that" my-function]
+] [probe disarm err]
+<span class="output">make object! [
+    code: 803
+    type: 'user
+    id: 'my-error
+    arg1: [this]
+    arg2: "that"
+    arg3: 'my-function
+    near: [make error! [user my-error [this] "that" my-function]]
+    where: none
+]</span>
+</pre>
+<p>Le message d'erreur produit pour my-error peut être affiché, sans bloquer l'exécution du script :</p>
+<pre>
+disarmed: disarm err
+print bind (get disarmed/id) (in disarmed 'id)
+<span class="output">this doesn't go into that using my-function</span>
+</pre>
+<p>Une nouvelle catégorie d'erreur peut aussi être créée si vous avez besoin de grouper un ensemble 
+spécifique d'erreurs :</p>
+<pre>
+system/error: make system/error [
+    my-errors: make object! [
+    code: 1000
+    type: "My Error Category"
+    error1: "a simple error"
+    error2: [:arg1 "doesn't go into" :arg2 "using" :arg3]
+    ]
+]
+</pre>
+<p>Le type défini l'objet erreur correspond au type d'erreur affiché quand l'erreur se produit. 
+L'exemple suivant illustre la génération d'erreurs pour deux sortes d'erreurs (error1 et error2) dans 
+la catégorie my-error .</p>
+<p>Création d'une erreur à partir d'error1. Cette erreur ne requiert aucun argument.</p>
+<pre>
+disarmed: disarm try [make error! [my-errors error1]]
+print get disarmed/id
+<span class="output">a simple error</span>
+</pre>
+<p>La création d'une erreur à partir d'error2 nécessite, elle, trois arguments :</p>
+<pre>
+disarmed: disarm try [
+make error! [my-errors error2 [this] "that" my-function]]
+print bind (get disarmed/id) (in disarmed 'id)
+<span class="output">this doesn't go into that using my-function</span>
+</pre>
+<p>Et pour finir, la description de la catégorie définie dans my-errors peut être obtenue ainsi :</p>
+<pre>
+probe get in get disarmed/type 'type
+<span class="output">My Error Category</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-7">7. Messages d'erreurs</h2>
+<blockquote>
+<p>La liste ci-dessous présente toutes les erreurs définies dans l'objet <b>system/error</b> :</p>
+</blockquote>
+<p>
+<h3 id="section-7.1">7.1 Erreur de syntaxe</h3>
+<blockquote>
+<p>
+<h4 id="section-7.1.1">7.1.1 invalid</h4>
+<p>Les données ne peuvent pas être transposées en un type valide de données REBOL. 
+En d'autres termes, une valeur mal formée a été évaluée.</p>
+<p>Message :</p>
+<pre>
+["Invalid" :arg1 "--" :arg2]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [load "1024AD"]
+<span class="output">** Syntax Error: Invalid integer -- 1024AD
+** Where: (line 1) 1024AD</span>
+</pre>
+<p>
+<h4 id="section-7.1.2">7.1.2 missing</h4>
+<p>Un bloc, une chaîne de caractère ou une expression à parenthèses (paren!) souffre d'un défaut : 
+Une parenthèse, un crochet, un guillemet,  ou une accolade manque.</p>
+<p>Message :</p>
+<p>["Missing" :arg2 "at" :arg1]</p>
+<p>Exemple :</p>
+<pre>
+filter-error try [load "("]
+<span class="output">** Syntax Error: Missing ) at end-of-script
+** Where: (line 1) (</span>
+</pre>
+<p>
+<h4 id="section-7.1.3">7.1.3 header</h4>
+<p>Une évaluation d'un fichier en tant que script REBOL a été essayée, mais 
+le fichier ne présente pas d'en-tête REBOL (header).</p>
+<p>Message :</p>
+<pre>
+Script is missing a REBOL header
+</pre>
+<p>Exemple :</p>
+<pre>
+write %no-header.r {print "data"}
+filter-error try [do %no-header.r]
+<span class="output">** Syntax Error: Script is missing a REBOL header
+** Where: do %no-header.r</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.2">7.2 Erreurs de script</h3>
+<blockquote>
+<p>
+<h4 id="section-7.2.1">7.2.1 no-value</h4>
+<p>Une évaluation a été essayée sur un mot qui n'est pas défini.</p>
+<p>Message :</p>
+<pre>
+[:arg1 "has no value"]
+</pre>
+<p>Example :</p>
+<pre>
+filter-error try [undefined-word]
+<span class="output">** Script Error: undefined-word has no value
+** Where: undefined-word</span>
+</pre>
+<p>
+<h4 id="section-7.2.2">7.2.2 need-value</h4>
+<p>Un essai de définir un mot sans rien a été fait. Un set-word (mot à définir) a été utilisé sans argument.</p>
+<p>Message :</p>
+<pre>
+[:arg1 "needs a value"]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [set-to-nothing:]
+<span class="output">** Script Error: set-to-nothing needs a value
+** Where: set-to-nothing:</span>
+</pre>
+<p>
+<h4 id="section-7.2.3">7.2.3 no-arg</h4>
+<p>Une fonction a été évaluée sans lui fournir tous les arguments attendus.</p>
+<p>Message :</p>
+<pre>
+[:arg1 "is missing its" :arg2 "argument"]
+</pre>
+<p>Exemple :</p>
+<pre>
+f: func [b][probe b]
+filter-error try [f]
+<span class="output">** Script Error: f is missing its b argument
+** Where: f</span>
+</pre>
+<p>
+<h4 id="section-7.2.4">7.2.4 expect-arg</h4>
+<p>Un argument a été fourni à une fonction mais n'était pas du type de données attendu.</p>
+<p>Message :</p>
+<pre>
+[:arg1 "expected" :arg2 "argument of type:" :arg3]
+</pre>
+<p>Exemple :</p>
+<pre>
+f: func [b [block!]][probe b]
+filter-error try [f "string"]
+<span class="output">** Script Error: f expected b argument of type: block
+** Where: f "string"</span>
+</pre>
+<p>
+<h4 id="section-7.2.5">7.2.5 expect-set</h4>
+<p>Deux valeurs de type serie! sont utilisées l'une avec l'autre d'une façon non compatible. 
+Par exemple, en tentant la réunion entre une chaîne de caractères et un bloc.</p>
+<p>Message :</p>
+<pre>
+["Expected one of:" :arg1 "- not:" :arg2]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [union [a b c] "a b c"]
+<span class="output">** Script Error: Expected one of: block! - not: string!
+** Where: union [a b c] "a b c"</span>
+</pre>
+<p>
+<h4 id="section-7.2.6">7.2.6 invalid-arg</h4>
+<p>Voici une erreur générique lorsqu'on manipule incorrectement des valeurs. 
+Par exemple, lorsque qu'un set-word est utilisé à l'intérieur du bloc 
+de spécification d'une fonction :</p>
+<p>Message :</p>
+<pre>
+["Invalid argument:" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [f: func [word:][probe word]]
+<span class="output">** Script Error: Invalid argument: word
+** Where: func [word:] [probe word]</span>
+</pre>
+<p>
+<h4 id="section-7.2.7">7.2.7 invalid-op</h4>
+<p>Un essai a été fait d'utiliser un opérateur qui a déjà été redéfini. L'opérateur utilisé n'est plus un 
+opérateur valide.</p>
+<p>Message :</p>
+<pre>
+["Invalid operator:" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+*: "operator redefined to a string"
+filter-error try [5 * 10]
+<span class="output">** Script Error: Invalid operator: *
+** Where: 5 * 10</span>
+</pre>
+<p>
+<h4 id="section-7.2.8">7.2.8 no-op-arg</h4>
+<p>Un opérateur mathématique ou de comparaison a été utilisé sans que soit fourni un deuxième argument.</p>
+<p>Message :</p>
+<pre>
+Operator is missing an argument
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [1 +]
+<span class="output">** Script Error: Operator is missing an argument
+** Where: 1 +</span>
+</pre>
+<p>
+<h4 id="section-7.2.9">7.2.9 no-return</h4>
+<p>Une fonction attendant d'un bloc une valeur de retour ne peut rien retourner. 
+Par exemple, lors de l'usage des fonctions <b>while</b> et <b>until</b>.</p>
+<p>Message :</p>
+<pre>
+Block did not return a value
+</pre>
+<p>Examples:</p>
+<pre>
+filter-error try [ ; first block returns nothing
+    while [print 10][probe "ten"]
+]
+<span class="output">10
+** Script Error: Block did not return a value
+** Where: while [print 10] [probe "ten"]</span>
+filter-error try [
+    until [print 10] ; block returns nothing
+]
+<span class="output">10
+** Script Error: Block did not return a value
+** Where: until [print 10]</span>
+</pre>
+<p>
+<h4 id="section-7.2.10">7.2.10 not-defined</h4>
+<p>Un mot utilisé n'était pas défini dans quel que contexte que ce soit.</p>
+<p>Message :</p>
+<pre>
+[:arg1 "is not defined in this context"]
+</pre>
+<p>
+<h4 id="section-7.2.11">7.2.11 no-refine</h4>
+<p>Une tentative a été faite d'utiliser pour une fonction un raffinement 
+qui n'existe pas.</p>
+<p>Message :</p>
+<pre>
+[:arg1 "has no refinement called" :arg2]
+</pre>
+<p>Exemple :</p>
+<pre>
+f: func [/a] [if a [print "a"]]
+filter-error try [f/b]
+<span class="output">** Script Error: f has no refinement called b
+** Where: f/b</span>
+</pre>
+<p>
+<h4 id="section-7.2.12">7.2.12 invalid-path</h4>
+<p>Un essai a été fait d'accéder à une valeur dans un bloc ou un objet 
+en utilisant un path qui n'existe pas au sein du bloc ou de l'objet.</p>
+<p>Message :</p>
+<pre>
+["Invalid path value:" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+blk: [a "a" b "b"]
+filter-error try [print blk/c]
+<span class="output">** Script Error: Invalid path value: c
+** Where: print blk/c</span>
+obj: make object! [a: "a" b: "b"]
+filter-error try [print obj/d]
+<span class="output">** Script Error: Invalid path value: d
+** Where: print obj/d</span>
+</pre>
+<p>
+<h4 id="section-7.2.13">7.2.13 cannot-use</h4>
+<p>Une opération a été exécutée sur une valeur d'un type de données incompatible avec l'opération. 
+Par exemple, en essayant d'ajouter une chaîne de caractères à un nombre.</p>
+<p>Message :</p>
+<pre>
+["Cannot use" :arg1 "on" :arg2 "value"]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [1 + "1"]
+<span class="output">** Script Error: Cannot use add on string! value
+** Where: 1 + "1"</span>
+</pre>
+<p>
+<h4 id="section-7.2.14">7.2.14 already-used</h4>
+<p>Un essai a été fait pour faire un alias avec un mot qui a déjà été 
+utilisé en alias.</p>
+<p>Message :</p>
+<pre>
+["Alias word is already in use:" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+alias 'print "prink"
+filter-error try [alias 'probe "prink"]
+<span class="output">** Script Error: Alias word is already in use: prink
+** Where: alias 'probe "prink"</span>
+</pre>
+<p>
+<h4 id="section-7.2.15">7.2.15 out-of-range</h4>
+<p>Un essai est fait de modifier un index invalide d'une série.</p>
+<p>Message :</p>
+<pre>
+["Value out of range:" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+blk: [1 2 3]
+filter-error try [poke blk 5 "five"]
+<span class="output">** Script Error: Value out of range: 5
+** Where: poke blk 5 "five"</span>
+</pre>
+<p>
+<h4 id="section-7.2.16">7.2.16 past-end</h4>
+<p>Une tentative d'accès à une série au delà de la longueur de la série.</p>
+<p>Message :</p>
+<pre>
+Out of range or past end
+</pre>
+<p>Exemple :</p>
+<pre>
+blk: [1 2 3]
+filter-error try [print fourth blk]
+<span class="output">** Script Error: Out of range or past end
+** Where: print fourth blk</span>
+</pre>
+<p>
+<h4 id="section-7.2.17">7.2.17 no-memory</h4>
+<p>Le système ne dispose plus d'assez de mémoire pour terminer l'opération.</p>
+<p>Message :</p>
+<pre>
+Not enough memory
+</pre>
+<p>
+<h4 id="section-7.2.18">7.2.18 wrong-denom</h4>
+<p>Une opération mathématique a été effectuée sur des valeurs monétaires 
+de dénominations différentes. Par exemple, en tentant d'ajouter USD$1.00 à DEN$1.50.</p>
+<p>Message :</p>
+<pre>
+[:arg1 "not same denomination as" :arg2]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [US$1.50 + DM$1.50]
+<span class="output">** Script Error: US$1.50 not same denomination as DM$1.50
+** Where: US$1.50 + DM$1.50</span>
+</pre>
+<p>
+<h4 id="section-7.2.19">7.2.19 bad-press</h4>
+<p>Une tentative pour décompresser une valeur binaire corrompue ou en format non compressé.</p>
+<p>Message :</p>
+<pre>
+["Invalid compressed data - problem:" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+compressed: compress {some data}
+change compressed "1"
+filter-error try [decompress compressed]
+<span class="output">** Script Error: Invalid compressed data - problem: -3
+** Where: decompress compressed</span>
+</pre>
+<p>
+<h4 id="section-7.2.20">7.2.20 bad-port-action</h4>
+<p>Une tentative pour effectuer une action non supportée sur un port. 
+Par exemple, en tentant d'utiliser <b>find</b> sur un port TCP.</p>
+<p>Message :</p>
+<pre>
+["Cannot use" :arg1 "on this type port"]
+</pre>
+<p>
+<h4 id="section-7.2.21">7.2.21 needs</h4>
+<p>Se produit lors de l'exécution d'un script qui nécessite une nouvelle version de REBOL 
+ou quand un fichier ne peut être trouvé. Cette information devra être trouvée dans l'en-tête 
+du script REBOL.</p>
+<p>Message :</p>
+<pre>
+["Script needs:" :arg1]
+</pre>
+<p>
+<h4 id="section-7.2.22">7.2.22 locked-word</h4>
+<p>Apparaît lorsqu'une tentative est faite visant à modifier un mot protégé. Le mot devra avoir été 
+protégé avec la fonction <b>protect</b>.</p>
+<p>Message :</p>
+<pre>
+["Word" :arg1 "is protected, cannot modify"]
+</pre>
+<p>Exemple :</p>
+<pre>
+my-word: "data"
+protect 'my-word
+filter-error try [my-word: "new data"]
+<span class="output">** Script Error: Word my-word is protected, cannot modify
+** Where: my-word: "new data"</span>
+</pre>
+<p>
+<h4 id="section-7.2.23">7.2.23 dup-vars</h4>
+<p>Une fonction a été évaluée et possède plusieurs occurrences du même mot défini dans son 
+bloc de spécification. Par exemple, si le mot arg a été défini à la fois comme premier et second argument.</p>
+<p>Message :</p>
+<pre>
+["Duplicate function value:" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [f: func [a /local a][print a]]
+<span class="output">** Script Error: Duplicate function value: a
+** Where: func [a /local a] [print a]</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.3">7.3 Erreurs d'accès</h3>
+<blockquote>
+<p>
+<h4 id="section-7.3.1">7.3.1 cannot-open</h4>
+<p>Un fichier ne peut être ouvert. Il peut s'agir d'un fichier en local ou en réseau. 
+L'une des raisons la plus courante est la non existence du répertoire.</p>
+<p>Message :</p>
+<pre>
+["Cannot open" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [read %/c/path-not-here]
+<span class="output">** Access Error: Cannot open /c/path-not-here
+** Where: read %/c/path-not-here</span>
+</pre>
+<p>
+<h4 id="section-7.3.2">7.3.2 not-open</h4>
+<p>Un essai a été fait d'utiliser un port qui était fermé.</p>
+<p>Message :</p>
+<pre>
+["Port" :arg1 "not open"]
+</pre>
+<p>Exemple :</p>
+<pre>
+p: open %file.txt
+close p
+filter-error try [copy p]
+<span class="output">** Access Error: Port file.txt not open
+** Where: copy p</span>
+</pre>
+<p>
+<h4 id="section-7.3.3">7.3.3 already-open</h4>
+<p>Se produit lorsqu'on essaye d'ouvrir un port déjà ouvert.</p>
+<p>Message :</p>
+<pre>
+["Port" :arg1 "already open"]
+</pre>
+<p>Exemple :</p>
+<pre>
+p: open %file.txt
+filter-error try [open p]
+<span class="output">** Access Error: Port file.txt already open
+** Where: open p</span>
+</pre>
+<p>
+<h4 id="section-7.3.4">7.3.4 already-closed</h4>
+<p>Se produit lorsqu'on essaye de fermer un port qui a déjà 
+été fermé.</p>
+<p>Message :</p>
+<pre>
+["Port" :arg1 "already closed"]
+</pre>
+<p>Exemple :</p>
+<pre>
+p: open %file.txt
+close p
+filter-error try [close p]
+<span class="output">** Access Error: Port file.txt not open
+** Where: close p</span>
+</pre>
+<p>
+<h4 id="section-7.3.5">7.3.5 invalid-spec</h4>
+<p>Apparaît lorsqu'on essaye de créer un port avec la fonction <b>make</b>, 
+en utilisant des spécifications incorrectes ou inadaptées ne permettant pas de le créer.</p>
+<p>Message :</p>
+<pre>
+["Invalid port spec:" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [p: make port! [scheme: 'naughta]]
+<span class="output">** Access Error: Invalid port spec: scheme naughta
+** Where: p: make port! [scheme: 'naughta]</span>
+</pre>
+<p>
+<h4 id="section-7.3.6">7.3.6 socket-open</h4>
+<p>Le système d'exploitation ne dispose plus de sockets à allouer.</p>
+<p>Message :</p>
+<pre>
+["Error opening socket" :arg1]
+</pre>
+<p>
+<h4 id="section-7.3.7">7.3.7 no-connect</h4>
+<p>Une connexion défectueuse avec une autre machine. C'est une erreur générique qui couvre 
+plusieurs situations possibles d'erreur lors de la connexion. Si une raison plus précise est connue, 
+une erreur plus spécifique est générée.</p>
+<p>Message :</p>
+<pre>
+["Cannot connect to" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [read http://www.host.dom/]
+<span class="output">** Access Error: Cannot connect to www.host.dom
+** Where: read http://www.host.dom/</span>
+</pre>
+<p>
+<h4 id="section-7.3.8">7.3.8 no-delete</h4>
+<p>Se produit lorsqu'on essaye de supprimer un fichier qui est utilisé par un autre processus, ou protégé.</p>
+<p>Message :</p>
+<pre>
+["Cannot delete" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+p: open %file.txt
+filter-error try [delete %file.txt]
+<span class="output">** Access Error: Cannot delete file.txt
+** Where: delete %file.txt</span>
+</pre>
+<p>
+<h4 id="section-7.3.9">7.3.9 no-rename</h4>
+<p>Une tentative a été faite de renommer un fichier utilisé par un autre processus ou protégé.</p>
+<p>Message :</p>
+<pre>
+["Cannot rename" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+p: open %file.txt
+filter-error try [rename %file.txt %new-name.txt]
+<span class="output">** Access Error: Cannot rename file.txt
+** Where: rename %file.txt %new-name.txt</span>
+</pre>
+<p>
+<h4 id="section-7.3.10">7.3.10 no-make-dir</h4>
+<p>Une tentative de création d'un répertoire avec un chemin (path) qui n'existe pas ou qui 
+a été protégé en écriture.</p>
+<p>Message :</p>
+<pre>
+["Cannot make directory" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [make-dir %/c/no-path/dir]
+<span class="output">** Access Error: Cannot make directory /c/no-path/dir/
+** Where: m-dir path return path</span>
+</pre>
+<p>
+<h4 id="section-7.3.11">7.3.11 timeout</h4>
+<p>Le délai de time-out s'est écoulé sans qu'une réponse ait été reçue d'une autre machine. 
+Le time-out est défini dans l'attribut <b>timeout</b> du port.</p>
+<p>Message :</p>
+<pre>
+Network timeout
+</pre>
+<p>
+<h4 id="section-7.3.12">7.3.12 new-level</h4>
+<p>Une tentative a été faite dans un script d'abaisser la sécurité, vers un niveau qui a été interdit. 
+Lorsqu'un script demande à abaisser le niveau de sécurité et que l'utilisateur refuse, cette erreur est générée.</p>
+<p>Message :</p>
+<pre>
+["Attempt to change security level to" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+secure quit
+filter-error try [secure none] ; denied request
+<span class="output">secure none</span>
+</pre>
+<p>
+<h4 id="section-7.3.13">7.3.13 security</h4>
+<p>Une violation de sécurité s'est produite. Ceci arrive lorsqu'une tentative d'accès à un fichier ou au réseau est 
+réalisée, avec un niveau de sécurité positionné sur "throw".</p>
+<p>Message :</p>
+<pre>
+REBOL - Security Violation
+</pre>
+<p>Exemple :</p>
+<pre>
+secure throw
+filter-error try [open %file.txt]
+<span class="output">** Access Error: REBOL - Security Violation
+** Where: open %file.txt
+secure none</span>
+</pre>
+<p>
+<h4 id="section-7.3.14">7.3.14 invalid-path</h4>
+<p>Un path mal formé a été employé.</p>
+<p>Message :</p>
+<pre>
+["Bad file path:" :arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+filter-error try [read %/]
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.4">7.4 Erreurs internes</h3>
+<blockquote>
+<p>
+<h4 id="section-7.4.1">7.4.1 bad-path</h4>
+<p>Un chemin commencant par un mot invalide a été évalué.</p>
+<p>Message :</p>
+<pre>
+["Bad path:" arg1]
+</pre>
+<p>Exemple :</p>
+<pre>
+path: make path! [1 2 3]
+filter-error try [path]
+<span class="output">** Internal Error: Bad path: 1
+** Where: path</span>
+</pre>
+<p>
+<h4 id="section-7.4.2">7.4.2 not-here</h4>
+<p>Se produit lorsqu'on essaye d'utiliser des caractéristiques de REBOL/Command ou 
+de REBOL/View à partir de REBOL/Core.</p>
+<p>Message :</p>
+<pre>
+[arg1 "not supported on your system"]
+</pre>
+<p>
+<h4 id="section-7.4.3">7.4.3 stack-overflow</h4>
+<p>Un débordement de la mémoire du système en exécutant une opération.</p>
+<p>Message :</p>
+<pre>
+["Stack overflow"]
+</pre>
+<p>Exemple :</p>
+<pre>
+call-self: func [][call-self]
+filter-error try [call-self]
+<span class="output">** Internal Error: Stack overflow
+** Where: call-self</span>
+</pre>
+<p>
+<h4 id="section-7.4.4">7.4.4 globals-full</h4>
+<p>Le nombre maximum autorisé de définitions de mots globaux a été dépassé.</p>
+<p>Message :</p>
+<pre>
+["No more global variable space"]
+</pre>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 8-Apr-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>

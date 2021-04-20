@@ -1,0 +1,759 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Chapitre 14 - Les Ports</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Chapitre 14 - Les Ports</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Chapitre 14 - Les Ports</h1>
+<div class="header">
+Ce document est la traduction française du Chapitre 14 du User Guide <br />de REBOL/Core,  qui concerne les Ports.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-14.html#section-1">1. Historique de la traduction</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-2">2. Généralités</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-3">3. Ouverture d'un port</a><br />
+<a class="toc2" href="fr-rebolcore-14.html#section-3.1">3.1 La fonction open</a><br />
+<a class="toc2" href="fr-rebolcore-14.html#section-3.2">3.2 Raffinements de la fonction open</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-4">4. Fermeture d'un port</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-5">5. Lecture du contenu d'un port</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-6">6. Ecriture dans un port</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-7">7. Mise à jour d'un port</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-8">8. Attente sur un port</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-9">9. Autres modes pour un port</a><br />
+<a class="toc2" href="fr-rebolcore-14.html#section-9.1">9.1 Mode ligne</a><br />
+<a class="toc2" href="fr-rebolcore-14.html#section-9.2">9.2 Ecriture et lecture seules</a><br />
+<a class="toc2" href="fr-rebolcore-14.html#section-9.3">9.3 Accés en mode direct</a><br />
+<a class="toc2" href="fr-rebolcore-14.html#section-9.4">9.4 Sauter des données</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-10">10. Permissions d'accès sur les fichiers</a><br />
+<a class="toc1" href="fr-rebolcore-14.html#section-11">11. Ports relatifs aux répertoires</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>29 avril 2005 17:55</p>
+</td><td>
+<p>1.0.1</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr><tr class="md-cell" ><td>
+<p>20 mai 18:55</p>
+</td><td>
+<p>1.0.1</p>
+</td><td>
+<p>Corrections mineures</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+<p><br />
+<br /></p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Généralités</h2>
+<blockquote>
+<p>Les ports permettent d'accéder à des séries externes résultant de fichiers, du réseau, 
+de consoles, de périphériques externes, d'évenements, de codecs, ou de bases de données.</p>
+<p>Les données d'un port sont traitées en utilisant les fonctions standards de REBOL 
+propres aux séries, comme décrit dans <a href="fr-rebolcore-6.html">le chapitre sur les Séries</a>.</p>
+<p>Les ports sont utilisés aussi bien pour des entrées que pour des sorties de données.</p>
+<p>Les types de données manipulés par un port dépendent de la façon dont celui-ci a été ouvert.</p>
+<p>Trois types de données sont possibles :</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Type</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>String</b></p>
+</td><td>
+<p>une série d'octets, avec conversion des sauts de lignes (par défaut)<br></p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Binary</b></p>
+</td><td>
+<p>une série d'octets, sans modification de la donnée<br /></p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Block</b></p>
+</td><td>
+<p>une série de valeurs REBOL<br></p>
+</td></tr></table>
+<p>
+<p><br><br>
+Un port peut être ouvert dans l'un des deux modes suivants (<i>buffering modes</i>) :
+<br></p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Mode</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Mise en buffer</b> (<i>buffered</i>)</p>
+</td><td>
+<p>toutes les données sont conservées en mémoire  (par défaut)<br></p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Direct</b></p>
+</td><td>
+<p>les données ne sont pas conservées en mémoire<br></p>
+</td></tr></table>
+<p>
+<p><br><br>
+De plus, un port peut être ouvert avec :
+<br></p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Type</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>Wait</b></p>
+</td><td>
+<p>le port attend, écoute, pour savoir si des données arrivent (par défaut)</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>No-wait</b></p>
+</td><td>
+<p>aucune attente de données</p>
+</td></tr></table>
+<p>
+<p><br><br></p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. Ouverture d'un port</h2>
+<blockquote>
+</blockquote>
+<p>
+<h3 id="section-3.1">3.1 La fonction open</h3>
+<blockquote>
+<p>La fonction <b>open</b> initialise l'accès à un port selon des paramètres, qui 
+lui ont été spécifiés. <br>La fonction peut être invoquée avec un nom de fichier, une URL, 
+ou un objet. <br>De plus, il existe plusieurs raffinements qui affecterons l'opération 
+d'ouverture ou l'accès au contenu du port.</p>
+<p>La méthode la plus simple pour utiliser <b>open</b> est de lui fournir un nom de 
+fichier, ou une URL en argument.</p>
+<p>Dans l'exemple ci-dessous, un port de type fichier est ouvert :</p>
+<pre>
+fp: open %file.txt
+</pre>
+<p>La variable <i>fp</i> référence le port. <br>Si le port n'est pas ouvert, 
+une erreur se produira. <br>Si besoin, l'erreur peut être capturée avec la 
+fonction <b>try</b>.</p>
+<p>Par défaut, le port est ouvert en mode "<i>buffered</i>".</p>
+<p>Cela signifie qu'un fichier est accèdé et modifié en mémoire, 
+et que les changements ne sont pas écrits dans le fichier 
+tant que le port n'est pas fermé ou mis à jour.</p>
+<p>Pour les fichiers, la fonction <b>open</b> créera automatiquement le fichier 
+si celui-ci n'existe pas auparavant.</p>
+<pre>
+close open %somefile.txt
+if exists? %somefile.txt [print "somefile exists"]
+<span class="output">somefile exists</span>
+</pre>
+<p>Le raffinement <b>/new</b> peut être utilisé pour remplacer un fichier existant.</p>
+<pre>
+write %somefile.txt "text in some file"
+print read %somefile.txt
+<span class="output">text in some file</span>
+close insert open/new %somefile.txt "new data"
+print read %somefile.txt
+<span class="output">new data</span>
+</pre>
+<p>Une fois le port ouvert, les opérations relatives aux séries comme <b>copy</b>, 
+<b>insert</b>, <b>remove</b>, <b>clear</b>, <b>first</b>, <b>next</b>, et <b>length?</b> 
+peuvent être utilisées pour accèder au contenu du port et le modifier.
+<br></p>
+</blockquote>
+<p>
+<h3 id="section-3.2">3.2 Raffinements de la fonction open</h3>
+<blockquote>
+<p>La fonction <b>open</b> accepte un certain nombre de raffinements qui 
+peuvent être utilisés pour modifier son comportement :</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Raffinement</p>
+</b></td><td><b>
+<p>Description</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/binary</b></p>
+</td><td>
+<p>les données du port sont binaires</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/string</b></p>
+</td><td>
+<p>les données sont de type texte, les fins de ligne 
+sont automatiquement converties</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/with</b></p>
+</td><td>
+<p>précise une fin de ligne spéciale</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/lines</b></p>
+</td><td>
+<p>manipule les données une ligne à la fois ou comme un 
+bloc de lignes</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/direct</b></p>
+</td><td>
+<p>ne met pas en mémoire</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/new</b></p>
+</td><td>
+<p>crée ou recrée la cible d'un port</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/read</b></p>
+</td><td>
+<p>ouverture en mode lecture seule</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/write</b></p>
+</td><td>
+<p>open for write only operation</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/no-wait</b></p>
+</td><td>
+<p>pas d'attente pour les données</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/skip</b></p>
+</td><td>
+<p>saute une partie des données</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/allow</b></p>
+</td><td>
+<p>définit les attributs des fichiers</p>
+</td></tr><tr class="md-cell" ><td>
+<p>&nbsp;<b>/custom</b></p>
+</td><td>
+<p>permet des raffinements spéciaux</p>
+</td></tr></table>
+<p>
+<p><br><br></p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-4">4. Fermeture d'un port</h2>
+<blockquote>
+<p>L'accès à un port se termine quand la fonction <b>close</b> est invoquée.</p>
+<p>Toutes les données en mémoire qui n'ont pas été sauvées seront écrites 
+dans le fichier cible.</p>
+<p>L'exemple ci-dessous ferme le port <i>fp</i> utilisé précedemment.</p>
+<pre>
+close fp
+</pre>
+<p>Si vous tentez de fermer un port qui n'est pas ouvert, une erreur se produira.</p>
+<p>Un port qui a été fermé peut être réouvert, avec la fonction <b>open</b> :</p>
+<pre>
+open fp
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-5">5. Lecture du contenu d'un port</h2>
+<blockquote>
+<p>La fonction <b>copy</b> (utilisée pour les séries) va servir à lire les 
+données d'un port, une fois celui-ci ouvert :</p>
+<pre>
+print copy fp
+<span class="output">I wanted the gold, and I sought it,I scrabbled and mucked like
+a slave....</span>
+</pre>
+<p>Cette fonction attend normalement les données du port.</p>
+<p>Si vous ne voulez pas attendre la fin des données, ouvrez le port avec le raffinement <b>/no-wait</b>.</p>
+<p>Et pour lire une partie seulement des données, utilisez  <b>copy/part</b> :</p>
+<pre>
+print copy/part fp 35
+<span class="output">I wanted the gold, and I sought it,</span>
+</pre>
+<p>Notez que le deuxième argument de <b>copy</b> peut être soit une longueur,
+soit une position au sein de la série, le contenu du port.</p>
+<p>Pour lire juste une partie des données du port, vous pouvez utiliser 
+les fonctions <b>find</b> et <b>copy</b>.</p>
+<pre>
+a: find fp "famine"
+print copy/part a find a newline
+<span class="output">famine or scurvy -- I fought it;</span>
+</pre>
+<p>Les fonctions ordinales comme <b>first</b>, ou de position comme <b>next</b>, peuvent aussi 
+être utilisées sur le port :</p>
+<pre>
+print first fp
+<span class="output">I</span>
+print first next next fp
+<span class="output">w</span>
+</pre>
+<p>La fonction <b>copy</b> retournera <b>none</b> lorsque toutes les données du port auront été lues.</p>
+<p>En mode <b>/no-wait</b>, la fonction <b>copy</b> renverra une <i>chaîne vide</i> 
+si aucune donnée n'est disponible avec le port.</p>
+<pre>
+tp: open/direct/binary/no-wait tcp://system:8000
+content: make binary! 1000
+while [wait tp  data: copy tp] [append content data]
+close tp
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-6">6. Ecriture dans un port</h2>
+<blockquote>
+<p>La fonction <b>insert</b> sert pour l'écriture de données dans un port.</p>
+<pre>
+insert fp "I was a fool to seek it."
+</pre>
+<p>Si le port est en mode "<i>buffered</i>", la modification sera répercutée seulement lorsque  
+le port sera fermé ou mis à jour  (avec la fonction <b>update</b>). <br>Si le port est 
+ouvert avec <b>/direct</b>, alors tout changement est immédiatement pris en compte.</p>
+<p>Tous les raffinements de la fonction <b>insert</b> peuvent être utilisés sur le port.</p>
+<p>Par exemple, l'écriture de 20 caractères "espace" dans le port (avec <b>/dup</b>):</p>
+<pre>
+insert/dup fp " " 20
+</pre>
+<p>Vous pouvez aussi utiliser sur le port les fonctions habituelles de modifications des séries, comme 
+<b>remove</b>, <b>clear</b>, <b>change</b>, <b>append</b>, <b>replace</b>, etc.</p>
+<p>Pour effacer un seul caractère, ou bien plusieurs :</p>
+<pre>
+remove fp
+
+remove/part fp 20
+</pre>
+<p>Et pour effacer tous les caractères restants, écrivez :</p>
+<pre>
+clear fp
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-7">7. Mise à jour d'un port</h2>
+<blockquote>
+<p>La fonction <b>update</b> force un port à rafraîchir son état selon le 
+fonctionnement du périphérique externe. (ici fichier).</p>
+<p>Par exemple, lors de l'écriture d'un fichier présent en cache, la fonction <b>update</b> 
+permet de forcer le vidage du buffer.</p>
+<p>En lecture, la fonction <b>update</b> peut être utilisée pour être sûr que toutes les 
+données en attente ont été mises en buffer.</p>
+<pre>
+update fp
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-8">8. Attente sur un port</h2>
+<blockquote>
+<p>La fonction <b>wait</b> est essentielle aux programmes gérant  
+de manière asynchrone des échanges de données.</p>
+<p>Avec <b>wait</b>, vous pouvez attendre des données d'un ou plusieurs ports, ou bien qu'un time-out se produise.</p>
+<p>La fonction peut accepter en argument un port unique :</p>
+<pre>
+wait port
+</pre>
+<p>mais un <b>bloc de plusieurs ports</b> peut aussi être fourni :</p>
+<pre>
+wait [port1 port2 port3]
+</pre>
+<p>De plus, une valeur de time-out peut également être indiquée, sous la forme d'un nombre 
+de secondes ou comme une valeur de type <b>time!</b> :</p>
+<pre>
+wait [port1 port2 10]
+
+wait [port1 port2 0:00:05]
+</pre>
+<p>Le premier exemple indique un time-out de 10 secondes. <br>Le second exemple sera en 
+time-out dans 5 secondes.</p>
+<p>La fonction <b>wait</b> renvoie le premier port qui est prêt ou <b>none</b> si un time-out s'est produit.</p>
+<pre>
+ready: wait [port1 port2 10]
+if ready [data: copy ready]
+</pre>
+<p>L'exemple précédent lira des données du premier port prêt, si un time-out ne se 
+produit pas avant.</p>
+<p>Pour obtenir un bloc comprenant tous les ports prêts, utilisez le 
+raffinement <b>/all</b> :</p>
+<pre>
+ready: wait/all [port1 port2 10]
+if ready [
+    foreach port ready [
+    append data copy port
+    ]
+]
+</pre>
+<p>Cet exemple ajoutera les données de tous les ports disponibles à une seule série, 
+appelée ici <i>data</i>.</p>
+<p>Vous pouvez aussi utiliser la fonction <b>dispatch</b> pour évaluer un bloc, ou une 
+fonction basée sur les résultats de <b>wait</b> vis-à-vis de plusieurs ports.</p>
+<pre>
+dispatch [
+    port1 [print "port1 awake"]
+    port2 [print "port2 awake"]
+    10 [print "time-out!"]
+]
+</pre>
+<div class="note"><p><b></b></p>
+<p><b>Usage de /no-wait et /direct</b></p>
+<p>Pour utilisez <b>wait</b> avec la plupart des ports, vous aurez besoin de spécifier 
+les raffinements <b>/no-wait</b> et <b>/direct</b> avec <b>open</b>. Ceci permet d'indiquer 
+que les fonctions habituelles pour l'accès aux données ne doivent pas être 
+bloquantes et que les données ne sont pas mises en cache (<i>buffered mode</i>).</p>
+<pre>
+port1: open/no-wait/direct tcp://system:8000
+</pre>
+</div>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-9">9. Autres modes pour un port</h2>
+<blockquote>
+</blockquote>
+<p>
+<h3 id="section-9.1">9.1 Mode ligne</h3>
+<blockquote>
+<p>La fonction <b>open</b> permet un accès en mode ligne.</p>
+<p>Dans ce mode, la fonction <b>first</b> retournera une ligne de texte, plutôt qu'un 
+caractère. (NdT: par exemple, avec un fichier texte séquentiel).</p>
+<p>L'exemple ci-dessous lit un fichier une ligne à la fois :</p>
+<pre>
+fp: open/lines %file.txt
+print first fp
+<span class="output">I wanted the gold, and I got it --</span>
+print third fp
+<span class="output">Yet somehow life's not what I thought it,</span>
+</pre>
+<p>Le raffinement <b>/lines</b> est aussi utile pour les protocoles Internet qui sont 
+orientés "lignes".</p>
+<pre>
+tp: open/lines tcp://server:8000
+print first tp
+</pre>
+<p><br><br></p>
+</blockquote>
+<p>
+<h3 id="section-9.2">9.2 Ecriture et lecture seules</h3>
+<blockquote>
+<p>Vous pouvez utiliser le raffinement <b>/read</b> pour ouvrir un port en lecture seule :</p>
+<pre>
+fp: open/read %file.txt
+</pre>
+<p>Les modifications faites en cache ne sont pas répercutées au fichier.</p>
+<p>Pour ouvrir un port en écriture seulement, utilisez le raffinement <b>/write</b> :</p>
+<pre>
+fp: open/write %file.txt
+</pre>
+<p>Les ports de type fichiers ouverts avec le raffinement <b>/write</b> ne liront pas 
+les données courantes à l'ouverture du port.</p>
+<p>La fermeture, ou la mise à jour d'un port en écriture seule force les données 
+existantes dans le fichier à être remplacées (écrasées).</p>
+<pre>
+insert fp "This is the law of the Yukon..."
+close fp
+print read %file.txt
+<span class="output">This is the law of the Yukon...</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-9.3">9.3 Accés en mode direct</h3>
+<blockquote>
+<p>Le raffinement <b>/direct</b> ouvre un port sans mise en buffer (mémoire) des données.</p>
+<p>C'est assez pratique pour accèder à des fichiers par morceaux, notamment lorsque 
+le fichier est trop grand pour être stocké en mémoire.</p>
+<pre>
+fp: open/direct %file.txt
+</pre>
+<p>La lecture des données avec <b>copy</b> entraîne la modification de la position  
+de la tête de la série, pour le port :</p>
+<pre>
+print copy/part fp 40
+<span class="output">I wanted the gold, and I sought it,^/ I</span>
+print copy/part fp 40
+<span class="output">scrabbled and mucked like a slave.^/Was i</span>
+</pre>
+<p>En mode direct, le port sera toujours sur la position de tête :</p>
+<pre>
+print head? fp
+true
+</pre>
+<p>La fonction <b>copy</b> renverra <b>none</b> lorsque la fin des données du port est atteinte.</p>
+<p>Voici un exemple qui utilise des ports en mode direct pour copier un fichier 
+quelle que soit sa taille.</p>
+<pre>
+from-port: open/direct %a-file.jpg
+to-port: open/direct %a-file.jpg
+while [data: copy/part from-port 100000 ][
+    append to-port data
+]
+close from-port
+close to-port
+</pre>
+</blockquote>
+<p>
+<h3 id="section-9.4">9.4 Sauter des données</h3>
+<blockquote>
+<p>Il existe deux façons de sauter les données existantes dans le port.</p>
+<p>Premièrement, vous pouvez ouvrir le port avec le raffinement <b>/skip</b>. La fonction 
+<b>open</b> passera automatiquement dans le port au point spécifié.</p>
+<p>Par exemple :</p>
+<pre>
+fp: open/direct/skip %file.big 1000000
+
+fp: open/skip http://www.example.com/bigfile.dat 100000
+</pre>
+<p>Deuxièmement, vous pouvez utiliser la fonction <b>skip</b> sur le port. <br />
+Pour les fichiers qui sont ouverts avec les raffinements <b>/direct</b> et <b>/binary</b>, 
+l'opération de saut est identique à l'opération seek (recherche/déplacement dans un fichier)</p>
+<p>Les données ne sont pas lues dans le cache. Ce n'est pas possible dans le mode <b>/string</b> 
+car les sauts de lignes interférent avec la valeur de saut.</p>
+<pre>
+fp: open/direct/binary %file.dat
+fp: skip fp 100000
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-10">10. Permissions d'accès sur les fichiers</h2>
+<blockquote>
+<p>Les fichiers créés par REBOL prennent des permissions d'accès par défaut.<br> 
+Sur les systèmes d'exploitation Windows et Macintosh, les fichiers sont créés avec 
+des privilèges permettant leur contrôle total. Sur les systèmes Unix, les fichiers sont créés avec 
+des permissions selon l'<i>umask</i> courant.</p>
+<p>Lorsqu'on utilise <b>open</b> ou <b>write</b> pour accèder à un fichier, 
+le raffinement <b>/allow</b> peut être utilisé pour définir les permissions d'accès.</p>
+<p>Le raffinement <b>/allow</b> prend un bloc en argument. Ce bloc peut être constitué de 
+n'importe lequel ou de tous les mots : <b>read</b>, <b>write</b>, <b>execute</b>.</p>
+<div class="note"><p><b></b></p>
+<p><b>Restrictions liées au système d'exploitation</b></p>
+<p>Le raffinement <b>/allow</b> permettra de définir des permissions d'accès uniquement 
+sur les systèmes d'exploitation qui le permettent. Si le système ne supporte pas 
+l'attribution de certaines permissions, elles seront ignorées.<br>
+Par exemple, les fichiers sur les systèmes Unix peuvent être défini comme exécutables  
+(execute), mais les systèmes Windows et Macintosh ne supportent pas cette option.</p>
+<p>Pour un système Unix, les possibilités de permissions de fichiers sont restreintes 
+à celles de l'utilisateur.</p>
+<p>Suivant le système, l'usage d'<b>/allow</b> conduit à effacer les permissions d'accès 
+pour les utilisateurs.</p>
+</div>
+<p>Pour mettre un fichier en lecture seule, utilisez <b>open/allow</b>, 
+ou <b>write/allow</b> avec un bloc read :</p>
+<pre>
+write/allow %file.txt [read]
+</pre>
+<p>Pour donner les droits en lecture et en exécution à un fichier :</p>
+<pre>
+open/allow %file.txt [read execute]
+</pre>
+<p>Vous pouvez définir des droits similaires, en écriture :</p>
+<pre>
+write/allow %file.txt [read write]
+</pre>
+<p>Pour supprimer tous les accès à un fichier (pour les systèmes d'exploitation 
+qui font la différence), mettez un bloc vide pour les permissions :</p>
+<pre>
+write/allow %file.txt []
+</pre>
+<p>Pour un accès complet :</p>
+<pre>
+write/allow %file [read write execute]
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-11">11. Ports relatifs aux répertoires</h2>
+<blockquote>
+<p>Les ports relatifs aux répertoires vous permettent d'accèder directement à ceux-ci.</p>
+<p>Quand vous ouvrez un répertoire, vous obtenez l'accés au répertoire présenté 
+comme un bloc de noms de fichiers.</p>
+<pre>
+mydir: open %intro/
+forall mydir [print first mydir]
+<span class="output">CVS/
+history.t
+intro.t
+overview.t
+quick.t
+close mydir</span>
+</pre>
+<p>Vous pouvez avancer à une position spécifique à l'intérieur de la série du répertoire 
+et effacer un fichier, avec par exemple le code suivant :</p>
+<pre>
+dir: open %.
+remove next dir
+close dir
+</pre>
+<p>Ce code efface le second fichier dans le répertoire courant. <br>De la même manière,</p>
+<pre>
+remove at dir 5
+</pre>
+<p>devrait effacer le cinquiéme fichier dans le répertoire, et :</p>
+<pre>
+clear dir
+</pre>
+<p>devrait effacer tous les fichiers du répertoire.</p>
+<p>Pour effacer tous les fichiers dont le nom contient "junk", vous pouvez écrire :</p>
+<pre>
+dir: open %intro/
+while [not tail? dir] [
+    either find first dir "junk" [remove dir][
+        dir: next dir
+    ]
+]
+close dir
+</pre>
+<p>Les modifications apportées au répertoire sont répercutées quand le port relatif au répertoire 
+est fermé ou quand il est mis à jour.</p>
+<p>Pour forcer l'application d'un changement, utilisez le code suivant :</p>
+<pre>
+update dir
+</pre>
+<div class="note"><p><b></b></p>
+<p>NdT : il semblerait que <b>update</b> ne fonctionne pas, avec le scheme 'directory.</p>
+</div>
+<p>La méthode d'accès à un répertoire peut aussi être utilisée pour changer les noms 
+des fichiers. Après l'ouverture du port, la ligne :</p>
+<pre>
+change at dir 3 %newname.txt
+</pre>
+<p>permet de renommer le troisième fichier dans le répertoire. Pareillement, 
+le nom de n'importe lequel des fichiers dans le répertoire peut être modifié.</p>
+<p>Voici un exemple pour renommer tous les fichiers dans un répertoire en ajoutant 
+le mot REBOL au nom initial :</p>
+<pre>
+dir: open %intro/
+forall dir [insert first dir "REBOL"]
+close dir
+</pre>
+<div class="note"><p><b></b></p>
+<p>NdT : l'exemple ne fonctionne pas. Bug signalé à RT.</p>
+</div>
+<p><br />
+<br /></p>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 6-Apr-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>

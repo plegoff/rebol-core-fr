@@ -1,0 +1,1809 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Chapitre 4 - Les Expressions</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Chapitre 4 - Les Expressions</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Chapitre 4 - Les Expressions</h1>
+<div class="header">
+Ce document est la traduction française du Chapitre 4 du User Guide de REBOL/Core,<br />qui concerne les Expressions.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-4.html#section-1">1. Historique de la Traduction</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-2">2. Présentation</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-3">3. Blocs</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-4">4. Valeurs</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-4.1">4.1 Valeurs directes et indirectes</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-4.2">4.2 Types de données des valeurs</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-5">5. Evaluation des Expressions</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-5.1">5.1 Evaluation depuis la console</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-5.2">5.2 Evaluation de valeurs simples</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-5.3">5.3 Evaluation de blocs</a><br />
+<a class="toc3" href="fr-rebolcore-4.html#section-5.3.1">5.3.1 do</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-5.4">5.4 Réduire des blocs</a><br />
+<a class="toc3" href="fr-rebolcore-4.html#section-5.4.1">5.4.1 reduce</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-5.5">5.5 Evaluation des scripts</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-5.6">5.6 Evaluation des chaînes</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-5.7">5.7 Evaluation d'erreurs</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-6">6. Mots</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-6.1">6.1 Validité des noms pour les mots</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-6.2">6.2 Usage des mots</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-6.3">6.3 Définition des mots</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-6.4">6.4 Récupérer la valeur des mots</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-6.5">6.5 Mots Littéraux (Literal Words)</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-6.6">6.6 Mots non définis</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-6.7">6.7 Protection des mots</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-7">7. Evaluation conditionnelle</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-7.1">7.1 Bloc Conditionnel</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-7.2">7.2 Any et All</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-7.3">7.3 Boucles conditionnelles</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-7.4">7.4 Erreurs classiques</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-8">8. Evaluations en boucle</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-8.1">8.1 Loop</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-8.2">8.2 Repeat</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-8.3">8.3 For</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-8.4">8.4 Foreach</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-8.5">8.5 Forall and Forskip</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-8.6">8.6 Forever</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-8.7">8.7 Break</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-9">9. Evaluation sélective</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-9.1">9.1 Select</a><br />
+<a class="toc2" href="fr-rebolcore-4.html#section-9.2">9.2 Switch</a><br />
+<a class="toc3" href="fr-rebolcore-4.html#section-9.2.1">9.2.1 Sélection par défaut</a><br />
+<a class="toc3" href="fr-rebolcore-4.html#section-9.2.2">9.2.2 Cas usuels</a><br />
+<a class="toc3" href="fr-rebolcore-4.html#section-9.2.3">9.2.3 Autres cas</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-10">10. Stopper une évaluation</a><br />
+<a class="toc1" href="fr-rebolcore-4.html#section-11">11. Test de blocs</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la Traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>19 avril 2005 17:55</p>
+</td><td>
+<p>1.0.0</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr><tr class="md-cell" ><td>
+<p>19 mai 2005 08:38</p>
+</td><td>
+<p>1.0.1</p>
+</td><td>
+<p>Corrections mineures</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+<p><br />
+<br /></p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Présentation</h2>
+<blockquote>
+<p>L'objectif premier de REBOL est d'établir une méthode standard de communication 
+qui soit commune à tous les systèmes informatiques.
+REBOL fournit un moyen simple, direct pour énoncer toutes sortes d'informations 
+avec une syntaxe minimale, et une grande flexibilité.</p>
+<p>Par exemple, examinez la ligne suivante :</p>
+<pre>
+Sell 100 shares of "Acme" at $47.97 per share
+</pre>
+<p>Le code ressemble beaucoup à de l'anglais, ce qui le rend facile à rédiger 
+si vous l'écrivez et facile à comprendre si vous le recevez. 
+Pourtant, cette ligne est actuellement une expression valide en REBOL, de sorte 
+que votre ordinateur pourra aussi la comprendre et réagir en fonction.</p>
+<p>Notez que cette ligne de code est un "dialecte" de REBOL. Elle ne peut être 
+directement évaluée. (Voir plus loin concernant ce concept de dialecte.)</p>
+<p>REBOL fournit donc un langage commun entre vous et votre ordinateur. 
+De plus, si votre ordinateur envoie cette expression à celui de votre 
+courtier, qui utilise aussi REBOL, l'ordinateur de votre courtier peut comprendre 
+l'expression et la traiter en conséquence.</p>
+<p>REBOL fournit donc un langage commun aux ordinateurs. La ligne précédente peut 
+ainsi être envoyée à des millions d'autres ordinateurs qui eux aussi peuvent 
+la traiter.</p>
+<p>Le code suivant est un autre exemple d'expression REBOL :</p>
+<pre>
+Reschedule exam for 2-January-1999 at 10:30
+</pre>
+<p>L'expression ci-dessus (écrite dans un autre "dialecte") peut provenir de votre 
+médecin qui l'a saisie, ou peut être originaire d'une application qu'il utilise.
+Il n'y a pas de probléme.  
+Ce qui est important, c'est que l'expression peut être utilisable sans considérer 
+le type d'ordinateur, de console, de télévision, d'instruments informatiques que vous utilisez.</p>
+<p>Les données (nombres, chaînes de caractères, prix, dates, heures ) dans toutes 
+les expressions indiquées sont des formats standard REBOL.</p>
+<p>Par ailleurs, les mots dépendent du contexte dans lequel ils sont interprétés pour 
+convenir de leur sens.
+Les mots comme "sell", "at", et "read" ont différentes significations selon les 
+contextes.</p>
+<p><b>Les mots sont des expressions relatives - leur sens est dépendant du contexte.</b></p>
+<p>Les expressions peuvent être traitées de deux manières : soit directement 
+par l'interpréteur REBOL, soit indirectement par un script REBOL.</p>
+<p>Un script traité indirectement est appelé un dialecte. 
+Les exemples précédents sont des dialectes et, par ailleurs, sont traités par 
+script.</p>
+<p>L'exemple suivant n'est pas un dialecte car il est exécuté directement par 
+l'interpréteur REBOL :</p>
+<pre>
+send master@rebol.com read http://www.rebol.com
+</pre>
+<p>Dans cet exemple, les mots "send" et "read" sont des fonctions traitées 
+par l'interpréteur REBOL.</p>
+<p>Au niveau de REBOL, la différence est que l'information est soit traitée 
+directement, soit indirectement.
+La différence ne porte pas sur le fait que l'information soit du code ou des 
+données mais sur la façon dont elle va être interprétée (directement ou non).</p>
+<p>Le code REBOL est souvent manipulé comme une donnée et une donnée est fréquemment 
+traitée comme du code, de sorte que la division classique entre 
+données et code s'estompe.</p>
+<p>La façon dont l'information est traitée détermine s'il s'agit de code ou de données.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. Blocs</h2>
+<blockquote>
+<p>Les expressions REBOL sont basées sur ce concept : vous pouvez combiner des valeurs 
+et des mots dans des blocs.</p>
+<p>Dans les scripts, un bloc est normalement compris entre deux crochets [ ].</p>
+<p>Tout ce qui est à l'intérieur des crochets est une partie du bloc. Le bloc peut 
+s'étendre sur plusieurs lignes, et son format est complétement libre.</p>
+<p>Les exemples suivants montrent différentes manières de présenter le contenu de blocs :</p>
+<pre>
+[white red green blue yellow orange black]
+["Spielberg" "Back to the Future" 1:56:20 MCA]
+[
+    "Bill"  billg@ms.dom  #315-555-1234
+    "Steve" jobs@apl.dom  #408-555-4321
+    "Ted"   ted@gw2.dom   #213-555-1010
+]
+sites: [
+    http://www.rebol.com [save %reb.html data]
+    http://www.cnn.com   [print data]
+    ftp://www.amiga.com  [send cs@org.foo data]
+]
+</pre>
+<p>Certains blocs ne nécessitent pas de crochets car ils sont implicites.</p>
+<p>Par exemple, dans un script REBOL, il n'y a pas de crochets entourant de part 
+et d'autre le contenu du script, et cependant, le contenu du script est un bloc.</p>
+<p>Les crochets d'un "script-bloc" sont implicites.</p>
+<p>La même chose est vraie pour les expressions tapées à l'invite de la console (prompt), 
+ou pour des messages REBOL envoyés entre ordinateurs -- chacun est un bloc implicite.</p>
+<p>Un autre aspect important des blocs est qu'ils impliquent des 
+informations supplémentaires. <br>
+Les blocs rassemblent en effet des jeux de valeurs dans un 
+<u>ordre particulier</u>.</p>
+<p>Ceci étant, un bloc peut être utilisé comme une donnée, tout comme un ensemble.</p>
+<p>Ceci sera décrit dans <a href="fr-rebolcore-6.html">le chapitre sur les Séries</a>.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-4">4. Valeurs</h2>
+<blockquote>
+<p>REBOL fournit en interne du langage  un ensemble de valeurs qui 
+peuvent être exprimées et échangées entre tous les systèmes. Ces valeurs sont les 
+élèments primaires pour composer toutes les expressions REBOL.</p>
+</blockquote>
+<p>
+<h3 id="section-4.1">4.1 Valeurs directes et indirectes</h3>
+<blockquote>
+<p>Les valeurs peuvent être directement ou indirectement exprimées.</p>
+<p>Une valeur directement exprimée est connue comme elle est écrite que ce soit au niveau lexical ou littéral.
+<br> 
+Par exemple, le nombre 10 ou l'heure 10:30 sont des valeurs directement exprimées.</p>
+<p>Une valeur exprimée indirectement demeure inconnue tant qu'elle n'est pas évaluée.</p>
+<p>Les valeurs <b>none</b>, <b>true</b>, et <b>false</b> nécessitent toutes des 
+mots pour les représenter. Ces valeurs sont indirectement exprimées, car elles 
+doivent être évaluées pour être connues.
+Ceci est aussi vrai d'autres valeurs, comme les listes, les tables de hachage 
+(<b>hash!</b>), les fonctions, les objets.</p>
+</blockquote>
+<p>
+<h3 id="section-4.2">4.2 Types de données des valeurs</h3>
+<blockquote>
+<div class="note"><p><b></b></p>
+<p>NDT : le mot anglais "datatype", utilisé pour "type de données" sera conservé, 
+afin d'alléger la lecture.</p>
+</div>
+<p>Chaque valeur REBOL posséde un type de données particulier. Le type de données 
+(<i>datatype</i>) d'une valeur définit :</p>
+<ul>
+<li>L'ensemble des valeurs possibles pour un type de données. Par exemple, le datatype 
+logique (<i>logic!</i>) peut seulement être : <b>true</b> ou <b>false</b>.</li>
+<li>Les opérations qui peuvent être réalisées. Par exemple, vous pouvez additionner  
+deux entiers, mais vous ne pouvez pas additionner deux valeurs logiques.</li>
+<li>La façon dont les valeurs sont stockés en mémoire. Certains datatypes peuvent 
+être stockés directement (comme les nombres), tandis que d'autres sont stockés 
+indirectement (comme les chaînes de caractères).</li>
+</ul>
+<p>Par convention, les noms des types de données REBOL sont suivis d'un point 
+d'exclamation (<b>!</b>) pour aider à les distinguer.</p>
+<p>Par exemple :</p>
+<pre>
+integer!
+char!
+word!
+string!
+</pre>
+<p>Les mots utilisés pour les types de données sont simplement des <i>mots</i>. 
+Ils sont juste comme beaucoup d'autres mots en REBOL. Il n'y a rien de "magique" 
+concernant le "<b>!</b>" utilisé pour les représenter.</p>
+<p>Voir l'annexe concernant les Valeurs, pour une description de tous les datatypes 
+REBOL.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-5">5. Evaluation des Expressions</h2>
+<blockquote>
+<p>Evaluer une expression revient à calculer sa valeur.</p>
+<p>REBOL opére en évaluant les séries d'expressions constituant un script et 
+ensuite retourne le résultat. <br>
+Evaluer, c'est aussi faire un traitement, exécuter un script.</p>
+<p>L'évaluation est réalisée sur des blocs. Les blocs peuvent être saisis à la console, 
+ou chargés à partir d'un fichier, un script. Dans les deux cas, le processus 
+d'évaluation est le même.</p>
+</blockquote>
+<p>
+<h3 id="section-5.1">5.1 Evaluation depuis la console</h3>
+<blockquote>
+<p>Toute expression pouvant être évaluée dans un script peut aussi l'être depuis 
+l'invite de console, fournissant un moyen simple de tester individuellement
+les expressions d'un script.</p>
+<p>Par exemple, si vous saississez l'expression suivante à la console :</p>
+<pre>
+&gt;&gt; 1 + 2
+</pre>
+<p>L'expression est évaluée et le résultat suivant est retourné :</p>
+<pre>
+== 3
+</pre>
+<div class="note"><p><b></b></p>
+<p><b>Concernant les exemples de code ...</b></p>
+<p>Dans l'exemple ci-dessus, l'invite de la console (>>) et l'indicateur de réponse 
+(==) sont indiqués pour vous donner une idée de la façon dont les résultats se présentent dans 
+la console.</p>
+<p>Pour les exemples suivants, ils ne seront plus affichés. Vous pouvez cependant 
+taper vous-même ces exemples pour vérifier les résultats.</p>
+</div>
+</blockquote>
+<p>
+<h3 id="section-5.2">5.2 Evaluation de valeurs simples</h3>
+<blockquote>
+<p>Une valeur connue directement est simplement retournée.</p>
+<p>Par exemple, si vous saisissez la ligne suivante :</p>
+<pre>
+10:30
+</pre>
+<p>la valeur 10:30 est retournée. C'est le comportement de toutes les valeurs 
+directement fournies. <br>
+Ceci inclut :</p>
+<pre>
+integer    1234
+decimal    12.34
+string     "REBOL world!"
+time       13:47:02
+date       30-June-1957
+tuple      199.4.80.1
+money      $12.49
+pair       100x200
+char       #"A"
+binary     #{ab82408b}
+email      info@rebol.com
+issue      #707-467-8000
+tag        &lt;IMG SRC="xray.jpg"&gt;
+file       %xray.jpg
+url        http://www.rebol.com/
+block      [milk bread butter]
+</pre>
+</blockquote>
+<p>
+<h3 id="section-5.3">5.3 Evaluation de blocs</h3>
+<blockquote>
+<p>Normalement, les blocs ne sont pas évalués. Par exemple, la saisie du bloc 
+suivant :</p>
+<pre>
+[1 + 2]
+</pre>
+<p>renverra le même bloc :</p>
+<pre>
+<span class="output">[1 + 2]</span>
+</pre>
+<p>
+<h4 id="section-5.3.1">5.3.1 do</h4>
+<p>Le bloc n'est pas évalué; il est simplement traité comme une donnée. 
+Pour évaluer un bloc, utiliser la fonction <b>do</b>, comme le montre l'exemple 
+suivant :</p>
+<pre>
+do [1 + 2]
+<span class="output">3</span>
+</pre>
+<p>La fonction <b>do</b> renvoie le résultat de l'évaluation. <br>Ci-dessus, le nombre 
+3 est retourné.</p>
+<p>Dans un bloc contenant plusieurs expressions, seul le résultat de la dernière 
+expression est renvoyé :</p>
+<pre>
+do [
+    1 + 2
+    3 + 4
+]
+<span class="output">7</span>
+</pre>
+<p>Dans cet exemple, les deux expressions sont évaluées, mais seul le résultat de 
+3 + 4 est renvoyé.</p>
+<p>Un certain nombre de fonctions telles que <b>if</b>, <b>loop</b>, <b>while</b>, 
+et <b>foreach</b> évaluent un bloc faisant partie d'elles-mêmes.</p>
+<p>Ces fonctions sont discutées en détail plus loin dans ce chapitre, mais voici quelques 
+illustrations :</p>
+<pre>
+if time &gt; 12:30 [print "past noon"]
+past noon
+loop 4 [print "looping"]
+<span class="output">looping
+looping
+looping
+looping</span>
+</pre>
+<p>C'est un point important à se rappeler : les blocs sont traités comme des données, 
+sauf s'ils sont explicitement évalués par une fonction. <br>
+Seule une fonction peut provoquer leur évaluation.</p>
+</blockquote>
+<p>
+<h3 id="section-5.4">5.4 Réduire des blocs</h3>
+<blockquote>
+<p>Quand vous évaluez un bloc avec la fonction <b>do</b>, seule la valeur de la 
+dernière expression est retournée comme résultat. 
+Cependant, vous voudrez parfois que les valeurs de toutes les expressions soient 
+retournées.</p>
+<p>
+<h4 id="section-5.4.1">5.4.1 reduce</h4>
+<p>Pour renvoyer le résultat de l'évaluation de chaque expression du bloc, 
+utilisez la fonction <b>reduce</b>.</p>
+<p>Dans l'exemple suivant, <b>reduce</b> est utilisé pour retourner le résultat particulier 
+de chacune des expressions du bloc :</p>
+<pre>
+reduce [
+    1 + 2
+    3 + 4
+]
+<span class="output">[3 7]</span>
+</pre>
+<p>Ci-dessus, le bloc a été ramené ("réduit") aux résultats de son évaluation. 
+La fonction <b>reduce</b> renvoie les résultats dans un bloc.</p>
+<p>La fonction <b>reduce</b> est importante car elle vous permet de créer des blocs 
+d'expressions, qui sont évalués et passés à d'autres fonctions.</p>
+<p><b>Reduce</b> évalue chaque expression dans un bloc et place le résultat de 
+l'expression dans un nouveau bloc. <br />
+Ce nouveau bloc est renvoyé comme résultat de <b>reduce</b>.</p>
+<p>Certaines fonctions, comme <b>print</b>, utilise <b>reduce</b> comme partie 
+intégrante dans leur fonctionnement, comme le montre l'exemple suivant :</p>
+<pre>
+print [1 + 2  3 + 4]
+<span class="output">3 7</span>
+</pre>
+<p>Les fonctions <b>rejoin</b>, <b>reform</b>, et <b>remold</b> l'utilisent également 
+en interne :</p>
+<pre>
+print rejoin [1 + 2  3 + 4]
+<span class="output">37</span>
+print reform [1 + 2  3 + 4]
+<span class="output">3 7</span>
+print remold [1 + 2  3 + 4]
+<span class="output">[3 7]</span>
+</pre>
+<p>Les fonctions <b>rejoin</b>, <b>reform</b>, et <b>remold</b> sont basées sur les  
+fonctions <b>join</b>, <b>form</b>, et <b>mold</b>, mais réduisent les blocs 
+en premier lieu.</p>
+</blockquote>
+<p>
+<h3 id="section-5.5">5.5 Evaluation des scripts</h3>
+<blockquote>
+<p>La fonction <b>do</b> peut être utilisée pour évaluer des scripts entiers.</p>
+<p>Normalement, <b>do</b> évalue un bloc, comme indiqué dans l'exemple suivant :</p>
+<pre>
+do [print "Hello!"]
+<span class="output">Hello!</span>
+</pre>
+<p>Mais, lorsque <b>do</b> évalue un nom de fichier au lieu d'un bloc, le fichier 
+est chargé dans l'interpréteur sous la forme d'un bloc, puis évalué :</p>
+<pre>
+do %script.r
+</pre>
+<p>Un en-tête REBOL valide est requis, comme décrit dans <a href="fr-rebolcore-5.html">le chapitre sur les Scripts</a>.
+L'en-tête identifie que le fichier contient du code et non un texte aléatoire.</p>
+</blockquote>
+<p>
+<h3 id="section-5.6">5.6 Evaluation des chaînes</h3>
+<blockquote>
+<p>La fonction <b>do</b> peut être utilisée pour évaluer des expressions 
+qui peuvent être trouvées à l'intérieur de chaînes de caractères. Par exemple, 
+l'expression suivante :</p>
+<pre>
+do "1 + 2"
+<span class="output">3</span>
+</pre>
+<p>retourne le résultat 3.</p>
+<p>D'abord, la chaîne est transformée en bloc, puis le bloc est évalué.</p>
+<p>L'évaluation d'une chaîne peut parfois s'avérer pratique mais ne 
+devra être utilisée que si nécessaire.</p>
+<p>Par exemple, pour créer un processeur de ligne de commande REBOL, 
+saisissez l'expression suivante:</p>
+<pre>
+forever [probe do ask "=&gt; "]
+</pre>
+<p>L'expression ci-dessus attend avec le symbole "=>" que vous tapiez une chaîne 
+de caractères. Le texte fourni doit être évalué et le résultat doit ensuite être affiché. 
+(Bien sûr, ce n'est pas vraiment aussi simple, car le script pourrait produire 
+une erreur).</p>
+<p>Sauf nécessité, l'évaluation de chaînes de caractère n'est pas généralement une 
+bonne pratique. <br/>
+L'évaluation de chaînes est moins efficace que l'évaluation 
+de blocs, et, de plus, le contexte des mots dans une chaîne n'est pas connu.</p>
+<p>Par exemple, l'expression suivante :</p>
+<pre>
+do form ["1" "+" "2"]
+</pre>
+<p>est beaucoup moins efficace que de taper :</p>
+<pre>
+do [1 + 2]
+</pre>
+<p>Des blocs REBOL peuvent être construits tout aussi facilement que des chaînes, 
+et les blocs sont plus efficaces pour évaluer les expressions.</p>
+</blockquote>
+<p>
+<h3 id="section-5.7">5.7 Evaluation d'erreurs</h3>
+<blockquote>
+<p>Des erreurs peuvent se produire pour plusieurs raisons durant l'évaluation. 
+Par exemple, si vous divisez un nombre par zéro, l'évaluation est arrétée et 
+une erreur est affichée :</p>
+<pre>
+100 / 0
+<span class="output">** Math Error: Attempt to divide by zero.
+** Where: 100 / 0</span>
+</pre>
+<p>Une erreur courante est d'utiliser un mot avant qu'il soit définit :</p>
+<pre>
+size + 10
+<span class="output">** Script Error: size has no value.
+** Where: size + 10</span>
+</pre>
+<p>Une autre erreur courante est de ne pas fournir les valeurs correctes pour une 
+fonction :</p>
+<pre>
+10 + [size]
+<span class="output">** Script Error: Cannot use add on block! value.
+** Where: 10 + [size]</span>
+</pre>
+<p>Parfois les erreurs ne sont pas évidentes, et vous aurez à faire des tests pour 
+déterminer la cause de l'erreur.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-6">6. Mots</h2>
+<blockquote>
+<p>Les expressions sont construites à partir de valeurs et de mots. 
+Les mots sont utilisés pour représenter une signification. Un mot représente 
+une idée ou une valeur particulière.</p>
+<p>Dans les exemples précédents de ce chapitre, un certain nombre de mots ont été 
+employés sans explication, dans des expressions.</p>
+<p>Par exemple, les mots <b>do</b>, <b>reduce</b>, <b>try</b> sont utilisés, mais 
+pas expliqués.</p>
+<p>Les mots sont évalués légérement différemment des valeurs directement exprimées. 
+Quand un mot est évalué, sa valeur est recherchée, évaluée, puis retournée 
+comme résultat.</p>
+<p>Par exemple, si vous saississez le mot suivant :</p>
+<pre>
+zero
+<span class="output">0</span>
+</pre>
+<p>La valeur <i>zero</i> est retournée. Le mot <i>zero</i> est prédéfini comme étant le nombre 0.<br>
+Quand le mot est recherché, un <i>zero</i> est trouvé et fournit le résultat.</p>
+<p>Quand des mots comme <b>do</b> et <b>print</b> sont analysés, leur valeurs 
+se trouvent être des fonctions, plutôt que de simples valeurs. 
+Dans de tels cas, la fonction est évaluée et le résultat de la fonction est renvoyé.</p>
+</blockquote>
+<p>
+<h3 id="section-6.1">6.1 Validité des noms pour les mots</h3>
+<blockquote>
+<p>Les mots sont composés de caractères alphabétiques, de nombres, et de n'importe 
+lesquels des caractères suivants :</p>
+<pre>
+? ! . ' + - * &amp; | = _ ~
+</pre>
+<p>Un mot ne doit pas commencer par un nombre, et il y a aussi quelques 
+restrictions sur les mots pouvant être interprétés comme des nombres.</p>
+<p>Par exemple, -1 et +1 sont des nombres, pas des mots.</p>
+<p>La fin d'un mot est marquée par un espace, une nouvelle ligne, ou l'un des caractères 
+suivants :</p>
+<pre>
+[ ] ( ) { } " : ; /
+</pre>
+<p>Par ailleurs, les crochets d'un bloc ne font pas partie d'un mot.</p>
+<p>Le bloc qui suit contient le mot <b>test</b> :</p>
+<pre>
+[test]
+</pre>
+<p>Les caractères suivants ne sont pas autorisés dans les mots, car ils induisent 
+une mauvaise interprétation des mots ou générent une erreur :</p>
+<pre>
+@ # $ % ^ ,
+</pre>
+<p>Les mots peuvent être de n'importe quelle longueur, mais ne peuvent pas se 
+prolonger après l'extrémité d'une ligne.</p>
+<pre>
+this-is-a-very-long-word-used-as-an-example
+</pre>
+<p>Les lignes suivantes présentent des exemples de mots valides :</p>
+<pre>
+Copy print test
+number?  time?  date!
+image-files  l'image
+++ -- == +-
+***** *new-line*
+left&amp;right left|right
+</pre>
+<p>REBOL n'est pas sensible à la casse des caractères. Les mots suivants font tous 
+référence au même mot :</p>
+<pre>
+blue
+Blue
+BLUE
+</pre>
+<p>La casse d'un mot est conservée lorsqu'il est affiché.</p>
+<p>Les mots peuvent être réutilisés. La signification d'un mot est dépendante de 
+son contexte, de sorte que des mots identiques peuvent être réutilisés dans des 
+contextes différents.</p>
+<p>Il n'y a pas de mot-clé en REBOL, vous pouvez réutiliser n'importe quel mot, même 
+ceux qui sont pré-définis.</p>
+<p>Par exemple, vous pouvez utilisez un mot dans votre code différemment de la 
+façon dont l'interpréteur utilise ce mot.</p>
+<div class="note"><p><b></b></p>
+<p><b>Du bon choix des mots :</b></p>
+<p>Choisissez soigneusement les mots que vous employez .  
+Les mots sont employés pour mettre en valeur une signification.  
+Si vous choisissez soigneusement vos mots, il sera plus facile pour vous et 
+pour les autres de comprendre vos scripts.</p>
+</div>
+</blockquote>
+<p>
+<h3 id="section-6.2">6.2 Usage des mots</h3>
+<blockquote>
+<p>Les mots sont utilisés de deux manières : comme symboles ou comme variables. 
+Dans le bloc suivant, les mots sont utilisés en tant que symboles pour des 
+couleurs :</p>
+<pre>
+[red green blue]
+</pre>
+<p>Dans la ligne suivante :</p>
+<pre>
+print second [red green blue]
+<span class="output">green</span>
+</pre>
+<p>Les mots n'ont pas d'autre signification que celle utilisée en tant que nom 
+pour les couleurs.  Tous les mots utilisés au sein des blocs servent de symboles 
+jusqu'à ce qu'ils soient évalués.</p>
+<p>Quand un mot est évalué, il est utilisé comme une variable. Dans l'exemple 
+précédent, les mots <b>print</b> et <b>second</b> sont des variables reliées 
+aux fonctions natives utilisées.</p>
+<p>Un mot peut être écrit de quatre manières différentes pour indiquer comment 
+il doit être traité, comme ceci est expliqué dans <a href="fr-rebolcore-a1.html">le chapitre consacré aux valeurs</a> et plus spécifiquement aux mots.</p>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Format</p>
+</b></td><td><b>
+<p>Ce qu'il fait</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>word</b></p>
+</td><td>
+<p>Evalue un mot. C'est la façon la plus simple et la plus naturelle d'écrire un 
+mot. Si un mot référence une fonction, il sera évalué. Sinon, la valeur du mot 
+sera retournée.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>word:</b></p>
+</td><td>
+<p>Définit ou attribue la valeur d'un mot. Une nouvelle valeur est donnée. La valeur 
+peut être n'importe quoi, et même une fonction. Voir la section sur 
+définition des Mots, ci-dessous.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>&#58;word</b></p>
+</td><td>
+<p>Récupère la valeur d'un mot mais sans l'évaluer. Ceci est utile pour faire 
+référence à des fonctions, et d'autres données, sans les évaluer. Voir la section sur 
+définition des Mots, ci-dessous.</p>
+</td></tr><tr class="md-cell" ><td>
+<p><b>'word</b></p>
+</td><td>
+<p>Traite le mot comme un symbole, mais ne l'évalue pas. Le mot est lui-même la valeur.</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<h3 id="section-6.3">6.3 Définition des mots</h3>
+<blockquote>
+<p>Un mot suivi du caractère (<b>:</b>) est utilisé pour définir ou attribuer sa 
+valeur :</p>
+<pre>
+age: 42
+lunch-time: 12:32
+birthday: 20-March-1990
+town: "Dodge City"
+test: %stuff.r
+</pre>
+<p>Vous pouvez définir un mot pour afin qu'il représente n'importe quel type de valeur. 
+Dans les exemples précédents, les mots ont été définis en tant qu'entier, heure, 
+date, chaîne de caractère, et fichier.</p>
+<p>Vous pouvez aussi définir des mots correspondant à des types plus complexes de valeurs.</p>
+<p>Par exemple, les mots suivants sont attribués à des valeurs de blocs et de fonctions :</p>
+<pre>
+towns: ["Ukiah" "Willits" "Mendocino"]
+code: [if age &gt; 32 [print town]]
+say: func [item] [print item]
+</pre>
+<div class="note"><p><b></b></p>
+<p><b>Pourquoi les mots sont-ils définis ainsi ?</b></p>
+<p>Dans beaucoup de langage, les mots sont définis avec un signe "égal", comme dans :</p>
+<pre>
+age = 42
+</pre>
+<p>En REBOL, les mots sont spécifiés avec le caractère "<b>:</b>". Il y a une raison 
+importante à cela. Ceci réduit l'opération de définition des mots à une seule valeur 
+lexicale. La représentation d'une opération de définition est <b>atomique</b>.</p>
+<p>La différence entre les deux approches peut être vue sur ce exemple :</p>
+<pre>
+print length? [age: 42]
+<span class="output">2</span>
+print length? [age = 42]
+<span class="output">3</span>
+</pre>
+<p>REBOL est un langage <b>réflectif</b>, il est capable de manipuler son propre 
+code.  Cette méthode permet d'écrire du code qui va manipuler facilement, 
+et en une simple opération, la définition des valeurs.</p>
+<p>Bien sûr, une autre raison est que le signe "=" est utilisé dans les opérations 
+de comparaison.</p>
+</div>
+<p>Plusieurs mots peuvent être définis en une fois par un effet de "cascade" de définitions. 
+Par exemple,  chacun des mots suivants est défini à la valeur 42 :</p>
+<pre>
+age: number: size: 42
+</pre>
+<p>Les mots peuvent aussi être définis avec la fonction <b>set</b> :</p>
+<pre>
+set 'time 10:30
+</pre>
+<p>Dans cet exemple, <b>set</b> attribue au mot <b>time</b> la valeur : 10:30 .
+le mot <b>time</b> est écrit comme un mot litéral (usage de l'apostrophe) 
+de sorte qu'il n'est pas évalué.</p>
+<p>La fonction <b>set</b> peut aussi définir plusieurs mots :</p>
+<pre>
+set [number num ten] 10
+
+print [number num ten]
+<span class="output">10 10 10</span>
+</pre>
+<p>Dans l'exemple précédent, remarquez que les mots n'ont pas besoin d'apostrophes car 
+ils sont à l'intérieur d'un bloc, qui n'est pas évalué.</p>
+<p>La fonction <b>print</b> montre l'attribution à chaque mot de la valeur 10.</p>
+<p>Si un bloc de valeurs est fourni à <b>set</b>, chacune des valeurs sera attribuée 
+à un mot. Dans l'exemple suivant, les mots <b>one</b>, <b>two</b>, et <b>three</b> 
+prendront respectivement la valeur <b>1</b>, <b>2</b> et <b>3</b> :</p>
+<pre>
+set [one two three] [1 2 3]
+
+print three
+<span class="output">3</span>
+print [one two three]
+<span class="output">1 2 3</span>
+</pre>
+<p>Voir l'annexe concernant les valeurs, pour une description de tous les datatypes 
+REBOL.</p>
+</blockquote>
+<p>
+<h3 id="section-6.4">6.4 Récupérer la valeur des mots</h3>
+<blockquote>
+<p>Pour récupérer la valeur d'un mot qui a été précédemment défini, placez le 
+symbole <b>:</b> devant le mot. Un mot préfixé par deux points (<b>:</b>) récupére  
+la valeur du mot, mais sans l'évaluer sauf si c'est une fonction.</p>
+<p>Par exemple, la ligne suivante :</p>
+<pre>
+drucken: :print
+</pre>
+<p>définit un nouveau mot <b>drucken</b> (l'équivalent allemand pour <b>print</b>)  
+pour faire référence à la même fonction que <b>print</b>. En effet, <b>:print</b> 
+renvoie la fonction pour <b>print</b> mais sans l'évaluer.</p>
+<p>A présent, <b>drucken</b> se comporte comme la fonction <b>print</b> :</p>
+<pre>
+drucken "test"
+<span class="output">test</span>
+</pre>
+<p><b>print</b> et <b>drucken</b> référencent la même valeur, la fonction effectuant 
+l'affichage.</p>
+<p>Ceci peut aussi être réalisé avec la fonction <b>get</b>. Quand un mot litéral est donné, 
+<b>get</b> renvoie sa valeur, mais sans l'évaluer :</p>
+<pre>
+stampa: get 'print
+stampa "test"
+<span class="output">test</span>
+</pre>
+<p>La possibilité de récupérer la valeur d'un mot est aussi importante, par exemple si vous voulez 
+connaître cette valeur mais sans l'évaluer.</p>
+<p>Vous pouvez déterminer si un mot est une fonction native en utilisant la ligne 
+suivante :</p>
+<pre>
+print native? :if
+<span class="output">true</span>
+</pre>
+<p>La fonction <b>if</b> n'est pas évaluée, mais elle est passée à la fonction 
+<b>native?</b> qui vérifie si elle est bien du type de données <b>native!</b>.</p>
+<p>Sans le caractère <b>:</b> placé devant, la fonction <b>if</b> aurait été  
+évaluée et parce qu'il n'y a pas d'arguments, une erreur se produirait.</p>
+</blockquote>
+<p>
+<h3 id="section-6.5">6.5 Mots Littéraux (Literal Words)</h3>
+<blockquote>
+<p>La possibilité de traiter un mot comme un "littéral" est commode.</p>
+<p>Aussi bien <b>set</b> que <b>get</b>, mais également d'autres fonctions comme 
+<b>value?</b>, <b>unset</b>, <b>protect</b> et <b>unprotect</b>, attendent 
+un mot littéral.</p>
+<p>Les mots littéraux peuvent être écrits de l'une ou l'autre manière : en préfixant 
+le mot avec une apostrophe, (`), ou en placant le mot dans un bloc.</p>
+<p>Vous pouvez utiliser l'apostrophe devant le mot à évaluer :</p>
+<pre>
+word: 'this
+</pre>
+<p>Dans l'exemple ci-dessus, le mot littéral <i>this</i>, et non la valeur de celui-ci, 
+est affecté à la variable <i>word</i>. La variable <i>word</i> utilise juste 
+symboliquement le nom.</p>
+<p>L'exemple ci-dessous montre que si vous affichez la valeur du mot, vous aurez 
+ceci :</p>
+<pre>
+print word
+<span class="output">this</span>
+</pre>
+<p>Vous pouvez aussi obtenir des mots littéraux à partir de blocs non évalués. 
+Dans l'exemple suivant, la fonction <b>first</b> récupére le premier mot du bloc. 
+Ce mot est alors passé à la variable <i>word</i>.</p>
+<pre>
+word: first [this and that]
+</pre>
+<p>N'importe qeul mot peut être utilisé comme littéral.  Il peut ou non faire référence 
+à une valeur. Le mot <b>print</b> a une valeur mais il peut cependant être utilisé 
+comme un littéral car les mots littéraux ne sont pas évalués.</p>
+<pre>
+word: 'here
+print word
+<span class="output">here</span>
+word: 'print
+print word
+<span class="output">print</span>
+</pre>
+<p>L'exemple suivant illustre l'importance des valeurs littérales :</p>
+<pre>
+video: [
+    title "Independence Day"
+    length 2:25:24
+    date   4/july/1996
+]
+print select video 'title
+<span class="output">Independence Day</span>
+</pre>
+<p>Dans cet exemple, le mot <i>title</i> est recherché dans le bloc. Si 
+l'apostrophe était manquante à ce mot <i>title</i>, alors sa valeur devrait être 
+utilisée. Si <i>title</i> n'avait pas de valeur attribuée, une erreur serait affichée.</p>
+<p>Voir l'annexe concernant les valeurs, pour plus de détail concernant les mots 
+littéraux.</p>
+</blockquote>
+<p>
+<h3 id="section-6.6">6.6 Mots non définis</h3>
+<blockquote>
+<p>Un mot qui n'a pas de valeur est <b>unset</b>, non attribué.</p>
+<p>Si un mot non défini est évalué, une erreur se produit :</p>
+<pre>
+&gt;&gt; outlook
+<span class="output">** Script Error: outlook has no value.
+** Where: outlook</span>
+</pre>
+<p>Le message d'erreur dans l'exemple précédent indique qu'aucune valeur n'a été attribuée 
+à ce mot. Le mot est non défini. Ne confondez pas ceci avec un mot qui aurait été 
+défini à <b>none</b>, qui est une valeur valide.</p>
+<p>Un mot préalablement défini peut être déclaré "unset" à n'importe quel moment en 
+utilisant la fonction :</p>
+<pre>
+unset 'word
+</pre>
+<p>Lorsqu'un mot devient "usnet", sa valeur est perdue. Pour déterminer si un mot est 
+"unset", utilisez la fonction <b>value?</b> qui prend en argument un mot littéral :</p>
+<pre>
+if not value? 'word [print "word is not set"]
+<span class="output">word is not set</span>
+</pre>
+<p>Ceci peut être commode pour des scripts qui appellent d'autres scipts. 
+Ci-dessous, un script initialise un paramétre par défaut (<i>test-mode</i>) qui n'a pas été 
+défini auparavant</p>
+<pre>
+if not value? 'test-mode [test-mode: on]
+</pre>
+</blockquote>
+<p>
+<h3 id="section-6.7">6.7 Protection des mots</h3>
+<blockquote>
+<p>Vous pouvez éviter qu'un mot soit modifié, avec la fonction <b>protect</b>.</p>
+<pre>
+protect 'word
+</pre>
+<p>Tenter de redéfinir un mot protégé génére une erreur :</p>
+<pre>
+word: "here"
+<span class="output">** Script Error: Word word is protected, cannot modify.
+** Where: word: "here"</span>
+</pre>
+<p>Un mot peut être "déprotégé" en utilsant la fonction <b>unprotect</b> :</p>
+<pre>
+unprotect 'word
+word: "here"
+</pre>
+<p>Les fonctions <b>protect</b> et <b>unprotect</b> peuvent aussi accepter un bloc 
+de mots :</p>
+<pre>
+protect [this that other]
+</pre>
+<p>Les mots et les fonctions importantes du système peuvent être protégés en utilisant 
+la fonction <b>protect-system</b>.</p>
+<p>La protection des fonctions et des mots du système est particulièrement utile 
+pour les débutants qui pourraient accidentellement modifier des mots importants.</p>
+<p>Si <b>protect-system</b> est placé dans votre fichier <b>user.r</b>, alors tous les mots 
+prédéfinis seront protégés.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-7">7. Evaluation conditionnelle</h2>
+<blockquote>
+<p>Comme mentionné précédemment, les blocs ne sont pas évalués, normalement. 
+La fonction <b>do</b> est requise pour forcer l'évaluation d'un bloc. 
+Parfois, vous aurez besoin qu'un bloc soit évalué sous condition. Le paragraphe 
+suivant décrit plusieurs façons de faire cela :</p>
+</blockquote>
+<p>
+<h3 id="section-7.1">7.1 Bloc Conditionnel</h3>
+<blockquote>
+<p>La fonction <b>if</b> prend deux arguments. Le premier argument est une condition 
+et le second argument est un bloc. 
+Si la condition est : <b>true</b>, le bloc est évalué, sinon il n'est pas évalué.</p>
+<pre>
+if now/time &gt; 12:00 [print "past noon"]
+<span class="output">past noon</span>
+</pre>
+<p>La condition est normalement une expression qui est évaluée à <i>true</i> 
+ou à <i>false</i>; cependant, d'autres valeurs peuvent aussi être fournies.</p>
+<p>Seules les valeurs <i>false</i> ou <i>none</i> évite à un bloc d'être évalué.</p>
+<p>Ceci peut être pratique pour vérifier les résultats des fonctions <b>find</b>, 
+<b>select</b>, <b>next</b>, et d'autres fonctions, qui retournent <b>none</b> :</p>
+<pre>
+string: "let's talk about REBOL"
+if find string "talk" [print "found"]
+<span class="output">found</span>
+</pre>
+<p>La fonction <b>either</b> améliore la fonction <b>if</b> en incluant un troisième 
+argument, qui est le bloc à évaluer si la condition est fausse (<i>false</i>) :</p>
+<pre>
+either now/time &gt; 12:00 [
+    print "after lunch"
+][
+    print "before lunch"
+]
+<span class="output">after lunch</span>
+</pre>
+<p>La fonction <b>either</b> interpréte également une valeur <b>none</b> comme 
+étant <b>false</b>.</p>
+<p>Les fonctions <b>if</b> et <b>either</b> renvoient le résultat de l'évaluation de 
+leurs blocs. Dans le cas de la fonction <b>if</b>, la valeur du bloc est retournée 
+seulement si le bloc est évalué. <br>
+La fonction <b>if</b> est commode pour initialiser de façon conditionnelle des variables :</p>
+<pre>
+flag: if time &gt; 13:00 ["lunch eaten"]
+print flag
+<span class="output">lunch eaten</span>
+</pre>
+<p>Avec la fonction <b>either</b>, l'exemple précédent peut être réécrit ainsi :</p>
+<pre>
+print either now/time &gt; 12:00 [
+    "after lunch"
+][
+    "before lunch"
+]
+<span class="output">after lunch</span>
+</pre>
+<p>Bien que <b>if</b> et <b>either</b> soient toutes deux des fonctions, leurs arguments 
+de type <i>block</i> peuvent être une expression quelconque dont le résultat donnerait 
+un bloc lors de son évaluation.</p>
+<p>Dans l'exemple suivant, des mots (<i>notice</i>, <i>sleep</i>) sont utilisés 
+pour représenter l'argument de type <i>block!</i> pour  <b>if</b> et <b>either</b>.</p>
+<pre>
+notice: [print "Wake up!"]
+if now/time &gt; 7:00 notice           ;--  mot notice un bloc simple
+<span class="output">Wake up!</span>
+notices: [                          ;-- notices un bloc de bloc
+    [print "It's past sunrise!"]
+    [print "It's past noon!"]
+    [print "It's past sunset!"]
+]
+if now/time &gt; 12:00 second notices
+<span class="output">It's past noon!</span>
+sleep: [print "Keep sleeping"]     ; - le mot sleep
+either now/time &gt; 7:00 notice sleep
+<span class="output">Wake up!</span>
+</pre>
+<p>Les expressions conditionnelles utilisées pour le premier argument de <b>if</b> 
+ou <b>either</b> peuvent être composées de fonctions très diverses, fonctions de logique 
+ou de comparaison.</p>
+<p>Voir <a href="fr-rebolcore-11.html">le chapitre sur les Maths</a> pour plus d'information.</p>
+<div class="note"><p><b></b></p>
+<p><b>Evitez une erreur courante :</b></p>
+<p>Une erreur communément faite en REBOL est d'oublier le second bloc pour <b>either</b> 
+ou, a contrario, d'ajouter un second bloc pour <b>if</b>.</p>
+<p>Les deux exemples suivants sont tous deux générateurs d'erreurs difficiles à détecter :</p>
+<pre>
+either age &gt; 10 [print "Older"]
+if age &gt; 10 [print "Older"] [print "Younger"]
+</pre>
+<p>Ces types d'erreurs peuvent être difficiles à détecter, aussi, ayez cela à l'esprit 
+si ces fonctions ne vous paraissent pas ressembler à ce qu'elles devraient.</p>
+</div>
+</blockquote>
+<p>
+<h3 id="section-7.2">7.2 Any et All</h3>
+<blockquote>
+<p>Les fonctions <b>any</b> et <b>all</b> fournissent un raccourci pour évaluer certains 
+types d'expressions conditionnelles.  Ces fonctions peuvent être utilisées de 
+nombreuses manières : avec <b>either</b> en conjuguaison avec <b>if</b>, avec 
+<b>either</b> seulement, avec d'autres fonctions conditionnelles, ou séparement.</p>
+<p><b>Any</b> et <b>all</b> acceptent toutes deux un bloc d'expressions, ce bloc étant 
+évalué ainsi : la première expression est évaluée, puis la suivante, etc...</p>
+<p>La fonction <b>any</b> retourne la première expression <i>true</i> rencontrée,  et 
+la fonction <b>all</b> retourne sa première expression <i>false</i>.</p>
+<p>N'oubliez pas qu'une expression <i>false</i> peut être aussi <i>none</i>, et qu'une 
+expression <i>true</i> peut être n'importe quelle valeur SAUF <i>false</i> et <i>none</i>.</p>
+<p>La fonction <b>any</b> renvoie donc la première valeur rencontrée qui ne soit 
+pas fausse (<i>false</i>), sinon elle renvoie <b>none</b>.</p>
+<p>Les deux fonctions <b>any</b> et <b>all</b> évaluent juste ce qui leur est nécessaire.</p>
+<p>Par exemple, dés que <b>any</b> a trouvé une expression "vraie" (<i>true</i>), les 
+expressions restantes ne sont pas évaluées.</p>
+<p>Voici un exemple d'usage de la fonction <b>any</b> :</p>
+<pre>
+size: 50
+if any [size &lt; 10 size &gt; 90] [
+    print "Size is out of range."
+]
+</pre>
+<p>Le comportement de <b>any</b> est aussi pratique pour définir des valeurs par défaut. 
+Par exemple, les lignes de code suivantes redéfinissent la valeur de <i>number</i> 
+à 100, mais seulement si sa valeur initiale est <b>none</b> :</p>
+<pre>
+number: none
+print number: any [number 100]
+<span class="output">100</span>
+</pre>
+<p>Pareillement, si vous avez potentiellement plusieurs valeurs, vous pouvez utiliser 
+la première à avoir une valeur autre que <i>non</i> :</p>
+<pre>
+num1: num2: none
+num3: 80
+print number: any [num1 num2 num3]
+<span class="output">80</span>
+</pre>
+<p>Vous pouvez utiliser <b>any</b> avec des fonctions comme <b>find</b> pour retourner 
+systématiquement un résultat valide :</p>
+<pre>
+data: [123 456 789]
+print any [find data 432 999]
+<span class="output">999</span>
+</pre>
+<p>De la même manière, la fonction <b>all</b> peut être utilisée pour des conditions qui nécessitent 
+d'être toutes "vraies" (<i>true</i>) :</p>
+<pre>
+if all [size &gt; 10 size &lt; 90] [print "Size is in range"]
+<span class="output">Size is in range</span>
+</pre>
+<p>Vous pouvez vérifier que des valeurs ont bien été définies avant d'évaluer une 
+fonction :</p>
+<pre>
+a: "REBOL/"
+b: none
+probe all [string? a string? b append a b]
+<span class="output">none</span>
+b: "Core"
+probe all [string? a string? b append a b]
+<span class="output">REBOL/Core</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-7.3">7.3 Boucles conditionnelles</h3>
+<blockquote>
+<p>Les fonctions <b>until</b> et <b>while</b> répétent l'évaluation d'un bloc jusqu'à 
+ce qu'une condition soit remplie.</p>
+<p>La fonction <b>until</b> répéte l'évaluation d'un bloc jusqu'à ce que cette 
+évaluation renvoie <b>true</b> (c'est à dire : ni <b>false</b>, ni <b>none</b> ).</p>
+<p>L'évaluation du bloc est toujours réalisée au moins une fois. La fonction <b>until</b> 
+renvoie la valeur de ce bloc.</p>
+<p>L'exemple ci-dessous affichera chaque mot du bloc <i>color</i>. Le bloc commence 
+par afficher le premier mot du bloc. Puis on se déplace à la couleur suivante, et 
+ainsi pour chaque couleur dans le bloc. Lorsque la fin du bloc est atteinte et que 
+la fonction <b>tail?</b> renvoie <b>true</b>, alors la boucle <b>until</b> se termine.</p>
+<pre>
+color: [red green blue]
+until [
+    print first color
+    tail? color: next color
+]
+<span class="output">red
+green
+blue</span>
+</pre>
+<p><u>N.B.</u> : la fonction <b>break</b> peut être utilisée pour sortir de la boucle <b>until</b> 
+à n'importe quel moment.</p>
+<p>La fonction <b>while</b> répéte l'évaluation de ses deux arguments (des blocs), 
+jusqu'au moment où le premier bloc renvoie <b>true</b>.</p>
+<p>Le premier bloc est le bloc conditionnel, le second bloc est le bloc d'évaluation.</p>
+<p>Quand le bloc conditionnel est évalué et renvoie <b>true</b>, le second bloc n'est pas évalué, et 
+la boucle se termine. <br>
+Voici un exemple identique au précédent. La boucle <b>while</b> continuera d'afficher 
+une couleur du bloc <i>color</i> tant qu'il y aura des couleurs à afficher.</p>
+<pre>
+color: [red green blue]
+while [not tail? color] [
+    print first color
+    color: next color
+]
+<span class="output">red
+green
+blue</span>
+</pre>
+<p>Le bloc conditionnel peut contenir plusieurs expressions, à condition que la 
+dernière expression renvoie la condition. Pour illustrer cela, l'exemple suivant 
+ajoute une ligne "<i>print index? color</i>" au bloc conditionnel. 
+Cette ligne affichera l'index de la valeur courante de la couleur. Le test sur la 
+fin du bloc de couleur s'effectue ensuite, fournissant la condition utilisée pour la boucle :</p>
+<pre>
+color: [red green blue]
+while [
+    print index? color
+    not tail? color
+][
+    print first color
+    color: next color
+]
+<span class="output">1
+red
+2
+green
+3
+blue
+4</span>
+</pre>
+<p>La dernière valeur du bloc est retournée par la fonction <b>while</b>.</p>
+<p><u>N.B.</u> : la fonction <b>break</b> peut être utilisée, là encore, pour forcer la sortie de la boucle, 
+à n'importe quel moment.</p>
+</blockquote>
+<p>
+<h3 id="section-7.4">7.4 Erreurs classiques</h3>
+<blockquote>
+<div class="note"><p><b></b></p>
+<p>Les expressions conditionnelles sont fausses seulement lorsque leur évaluation 
+retourne <b>false</b> ou <b>none</b>, et elles sont <b>true</b> (vraies) pour <b>toute 
+autre valeur</b>.</p>
+</div>
+<p>Toutes les expressions conditionnelles dans les exemples suivants  
+renvoient <b>true</b>, même pour des valeurs comme zéro ou un bloc vide :</p>
+<pre>
+if true [print "yep"]
+<span class="output">yep</span>
+if 1 [print "yep"]
+<span class="output">yep</span>
+if 0 [print "yep"]
+<span class="output">yep</span>
+if [] [print "yep"]
+<span class="output">yep</span>
+</pre>
+<p>L'expression conditionnelle suivante renvoie <b>false</b> :</p>
+<pre>
+if false [print "yep"]
+if none [print "yep"]
+</pre>
+<p>N'incluez PAS d'expressions conditionnelles dans un bloc. Les expressions 
+conditionnelles comprises dans un bloc retournent toujours un résultat <b>true</b> :</p>
+<pre>
+if [false] [print "yep"]
+yep
+</pre>
+<p>Ne confondez pas <b>either</b> et <b>if</b>. Par exemple, si vous souhaitez écrire :</p>
+<pre>
+either some-condition [a: 1] [b: 2]
+</pre>
+<p>mais écrivez ceci à la place :</p>
+<pre>
+if some-condition [a: 1] [b: 2]
+</pre>
+<p>la fonction <b>if</b> va ignorer le second bloc. Il n'y aura pas d'erreur, mais 
+le second bloc ne sera jamais évalué.</p>
+<p>Le contraire est aussi vrai. Si vous écrivez la ligne suivante, en oubliant le 
+second bloc :</p>
+<pre>
+either some-condition [a: 1]
+</pre>
+<p>la fonction <b>either</b> n'évaluera pas correctement le code et pourra produire 
+un résultat erroné.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-8">8. Evaluations en boucle</h2>
+<blockquote>
+<p>Les fonctions <b>while</b> et <b>until</b> ci-dessus ont été employées pour 
+une boucle jusqu'à ce qu'une condition soit remplie.</p>
+<p>Il y a d'autres fonctions permettant de réaliser une boucle, un certain nombre 
+de fois.</p>
+</blockquote>
+<p>
+<h3 id="section-8.1">8.1 Loop</h3>
+<blockquote>
+<p>La fonction <b>loop</b> évalue un bloc autant de fois qu'indiqué. 
+L'exemple suivant affiche une ligne de quarante tirets :</p>
+<pre>
+loop 40 [prin "-"]
+<span class="output">----------------------------------------</span>
+</pre>
+<p>Notez que la fonction <b>prin</b> est identique à la fonction  <b>print</b>, 
+mais affiche son argument sans ajouter de retour à la ligne.</p>
+<p>La fonction <b>loop</b> renvoie la valeur de l'évaluation finale du bloc :</p>
+<pre>
+i: 0
+print loop 40 [i: i + 10]
+<span class="output">400</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.2">8.2 Repeat</h3>
+<blockquote>
+<p>La fonction <b>repeat</b> rajoute à la fonction <b>loop</b> la possibilité de 
+contrôler votre compteur de boucle. Le premier argument de la fonction <b>repeat</b> 
+est un mot qui sera utilisé pour manipuler la valeur du compteur :</p>
+<pre>
+repeat count 3 [print ["count:" count]]    ; count est le mot "compteur"
+<span class="output">count: 1
+count: 2
+count: 3</span>
+</pre>
+<p>Le résultat du dernier bloc est aussi retourné par la fonction :</p>
+<pre>
+i: 0
+print repeat count 10 [i: i + count]
+<span class="output">55</span>
+</pre>
+<p>Dans cet exemple, le mot <i>count</i> a seulement une valeur à l'intérieur du bloc à répéter. 
+En d'autres termes, la valeur de <i>count</i> est locale au bloc. 
+A l'issue de la boucle, <i>count</i> référence la valeur définie qu'il pouvait 
+avoir avant.</p>
+</blockquote>
+<p>
+<h3 id="section-8.3">8.3 For</h3>
+<blockquote>
+<p>La fonction <b>for</b> rajoute à <b>repeat</b> une valeur de départ, une autre de fin, 
+et un incrément à préciser.  Chacune de ces valeurs peut être positive ou négative.</p>
+<p>L'exemple ci-dessous démarre son compteur à zéro et va jusqu'à 50, avec un incrément 
+de 10, à chaque itération.</p>
+<pre>
+for count 0 50 10 [print count]
+<span class="output">0
+10
+20
+30
+40
+50</span>
+</pre>
+<p>La fonction <b>for</b> fait une itération jusqu'à la valeur de fin <i>incluse</i>.</p>
+<p>L'exemple ci-dessous indique une valeur de fin égale à 55. 
+Cette valeur ne sera jamais atteinte parce que le compteur est incrémenté de 10 
+à chaque itération. La boucle se terminera donc à 50.</p>
+<pre>
+for count 0 55 10 [prin [count " "]]
+<span class="output">0 10 20 30 40 50</span>
+</pre>
+<p>L'exemple suivant montre la valeur du compteur est décrémentée. 
+Il commence à quatre et diminue jusqu'à zéro d'une unité à la fois.</p>
+<pre>
+for count 4 0 -1 [print count]
+<span class="output">4
+3
+2
+1
+0</span>
+</pre>
+<p>La fonction <b>for</b> travaille aussi avec des nombres décimaux, des valeurs monétaires, 
+des dates/heures, des séries, et des caractères.</p>
+<p>Soyez sûrs d'utiliser pour les valeurs de début et de fin le même type de données.</p>
+<p>Voici plusieurs exemples d'utilisation de boucle avec d'autres types de données :</p>
+<pre>
+for count 10.5 0.0 -1 [prin [count " "]]
+<span class="output">10.5 9.5 8.5 7.5 6.5 5.5 4.5 3.5 2.5 1.5 0.5</span>
+for money $0.00 $1.00 $0.25 [prin [money " "]]
+<span class="output">$0.00 $0.25 $0.50 $0.75 $1.00</span>
+for time 10:00 12:00 0:20 [prin [time " "]]
+<span class="output">10:00 10:20 10:40 11:00 11:20 11:40 12:00</span>
+for date 1-jan-2000 4-jan-2000 1 [prin [date " "]]
+<span class="output">1-Jan-2000 2-Jan-2000 3-Jan-2000 4-Jan-2000</span>
+for char #"a" #"z" 1 [prin char]
+<span class="output">abcdefghijklmnopqrstuvwxyz</span>
+</pre>
+<p>La fonction <b>for</b> peut aussi être utilisée sur des séries.</p>
+<p>Voici un exemple sur une valeur de type chaîne. Le mot <i>end</i> définit la chaîne de 
+caractères <i>str</i>, avec son index courant sur le caractère "d".</p>
+<p>La fonction <b>for</b> parcourt la série de caractères, un par un, et s'arrête 
+lorsque la position définie par <i>end</i> est atteinte :</p>
+<pre>
+str: "abcdef"
+end: find str "d"
+for s str end 1 [print s]
+<span class="output">abcdef
+bcdef
+cdef
+def</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.4">8.4 Foreach</h3>
+<blockquote>
+<p>La fonction <b>foreach</b> fournit une façon commode de répéter l'évaluation d'un bloc 
+pour chaque élément d'une série. Elle fonctionne avec tous types de blocs, et de  
+séries de type caractère.</p>
+<p>Dans l'exemple ci-dessous, chaque mot dans le bloc sera affiché</p>
+<pre>
+colors: [red green blue]
+foreach color colors [print color]
+<span class="output">red
+green
+blue</span>
+</pre>
+<p>Dans l'exemple suivant, chaque caractère dans la chaîne sera affiché :</p>
+<pre>
+string: "REBOL"
+foreach char string [print char]
+<span class="output">REBOL</span>
+</pre>
+<p>Ici, chaque nom de fichier dans un répertoire est retourné :</p>
+<pre>
+files: read %.
+foreach file files [
+    if find file ".t" [print file]
+]
+<span class="output">file.txt
+file2.txt
+newfile.txt
+output.txt</span>
+</pre>
+<p>Quand un bloc contient des groupes de valeurs qui sont en lien les unes avec les 
+autres, la fonction <b>foreach</b> peut récupérer toutes les valeurs du groupe en 
+même temps.</p>
+<p>Par exemple, voici un bloc qui contient une heure, une chaîne de caractères (un nom), 
+et un prix.</p>
+<p>En fournissant comme argument à la fonction <b>foreach</b> un bloc de mots pour 
+le groupe, chacune de ces valeurs peut être cherchée et affichée :</p>
+<pre>
+movies: [
+     8:30 "Contact"      $4.95
+    10:15 "Ghostbusters" $3.25
+    12:45 "Matrix"       $4.25
+]
+foreach [time title price] movies [
+    print ["watch" title "at" time "for" price]
+]
+<span class="output">watch Contact at 8:30 for $4.95
+watch Ghostbusters at 10:15 for $3.25
+watch Matrix at 12:45 for $4.25</span>
+</pre>
+<p>Dans l'exemple ci-dessus, le bloc de valeurs <i>[time title price]</i> mentionne 
+que trois valeurs seront cherchées dans la série <i>movies</i> pour chaque évaluation 
+du bloc.</p>
+<p>Dans la boucle <b>foreach</b>, les variables utilisées (ici <i>time, title, price</i>) 
+sont locales.</p>
+<p>Leur valeur est uniquement définie au sein du bloc en cours d'évaluation.</p>
+<p>Une fois la boucle finie, les variables retournent aux valeurs qu'elles pouvaient 
+avoir auparavant.</p>
+</blockquote>
+<p>
+<h3 id="section-8.5">8.5 Forall and Forskip</h3>
+<blockquote>
+<p>Tout comme <b>foreach</b>, la fonction <b>forall</b> évalue un bloc pour chaque 
+valeur dans la série. Cependant, il y a quelques différences importantes.</p>
+<p>La fonction <b>forall</b> manipule la série, en partant du début de la série. 
+Au cours des itérations, <b>forall</b> modifie la position à l'intérieur de la série.</p>
+<pre>
+colors: [red green blue]
+forall colors [print first colors]
+<span class="output">red
+green
+blue</span>
+</pre>
+<p>Dans l'exemple ci-dessus, après chaque évaluation du bloc, la série est 
+avancée à la position suivante. Quand <b>forall</b> rend la main, l'index de la série 
+<i>color</i> est sur la fin (<i>tail</i>) de la série.</p>
+<p>Pour continuer à utiliser la série, vous aurez besoin de la repositionner sur la 
+position du début (<i>head</i>), avec la ligne suivante :</p>
+<pre>
+colors: head colors
+</pre>
+<p>La fonction <b>forskip</b> évalue un bloc par groupe de valeurs dans une série. 
+Le second argument de la fonction <b>forskip</b> est le nombre d'élements à "sauter" 
+entre deux itérations.</p>
+<p>Comme <b>forall</b>, <b>forskip</b> manipule la série, en commencant avec l'index 
+au début de la série. Puis <b>forskip</b> parcourt la série en modifiant l'index 
+de position.</p>
+<p>Après chaque évaluation du bloc, l'index de série est avancé du nombre de 
+positions sautées jusqu'à la nouvelle position.</p>
+<p>L'exemple suivant illustre le fonctionnnement de <b>forskip</b> :</p>
+<pre>
+movies: [
+     8:30 "Contact"      $4.95
+    10:15 "Ghostbusters" $3.25
+    12:45 "Matrix"       $4.25
+]
+forskip movies 3 [print second movies]
+<span class="output">Contact
+Ghostbusters
+Matrix</span>
+</pre>
+<p>Dans l'exemple ci-dessus, <b>foskip</b> retourne la série <i>movies</i>.</p>
+<p>Vous devrez utiliser la fonction <b>head</b> pour repositionner la série sur sa 
+position de départ (<i>head</i>).</p>
+</blockquote>
+<p>
+<h3 id="section-8.6">8.6 Forever</h3>
+<blockquote>
+<p>La fonction <b>forever</b> évalue un bloc continuement, sans sortir, ou juste si la fonction 
+<b>break</b> est rencontrée.</p>
+<p>L'exemple suivant utilise <b>forever</b> pour vérifier l'existence d'un fichier, toutes les 
+dix minutes :</p>
+<pre>
+forever [
+    if exists? %datafile [break]
+    wait 0:10
+]
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.7">8.7 Break</h3>
+<blockquote>
+<p>Vous pouvez arrêter la répétition de l'évaluation d'un bloc avec la fonction 
+<b>break</b>.</p>
+<p>La fonction <b>break</b> est pratique quand une condition particulière est 
+rencontrée et que la boucle doit être arrêtée.</p>
+<p>La fonction <b>break</b> est utilisable avec tous les types de boucles.</p>
+<p>Dans l'exemple suivant, la boucle se termine si un nombre est supérieur à 5 :</p>
+<pre>
+repeat count 10 [
+    if (random count) &gt; 5 [break]
+    print "testing"
+]
+<span class="output">testing
+testing
+testing</span>
+</pre>
+<p>La fonction <b>break</b> ne renvoie pas de valeur, sauf si le raffinement 
+<b>return</b> est utilisé :</p>
+<pre>
+print repeat count 10 [
+    if (random count) &gt; 5 [break/return "stop here"]
+    print "testing"
+    "normal exit"
+]
+<span class="output">testing
+testing
+testing
+stop here</span>
+</pre>
+<p>Dans cet exemple, si la boucle <b>repeat</b> se termine sans que la condition 
+particulière <i>(random count) > 5</i> se réalise, le bloc renvoie la chaîne "<i>normal exit</i>".</p>
+<p>Sinon, <b>break/return</b> retournera la chaîne "<i>stop here</i>".</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-9">9. Evaluation sélective</h2>
+<blockquote>
+<p>Il y a plusieurs méthodes pour évaluer sélectivement des expressions en REBOL. 
+Ces méthodes fournissent pour l'évaluation une manière de trier plusieurs choix, 
+sur la base d'une valeur de clé.</p>
+</blockquote>
+<p>
+<h3 id="section-9.1">9.1 Select</h3>
+<blockquote>
+<p>La fonction <b>select</b> est souvent utilisée pour obtenir une valeur 
+spécifique ou un bloc, à partir d'une valeur cible.</p>
+<p>Si vous définissez un bloc de valeurs et d'actions à faire, vous pouvez utiliser <b>select</b> 
+pour rechercher l'action correspondante à une valeur.</p>
+<pre>
+cases: [
+    center [print "center"]
+    right  [print "right"]
+    left   [print "left"]
+]
+action: select cases 'right
+if action [do action]
+<span class="output">right</span>
+</pre>
+<p>Dans cet exemple, la fonction <b>select</b> trouve le mot <i>rigth</i> et renvoie 
+le bloc qui suit ce mot. (Si pour une raison ou une autre, la recherche était infructueuse, 
+la valeur <b>none</b> serait retournée.)</p>
+<p>Le bloc est alors évalué. Les valeurs utilisées dans cet exemple sont des mots, 
+mais il peut y avoir n'importe quelle sorte de valeur :</p>
+<pre>
+cases: [
+     5:00 [print "everywhere"]
+    10:30 [print "here"]
+    18:45 [print "there"]
+]
+action: select cases 10:30
+if action [do action]
+<span class="output">here</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-9.2">9.2 Switch</h3>
+<blockquote>
+<p>La fonction <b>select</b> est utilisée tellement souvent qu'il existe de cette 
+fonction une version particulière, appelée <b>switch</b> : cette version inclut 
+l'évaluation du bloc résultant.</p>
+<p>La fonction <b>switch</b> rend plus simple et facile la réalisation directe d'évaluation 
+sélective.</p>
+<p>Par exemple, pour effectuer un choix sur une simple valeur numérique :</p>
+<pre>
+switch 22 [
+    11 [print "here"]
+    22 [print "there"]
+]
+<span class="output">there</span>
+</pre>
+<p>La fonction <b>switch</b> renvoie également la valeur du bloc évalué, de sorte que 
+l'exemple ci-dessus pourrait être ré-écrit sous la forme :</p>
+<pre>
+str: copy "right "
+print switch 22 [
+    11 [join str "here"]
+    22 [join str "there"]
+]
+<span class="output">right there</span>
+</pre>
+<p>et :</p>
+<pre>
+car: pick [Ford Chevy Dodge] random 3
+print switch car [
+    Ford  [351 * 1.4]
+    Chevy [454 * 5.3]
+    Dodge [154 * 3.5]
+]
+<span class="output">2406.2</span>
+</pre>
+<p>Les différentes sélections peuvent être de n'importe quel type de données valides, 
+ce qui inclut les nombres, les chaînes de caractères, les mots, les dates/heures, 
+les urls, et les fichiers.</p>
+<p>En voici d'ailleurs quelques illustrations :</p>
+<ul>
+<li><u>Chaînes de caractères</u> :</li>
+</ul>
+<pre>
+person: "kid"
+switch person [
+    "dad" [print "here"]
+    "mom" [print "there"]
+    "kid" [print "everywhere"]
+]
+<span class="output">everywhere</span>
+</pre>
+<ul>
+<li><u>Mots</u> :</li>
+</ul>
+<pre>
+person: 'kid
+switch person [
+    dad [print "here"]
+    mom [print "there"]
+    kid [print "everywhere"]
+]
+<span class="output">everywhere</span>
+</pre>
+<ul>
+<li><u>Type de données</u> :</li>
+</ul>
+<pre>
+person: 123
+switch type?/word [
+    string! [print "a string"]
+    binary! [print "a binary"]
+    integer! [print "an integer number"]
+    decimal! [print "a decimal number"]
+]
+<span class="output">an integer number</span>
+</pre>
+<ul>
+<li><u>Fichiers</u> :</li>
+</ul>
+<pre>
+file: %rebol.r
+switch file [
+    %user.r [print "here"]
+    %rebol.r [print "everywhere"]
+    %file.r [print "there"]
+]
+<span class="output">everywhere</span>
+</pre>
+<ul>
+<li><u>URLs</u> :</li>
+</ul>
+<pre>
+url: ftp://ftp.rebol.org
+switch url [
+    http://www.rebol.com [print "here"]
+    http://www.cnet.com [print "there"]
+    ftp://ftp.rebol.org [print "everywhere"]
+]
+<span class="output">everywhere</span>
+</pre>
+<ul>
+<li><u>Balises</u> :</li>
+</ul>
+<pre>
+tag: &lt;LI&gt;
+print switch tag [
+    &lt;PRE&gt;   ["Preformatted text"]
+    &lt;TITLE&gt; ["Page title"]
+    &lt;LI&gt;    ["Bulleted list item"]
+]
+<span class="output">Bulleted list item</span>
+</pre>
+<ul>
+<li><u>Heures</u> :</li>
+</ul>
+<pre>
+time: 12:30
+switch time [
+     8:00 [send wendy@domain.dom "Hey, get up"]
+    12:30 [send cindy@rebol.dom "Join me for lunch."]
+    16:00 [send group@every.dom "Dinner anyone?"]
+]
+</pre>
+<p>
+<h4 id="section-9.2.1">9.2.1 Sélection par défaut</h4>
+<p>Une sélection par défaut peut être indiquée quand aucun des autres cas ne 
+correspond.</p>
+<p>Utilisez le raffinement <b>/default</b> pour définir le choix par défaut :</p>
+<pre>
+time: 7:00
+switch/default time [
+     5:00 [print "everywhere"]
+    10:30 [print "here"]
+    18:45 [print "there"]
+] [print "nowhere"]
+<span class="output">nowhere</span>
+</pre>
+<p>
+<h4 id="section-9.2.2">9.2.2 Cas usuels</h4>
+<p>Si vous avez couramment des cas, où le résultat devrait être le même 
+pour plusieurs valeurs, vous pouvez définir un mot pour manipuler un bloc de 
+code commun :</p>
+<pre>
+case1: [print length? url]   ; le bloc commun
+url: http://www.rebol.com
+switch url [
+    http://www.rebol.com case1
+    http://www.cnet.com [print "there"]
+    ftp://ftp.rebol.org case1
+]
+<span class="output">20</span>
+</pre>
+<p>
+<h4 id="section-9.2.3">9.2.3 Autres cas</h4>
+<p>D'autres valeurs que des blocs peuvent être évaluées pour les sélections.</p>
+<p>Cet exemple illustre l'évaluation d'un fichier en correspondance avec 
+le jour de la semaine :</p>
+<pre>
+switch now/weekday [
+    1 %monday.r
+    5 %friday.r
+    6 %saturday.r
+]
+</pre>
+<p>Ainsi, si c'est vendredi (<i>friday</i>), c'est le fichier friday.r qui est évalué et le résultat est retourné.</p>
+<p>Ce type d'évaluation marche aussi pour des URLs :</p>
+<pre>
+switch time [
+     8:30 ftp://ftp.rebol.org/wakeup.r
+    10:30 http://www.rebol.com/break.r
+    18:45 ftp://ftp.rebol.org/sleep.r
+]
+</pre>
+<p>Les choix pour <b>switch</b> sont inclus dans un bloc, et par conséquent, peuvent 
+être définis à part de bloc <b>switch [...]</b> :</p>
+<pre>
+schedule: [
+     8:00 [send wendy@domain.dom "Hey, get up"]
+    12:30 [send cindy@dom.dom "Join me for lunch."]
+    16:00 [send group@every.dom "Dinner anyone?"]
+]
+<span class="output">switch 8:00 schedule</span>
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-10">10. Stopper une évaluation</h2>
+<blockquote>
+<p>L'évaluation d'un script peut être stoppée à n'importe quel moment en pressant 
+la touche (ESC) sur le clavier ou en utilisant les fonctions <b>halt</b> et <b>quit</b>.</p>
+<p>La fonction <b>halt</b> arrête l'évaluation et retourne à l'invite de commande 
+dans la console REBOL :</p>
+<pre>
+if time &gt; 12:00 [halt]
+</pre>
+<p>La fonction <b>quit</b> arrête l'évaluation et <b>quitte</b> l'interpréteur REBOL :</p>
+<pre>
+if error? try [print test] [quit]
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-11">11. Test de blocs</h2>
+<blockquote>
+<p>Il y a des fois où vous voudrez évaluer du code, mais ceci sans que l'évaluation 
+du reste de votre script s'arrête, si une erreur se produit.</p>
+<p>Par exemple, vous réalisez une division, mais vous ne voulez pas que 
+votre script s'arrête si une division par zéro se produit.</p>
+<p>La fonction <b>try</b> vous permet de récupérer les erreurs durant l'évaluation 
+d'un bloc. Elle est presque identique à <b>do</b>.</p>
+<p>La fonction <b>try</b> renverra normalement le résultat du bloc; cependant, si 
+une erreur se produit, elle renverra la valeur de l'erreur à la place.</p>
+<p>Dans l'exemple suivant, quand la division par zéro se produit, le script transmet 
+une erreur à la fonction <b>try</b>, et l'évaluation continue à partir de ce point.</p>
+<pre>
+for num 5 0 -1 [
+    if error? try [print 10 / num] [print "error"]
+<span class="output">]
+2
+2.5
+3.33333333333333
+5
+10
+error</span>
+</pre>
+<p>D'autres informations concernant la gestion des erreurs se trouvent dans l'Annexe 
+consacrée aux Erreurs.</p>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 15-Apr-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>

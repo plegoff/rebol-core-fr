@@ -1,0 +1,889 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//FR">
+<html>
+<head>
+<title>Chapitre 12 - Fichiers</title>
+<meta http-equiv="content-type" content="text/html;CHARSET=iso-8859-15">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1"> 
+<META NAME="KEYWORDS" CONTENT="REBOL, rebel, distributed computing, X Internet, X-Internet, xnet, executable internet, distributed applications, distributed platform, internet platform, internet programming, client-side computing, distributed desktop, platform independent, system independent, machine independent, operating system, programming language, scripting language, scripting, messaging, dialect, dialecting, e-content, direct Internet delivery, command">
+<META NAME="Description" CONTENT="REBOL Technologies provides advanced, system-independent communication technology for the X Internet.">
+<title>Chapitre 12 - Fichiers</title>
+<style type="text/css">
+
+body, p, td {font-family: arial, sans-serif, helvetica; font-size: 9pt;}
+
+tt {font-family: "courier new", monospace, courier; font-size: 9pt;}
+.title {Font-Size: 16 pt; Font-Weight: bold;}
+
+/* style du header présentant le doc */
+.header { padding: 10pt; padding-left: 20pt; margin-right: 30pt; width:"660px"; background-color: #e5e5e5; 
+font-family: arial, sans-serif, helvetica; font-size: 9pt; font-weight: normal;}
+
+/*  Le style du lien pour remonter à la Table des Matières  */
+.top { font-size:8pt; text-align: right; color: #872C2C; width: 100%; }
+/*  Le style des Notes  */
+.note {
+	margin: 1em 2em;
+	padding: 1em;
+	width: 85%;
+	color: white;
+	background-color: #B16C62;
+	border: solid gray 1px;
+	text-align:justify;
+}
+/*  Les styles des items de la table des matières  */
+.toc1 {margin-left: 1cm; font-size: 10pt; font-weight: bold;}
+.toc2 {margin-left: 2cm; font-size: 9pt; font-weight: bold; text-decoration: none;}
+.toc3 {margin-left: 3cm; font-size: 8pt; text-decoration: none;}
+.toc4 {margin-left: 4cm; font-size: 8pt; color: grey; text-decoration: none;}
+
+
+h1 {font-size: 12pt;}
+h2 {font-size: 10pt; color: #2030a0; width: 100%; border-bottom: 1px solid #c09060;}
+h3 {font-size: 10pt; color: #2030a0;}
+h4 {font-size: 9pt; color: #2030a0; font-weight: bold;}
+h5 {font-size: 9pt; font-weight: bold;}
+
+/*  Les styles du code et des outputs  */
+pre {font: bold 9pt "courier new", monospace, console; color: #000000;
+    background-color: #e0e0e0; padding: 16px; border: solid #a0a0a0 1px;}
+.output {color: #000080; font-weight: normal;}
+
+/*  Les styles des tableaux  */
+.md-table table {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px;}
+
+.md-header td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid black 1px; background-color: silver;
+font: bold 8pt; color: black; text-align: center;}
+
+.md-cell td {font-family: verdana, arial, sans-serif, helvetica; 
+border: solid #454545 1px;
+font-size: 8pt; color: black; text-align: top}
+
+/* style de la mention finale */
+.tail {color: gray; font-size: 8pt;}
+
+</style>
+</head>
+<body bgcolor="white"><h4 id="top" >&nbsp;</h4>
+<center>
+<table width="660" cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td>
+<a href="http://www.rebol.com/docs.html">
+<img src="http://www.rebol.com/graphics/doc-bar.gif" width="680" height="28" align="bottom" alt="rebol document" border="0" usemap="#bar-map" ismap>
+</a>
+</td>
+
+</tr>
+<tr height="10"><td></td></tr>
+<tr><td>
+<p><h1 class="title" >Chapitre 12 - Fichiers</h1>
+<div class="header">
+Ce document est la traduction française du Chapitre 12 du User Guide de REBOL/Core,<br />qui concerne les fichiers.
+</div>
+
+
+
+
+<h2 class="toc-title" >Contenu </h2>
+<a class="toc1" href="fr-rebolcore-12.html#section-1">1. Historique de la traduction</a><br />
+<a class="toc1" href="fr-rebolcore-12.html#section-2">2. Présentation</a><br />
+<a class="toc1" href="fr-rebolcore-12.html#section-3">3. Noms et Paths</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-3.1">3.1 Noms des fichiers</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-3.2">3.2 Chemins</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-3.3">3.3 Sensibilité à la casse</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-3.4">3.4 Fonctions de noms de fichiers</a><br />
+<a class="toc1" href="fr-rebolcore-12.html#section-4">4. Lecture des fichiers</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-4.1">4.1 Lecture de fichiers texte</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-4.2">4.2 Lecture de fichiers binaire</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-4.3">4.3 Lecture au travers du réseau</a><br />
+<a class="toc1" href="fr-rebolcore-12.html#section-5">5. Ecriture de fichiers</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-5.1">5.1 Ecriture de fichiers texte</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-5.2">5.2 Ecriture de fichiers binaires</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-5.3">5.3 Ecriture de fichiers sur le réseau</a><br />
+<a class="toc1" href="fr-rebolcore-12.html#section-6">6. Conversion de Ligne</a><br />
+<a class="toc1" href="fr-rebolcore-12.html#section-7">7. Blocs de Lignes</a><br />
+<a class="toc1" href="fr-rebolcore-12.html#section-8">8. Information sur les fichiers et les répertoires</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-8.1">8.1 Contrôle de Répertoire</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-8.2">8.2 Existence de fichier</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-8.3">8.3 Taille de fichier</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-8.4">8.4 Date de modification d'un fichier</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-8.5">8.5 Information relative à un fichier</a><br />
+<a class="toc1" href="fr-rebolcore-12.html#section-9">9. Répertoires</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-9.1">9.1 Lire un répertoire</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-9.2">9.2 Créer un répertoire</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-9.3">9.3 Renommage des répertoires et des fichiers</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-9.4">9.4 Effacer des répertoires et des fichiers</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-9.5">9.5 Répertoire courant</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-9.6">9.6 Modifier le répertoire courant</a><br />
+<a class="toc2" href="fr-rebolcore-12.html#section-9.7">9.7 Listing du Répertoire courant</a><br />
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-1">1. Historique de la traduction</h2>
+<blockquote>
+<table class="md-table" border=1 cellspacing="1" cellpadding="4" >
+        <tr class="md-header"><td><b>
+<p>Date</p>
+</b></td><td><b>
+<p>Version</p>
+</b></td><td><b>
+<p>Commentaires</p>
+</b></td><td><b>
+<p>Auteur</p>
+</b></td><td><b>
+<p>Email</p>
+</td></tr><tr class="md-cell" ><td>
+<p>27 juin 2005 19:33</p>
+</td><td>
+<p>1.0.0</p>
+</td><td>
+<p>Traduction initiale</p>
+</td><td>
+<p>Philippe Le Goff</p>
+</td><td>
+<p>lp--legoff--free--fr</p>
+</td></tr></table>
+<p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-2">2. Présentation</h2>
+<blockquote>
+<p>Une caractéristique importante de la puissance de REBOL est sa capacité 
+à manipuler les fichiers et les répertoires. REBOL fournit plusieurs fonctions 
+sur mesure permettant des opérations allant de la lecture d'un simple 
+fichier jusqu'à l'accès direct aux fichiers et répertoires. Pour plus 
+d'informations sur l'accès direct aux fichiers et répertoires, 
+voir <a href="fr-rebolcore-14.html">le chapitre sur les Ports</a>.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-3">3. Noms et Paths</h2>
+<blockquote>
+<p>REBOL fournit une convention de nommage des chemins et des fichiers qui se veut indépendante du 
+type de machines.</p>
+</blockquote>
+<p>
+<h3 id="section-3.1">3.1 Noms des fichiers</h3>
+<blockquote>
+<p>Dans les scripts, les noms de fichiers et les chemins 
+sont écrits avec un signe pourcentage <b>(%)</b> suivi par une suite de caractères :</p>
+<pre>
+%examples.r
+%big-image.jpg
+%graphics/amiga.jpg
+%/c/plug-in/video.r
+%//sound/goldfinger.mp3
+</pre>
+<p>Le signe pourcentage <b>(%)</b> est nécessaire pour éviter que les noms de fichiers soient 
+interprétés comme des mots au sein du langage.</p>
+<p>Bien que cela ne soit pas une bonne habitude, des espaces peuvent être inclus dans 
+les noms de fichiers en incluant le nom du fichier entre des guillemets <b>(" ")</b>.</p>
+<p>Les guillemets évitent que le nom du fichiers soit interprété comme 
+une série de plusieurs mots :</p>
+<pre>
+%"this file.txt"
+%"cool movie clip.mpg"
+</pre>
+<p>La convention standard Internet d'utiliser le signe pourcentage 
+<b>(%)</b> et un code hexadécimal est aussi autorisée pour les noms de fichiers. 
+Quand ceci est fait, les guillemets ne sont pas requis.</p>
+<p>Les noms de fichiers précédents peuvent encore être écrits sous la forme :</p>
+<pre>
+%this%20file.txt
+%cool%20movie%20clip.mpg
+</pre>
+<p>Notez que le suffixe standard pour les scripts REBOL est "<b>.r</b>". Sur les systèmes 
+où cette convention produit un conflit avec un autre type de fichier, un 
+suffixe "<b>.reb</b>" peut être utilisé à la place.</p>
+</blockquote>
+<p>
+<h3 id="section-3.2">3.2 Chemins</h3>
+<blockquote>
+<p>Les chemins vers les fichiers sont décrits par un signe pourcentage <b>(%)</b> suivi par une 
+séquence de noms de répertoires qui sont chacun séparés par le signe <b>(/)</b>.</p>
+<pre>
+%dir/file.txt
+%/file.txt
+%dir/
+%/dir/
+%/dir/subdir/
+%../dir/file.txt
+</pre>
+<p>Le caractère standard pour séparer les répertoires est le caractère slash <b>(/)</b>,
+pas le backslash <b>(\)</b>. Si des caractères "backslash" sont trouvés, ils sont convertis 
+en caractères "slash" :</p>
+<pre>
+probe %\some\cool\movie.mpg
+%/some/cool/movie.mpg
+</pre>
+<p>REBOL fournit une méthode standard, indépendante du système d'exploitation pour spécifier 
+les chemins vers les répertoires. Les chemins peuvent être relatifs au répertoire courant 
+ou absolus à partir du plus haut niveau de l'arborescence du système d'exploitation.</p>
+<p>Les chemins vers les fichiers qui ne commencent pas par un symbole slash <b>(/)</b> sont des 
+chemins relatifs.</p>
+<pre>
+%docs/intro.txt
+%docs/new/notes.txt
+%"new mail/inbox.mbx"
+</pre>
+<p>La convention standard qui utilise deux points successifs <b>(..)</b> 
+pour indiquer un répertoire parent ou un point unique <b>(.)</b> pour faire référence 
+au répertoire courant est aussi supportée. Par exemple :</p>
+<pre>
+%.
+%./
+%./file.txt
+%..
+%../
+%../script.r
+%../../plans/schedule.r
+</pre>
+<p>Les chemins vers les fichiers utilisent la convention Internet qui fait  
+commencer un chemin absolu avec un slash <b>(/)</b>. Le slash indique le point de départ depuis 
+le plus haut niveau de l'arborescence du système. (Généralement, les chemins absolus 
+devraient être évités pour rendre les scripts indépendants du contexte de la machine.</p>
+<p>L'exemple :</p>
+<pre>
+%/home/file.txt
+</pre>
+<p>devrait référer à un volume disque ou une partition nommée "<i>home</i>".</p>
+<p>Voici d'autres exemples :</p>
+<pre>
+%/ram/temp/test.r
+%/cd0/scripts/test/files.r
+</pre>
+<p>Pour faire référence à un disque C comme cela est souvent 
+le cas pour Windows, la notation est :</p>
+<pre>
+%/C/docs/file.txt
+%"/c/program files/qualcomm/eudora mail/out.mbx"
+</pre>
+<p>Notez que dans les lignes précédentes, le disque C n'est pas écrit avec :</p>
+<pre>
+%c:/docs/file.txt
+</pre>
+<p>L'exemple précédent n'est pas indépendant du format utilisé pour la 
+machine et provoque une erreur.</p>
+<p>Si le premier nom de répertoire est absent, et que le chemin commence 
+avec deux slashs consécutifs, <b>(//)</b>, alors le chemin du fichier est relatif 
+au volume courant :</p>
+<pre>
+%//docs/notes
+</pre>
+</blockquote>
+<p>
+<h3 id="section-3.3">3.3 Sensibilité à la casse</h3>
+<blockquote>
+<p>Par défaut, en REBOL, les noms de fichiers ne sont pas sensibles à la casse des caractères. 
+Malgré tout, lorsque de nouveaux fichiers sont créés via le langage, leurs noms conservent la 
+casse avec lesquels ils sont créés :</p>
+<pre>
+write %Script-File.r file-data
+</pre>
+<p>L'exemple précédent crée un nom de fichier avec un S et un F 
+majuscules.</p>
+<p>De plus, lorsque des noms de fichiers sont issus de répertoires, leur casse est conservée :</p>
+<pre>
+print read %/home
+</pre>
+<p>Pour les systèmes sensibles à la casse, comme UNIX, 
+REBOL trouve la correspondance la plus proche pour le nom de fichier.</p>
+<p>Par exemple, si un script demande à lire %test.r, mais trouve seulement %TEST.r, ce 
+fichier %TEST.r sera lu. Ce comportement est nécessaire pour permettre de conserver 
+des scripts indépendants du contexte machine.</p>
+</blockquote>
+<p>
+<h3 id="section-3.4">3.4 Fonctions de noms de fichiers</h3>
+<blockquote>
+<p>Diverses fonctions sont fournies pour vous aider à 
+créer des noms de fichiers et des chemins (paths). 
+Elles sont listées ci-dessous :</p>
+<table cellspacing="6" border="0" width="95%">
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>to-file</b></td><td valign="top">Convertit des chaînes de caractères et des blocs en noms de fichiers 
+ou en chemin vers un fichier.
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>split-path</b></td><td valign="top">Scinde un chemin en deux parties : celle relative au répertoire et celle 
+relative au nom de fichier .
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>clean-path</b></td><td valign="top">Renvoie un chemin absolu qui est équivalent à n'importe quel chemin 
+fourni contenant (..) ou (.).
+</td></tr>
+<tr><td width="20">&nbsp;</td><td valign="top" width="80"><b>what-dir</b></td><td valign="top">Renvoie le chemin absolu du répertoire courant.
+</td></tr>
+</table>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-4">4. Lecture des fichiers</h2>
+<blockquote>
+<p>Les fichiers sont lus comme des séries de caractères (mode texte) ou d'octets (mode binaire).
+La source pour le fichier est soit un fichier local sur votre système, ou un fichier à partir 
+du réseau.</p>
+</blockquote>
+<p>
+<h3 id="section-4.1">4.1 Lecture de fichiers texte</h3>
+<blockquote>
+<p>Pour lire un fichier texte local, utilisez la fonction <b>read</b> :</p>
+<pre>
+text: read %file.txt
+</pre>
+<p>La fonction <b>read</b> renvoie une chaîne qui contient le texte entier 
+du fichier. Dans l'exemple ci-dessus, la variable <i>text</i> fait référence à cette chaîne.</p>
+<p>Au sein de cette chaîne renvoyée par <b>read</b>, les fins de lignes 
+sont convertis en caractères newline, indifféremment du genre de 
+fin de ligne qu'utilise votre système d'exploitation. Ceci permet d'écrire des scripts 
+qui recherche des sauts de lignes, sans se soucier des caractères particuliers 
+qui constitue une fin de ligne.</p>
+<pre>
+next-line: next find text newline
+</pre>
+<p>Un fichier peut aussi être lu en séparant les lignes, qui sont 
+stockées dans un bloc :</p>
+<pre>
+lines: read/lines %file.txt
+</pre>
+<p>Voir le paragraphe "Conversion de Lignes" pour plus d'informations concernant newline et la 
+lecture ligne par ligne.</p>
+<p>Pour lire un fichier par morceaux, utilisez la fonction <b>open</b> qui est décrite 
+dans <a href="fr-rebolcore-14.html">le chapitre sur les Ports</a>.</p>
+<p>Pour voir le contenu d'un fichier texte, vous pouvez le lire en 
+utilisant <b>read</b> et l'afficher en utilisant <b>print</b> :</p>
+<pre>
+print read %service.txt
+<span class="output">I wanted the gold, and I sought it,I scrabbled and mucked like
+a slave.</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-4.2">4.2 Lecture de fichiers binaire</h3>
+<blockquote>
+<p>Pour lire un fichier binaire comme une image, un programme ou un son, utilisez 
+<b>read/binary</b> :</p>
+<pre>
+data: read/binary %file.bin
+</pre>
+<p>La fonction <b>read/binary</b> renvoie une série binaire qui comprend le contenu 
+entier du fichier. Dans l'exemple ci-dessus, la variable data fait référence à la série 
+binaire. Aucune conversion d'aucun type n'est réalisée pour ce fichier.</p>
+<p>Pour lire un fichier <u>binaire</u> par morceaux, utilisez la fonction <b>open</b> 
+comme décrite dans <a href="fr-rebolcore-14.html">le chapitre sur les Ports</a>.</p>
+</blockquote>
+<p>
+<h3 id="section-4.3">4.3 Lecture au travers du réseau</h3>
+<blockquote>
+<p>Les fichiers peuvent être lus à partir du réseau. Par exemple, pour voir un fichier 
+texte à partir du réseau en utilisant le protocole HTTP :</p>
+<pre>
+print read http://www.rebol.com/test.txt
+<span class="output">Hellotherenewuser!</span>
+</pre>
+<p>Le fichier peut être écrit localement en une ligne de code :</p>
+<pre>
+write %test.txt read http:/www.rebol.com/test.txt
+</pre>
+<p>Dans le processus d'écriture, le fichier aura ses terminaisons de ligne converties en 
+ce qui est utilisé pour cela sur votre système d'exploitation.</p>
+<p>Pour lire et sauver un fichier binaire, comme une image, utilisez la ligne suivante :</p>
+<pre>
+write %image.jpg read/binary http:/www.rebol.com/image.jpg
+</pre>
+<p>Voyez <a href="fr-rebolcore-13.html">le chapitre sur les protocoles Réseau</a> pour plus d'information et d'exemples 
+sur les moyens d'accéder à des fichiers au travers le réseau.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-5">5. Ecriture de fichiers</h2>
+<blockquote>
+<p>Vous pouvez écrire un fichier de caractères (texte) ou d'octets (binaire). 
+L'emplacement du fichier peut soit être local sur votre système, soit sur le réseau.</p>
+</blockquote>
+<p>
+<h3 id="section-5.1">5.1 Ecriture de fichiers texte</h3>
+<blockquote>
+<p>Pour écrire un fichier texte localement, utilisez la ligne de code suivante :</p>
+<pre>
+write %file.txt "sample text here"
+</pre>
+<p>Celle-ci écrit le texte entier dans le fichier.
+Si un fichier contient des caractères newline, ils seront convertis en ceux que votre 
+système d'exploitation utilise. Ceci permet de manipuler les fichiers d'une manière 
+homogène, mais de les écrire en utilisant la convention en vigueur sur votre système.</p>
+<p>Par exemple, la ligne de code suivante transforme n'importe quel texte ayant un 
+style de terminaison de ligne (UNIX, Macintosh, PC, Amiga) en celui utilisé localement par 
+votre système :</p>
+<pre>
+write %newfile.txt read %file.txt
+</pre>
+<p>La ligne précédente lit le fichier en convertissant les fins de ligne vers le standard REBOL, puis 
+à l'écriture du fichier, en convertissant celui-ci au format propre au système d'exploitation local.</p>
+<p>Pour ajouter quelque chose à la fin d'un fichier, utilisez le raffinement <b>/append</b> :</p>
+<pre>
+write/append %file.txt "encore du texte"
+</pre>
+<p>Un fichier peut aussi être écrit à partir de lignes distinctes stockées dans 
+un bloc.</p>
+<pre>
+write/lines %file.txt lines
+</pre>
+<p>Pour écrire un fichier texte morceaux par morceaux, utilisez la fonction <b>open</b> décrite 
+dans <a href="fr-rebolcore-14.html">le chapitre sur les Ports</a>.</p>
+</blockquote>
+<p>
+<h3 id="section-5.2">5.2 Ecriture de fichiers binaires</h3>
+<blockquote>
+<p>Pour écrire des fichiers binaires comme une image, un programme, 
+un son, utilisez <b>write/binary</b> :</p>
+<pre>
+write/binary %file.bin data
+</pre>
+<p>La fonction <b>write/binary</b> crée le fichier si celui-ci n'existe pas 
+ou l'écrase s'il existe. Aucune conversion d'aucune sorte n'est réalisée pour le fichier.</p>
+<p>Pour écrire un fichier binaire morceaux par morceaux, utilisez la fonction <b>open</b> décrite 
+dans <a href="fr-rebolcore-14.html">le chapitre sur les Ports</a>.</p>
+</blockquote>
+<p>
+<h3 id="section-5.3">5.3 Ecriture de fichiers sur le réseau</h3>
+<blockquote>
+<p>Les fichiers peuvent aussi être écrits sur le réseau. Par exemple, pour écrire un fichier texte 
+en utilisant le protocole FTP, utilisez :</p>
+<pre>
+write ftp://ftp.domain.com/file.txt "save this text"
+</pre>
+<p>Le fichier peut être lu localement et écrit sur un emplacement en réseau via une 
+ligne comme celle-ci</p>
+<pre>
+write ftp://ftp.domain.com/file.txt read %file.txt
+</pre>
+<p>Dans le processus, le fichier a ses fins de lignes convertis 
+au format standard CRLF. Pour écrire un fichier binaire comme une image, via le réseau, 
+utilisez le code suivant :</p>
+<pre>
+write/binary ftp://ftp.domain.com/file.txt/image.jpg read/binary %image.jpg
+</pre>
+<p>Voyez <a href="fr-rebolcore-13.html">le chapitre sur les protocoles Réseau</a> pour plus d'information et d'exemples 
+sur les moyens d'accéder à des fichiers via le réseau.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-6">6. Conversion de Ligne</h2>
+<blockquote>
+<p>Quand un fichier est lu en tant que texte, toutes les fins de lignes sont 
+converties en caractères <b>newline</b> (line feed). Les caarctères LF (utilisés comme caractères de fin de lignes 
+pour Amiga, Linux, et les systèmes UNIX), les retours chariots CR (utilisés sur Macintosh) ou 
+la combinaison CR/LF (PC et Internet) sont tous transformés en leurs équivalents <b>newline</b>.</p>
+<p>L'usage d'un caractère standard au sein d'un script permet de le faire marcher 
+indépendamment du contexte machine. Par exemple, pour chercher et compter tous les caractères 
+<b>newligne</b> à l'intérieur d'un fichier texte :</p>
+<pre>
+text: read %file.txt
+count: 0
+while [spot: find text newline][
+    count: count + 1
+    text: next spot
+]
+</pre>
+<p>La conversion de ligne est aussi pratique pour la lecture de fichiers distants :</p>
+<pre>
+text: read ftp://ftp.rebol.com/test.txt
+</pre>
+<p>Quand un fichier est écrit, le caractère <b>newline</b> est converti dans le 
+type de fin de ligne pour le système d'exploitation cible. 
+Par exemple, le caractère newline est transformé en CRLF pour les PCs, LF sur UNIX 
+ou AMIGA, ou CR pour un Macintosh. Les fichiers sur le réseau sont écrits avec CRLF.</p>
+<p>La fonction suivante transforme n'importe quel texte, quel que soit le style de 
+fin de ligne en celui qu'utilise le système d'exploitation local :</p>
+<pre>
+convert-lines: func [file] [write file read file]
+</pre>
+<p>Le fichier est lu et tous les caractères de fin de ligne sont transformés en caractère newline, 
+puis le fichier est écrit et les caractères newline sont convertis 
+dans le type nécessaire pour le système d'exploitation local.</p>
+<p>La conversion de ligne peut être désactivée en lisant le fichier texte en mode binaire.</p>
+<p>Par exemple, la ligne suivante :</p>
+<pre>
+write/binary %newfile.txt read/binary %oldfile.txt
+</pre>
+<p>préserve les fins de ligne du fichier texte original (<i>%oldfile.txt</i>).</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-7">7. Blocs de Lignes</h2>
+<blockquote>
+<p>Les fichiers textes peuvent facilement être atteints et gérés 
+sous forme de lignes individuelles, plutôt que comme une seule série de caractères.
+Par exemple, pour lire un fichier sous la forme d'un bloc de lignes :</p>
+<pre>
+lines: read/lines %service.txt
+</pre>
+<p>L'exemple précédent renvoie un bloc contenant une série (au sens REBOL) de chaînes de 
+caractères (une pour chaque ligne), sans caractères de fin de ligne. Les lignes vierges 
+sont représentées par des chaînes vides.</p>
+<p>Pour afficher une ligne spécifique, vous pouvez utiliser le code suivant :</p>
+<pre>
+print first lines
+print last lines
+print pick lines 100
+print lines/500
+</pre>
+<p>Pour afficher toutes les lignes d'un fichier, utilisez l'exemple de code suivant.</p>
+<pre>
+foreach line lines [print line]
+<span class="output">I wanted the gold, and I sought it,
+I scrabbled and mucked like a slave.
+Was it famine or scurvy -- I fought it;
+I hurled my youth into a grave.
+I wanted the gold, and I got it --
+Came out with a fortune last fall, --
+Yet somehow life's not what I thought it,
+And somehow the gold isn't all.</span>
+</pre>
+<p>Pour afficher toutes les lignes qui contiennent la chaîne "<i>gold</i>", 
+utilisez la ligne de code suivante :</p>
+<pre>
+foreach line lines [
+   if find line "gold" [print line]
+]
+<span class="output">I wanted the gold, and I sought it,
+I wanted the gold, and I got it --
+And somehow the gold isn't all.</span>
+</pre>
+<p>Vous pouvez écrire un fichier texte ligne par ligne en utilisant 
+la fonction <b>write</b> avec le raffinement <b>/lines</b> :</p>
+<pre>
+write/lines %output.txt lines
+</pre>
+<p>Pour écrire un fichier à partir de lignes spécifiques d'un bloc, utilisez :</p>
+<pre>
+write/lines %output.txt [
+    "line one"
+    "line two"
+    "line three"
+]
+</pre>
+<p>En fait, les fonctions <b>read/lines</b> et <b>write/lines</b> peuvent être combinées pour 
+traiter des fichiers ligne par ligne. Par exemple, le code suivant efface tous les commentaires 
+d'un script REBOL :</p>
+<pre>
+script: read/lines %script.r
+foreach line script [
+    where: find line ";"
+    if where [clear where]
+]
+write/lines %script1.r script
+</pre>
+<p>Le bout de script précédent est indiqué à des fins de démonstration. 
+En effet, en plus d'effacer les commentaires, le code effacerait aussi les points virgules 
+valides présents dans les chaînes de caractères entre apostrophes.</p>
+<p>Les fichiers peuvent également être lus ligne par ligne depuis le réseau :</p>
+<pre>
+data: read/lines http://www.rebol.com
+
+print pick (read/lines ftp://ftp.rebol.com/test.txt) 3
+<span class="output">new</span>
+</pre>
+<p>Le rafinement <b>/lines</b> peut aussi être utilisé avec la fonction <b>open</b> 
+pour lire une ligne à la fois à partir d'une saisie à la console. Voir 
+<a href="fr-rebolcore-14.html">le chapitre sur les Ports</a> pour plus d'information.</p>
+<p>De surcroît, <b>/lines</b> peut servir, avec le raffinement <b>/append</b>, à 
+ajouter des lignes à un fichier, depuis un bloc.</p>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-8">8. Information sur les fichiers et les répertoires</h2>
+<blockquote>
+<p>Il existe de nombreuses fonctions permettant d'avoir des informations utiles sur 
+un fichier comme : s'il existe, sa taille en octets, lorsqu'il a été modifié, ou 
+s'il s'agit d'un répertoire.</p>
+</blockquote>
+<p>
+<h3 id="section-8.1">8.1 Contrôle de Répertoire</h3>
+<blockquote>
+<p>Pour déterminer si un nom de fichier est celui d'un répertoire, utilisez 
+la fonction <b>dir?</b>.</p>
+<pre>
+print dir? %file.txt
+<span class="output">false</span>
+print dir? %.
+<span class="output">true</span>
+</pre>
+<p>La fonction <b>dir?</b> fonctionne également avec la plupart des protocoles réseau :</p>
+<pre>
+print dir? ftp://www.rebol.com/pub/
+<span class="output">true</span>
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.2">8.2 Existence de fichier</h3>
+<blockquote>
+<p>Pour déterminer si un fichier existe, utilisez la fonction <b>exists?</b>  :</p>
+<pre>
+print exists? %file.txt
+</pre>
+<p>Pour savoir si un fichier existe avant d'essayer de le lire :</p>
+<pre>
+if exists? file [text: read file]
+</pre>
+<p>Pour éviter d'écraser un fichier, vous pouvez contrôler sa présence :</p>
+<pre>
+if not exists? file [write file data]
+</pre>
+<p>La fonction <b>exists?</b> fonctionne aussi avec la plupart des 
+protocoles réseau :</p>
+<pre>
+print exists? ftp://www.rebol.com/file.txt
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.3">8.3 Taille de fichier</h3>
+<blockquote>
+<p>Pour obtenir la taille en octets d'un fichier, utilisez la fonction <b>size?</b> :</p>
+<pre>
+print size? %file.txt
+</pre>
+<p>La fonction <b>size?</b> est utilisable avce la plupart des protocoles réseau :</p>
+<pre>
+print size? ftp://www.rebol.com/file.txt
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.4">8.4 Date de modification d'un fichier</h3>
+<blockquote>
+<p>Pour obtenir la date à laquelle un fichier a été modifié, utilisez la 
+fonction <b>modified?</b> :</p>
+<pre>
+print modified? %file.txt
+<span class="output">30-Jun-2000/14:41:55-7:00</span>
+</pre>
+<p>Tous les systèmes d'exploitation ne conservent pas la date de création d'un fichier, 
+donc pour gardez les scripts REBOL indépendants du système d'exploitation, utilisez 
+<b>modified?</b> juste lorsque la date de dernière modification est accessible.</p>
+<p>La fonction <b>modified?</b> fonctionne aussi avec la plupart des protocoles réseaux :</p>
+<pre>
+print modified? ftp://www.rebol.com/file.txt
+</pre>
+</blockquote>
+<p>
+<h3 id="section-8.5">8.5 Information relative à un fichier</h3>
+<blockquote>
+<p>La fonction <b>info?</b> récupére toutes les informations sur les fichiers et les répertoires 
+en même temps. Ces informations sont retournées sous la forme d'un objet :</p>
+<pre>
+probe info? %file.txt
+<span class="output">make object! [
+    size: 306
+    date: 30-Jun-2000/14:41:55-7:00
+    type: 'file
+]</span>
+</pre>
+<p>Pour afficher des informations concernant tous les fichiers du répertoire 
+courant, utilisez :</p>
+<pre>
+foreach file read %. [
+    info: info? file
+    print [file info/size info/date info/type]
+]
+<span class="output">build-guide.r 22334 30-Jun-2000/14:24:43-7:00 file
+code/ 11 11-Oct-1999/18:37:04-7:00 directory
+data.r 41 30-Jun-2000/14:41:36-7:00 file
+file.txt 306 30-Jun-2000/14:41:55-7:00 file</span>
+</pre>
+<p>La fonction <b>info?</b> est utilisable avec beaucoup de protocoles réseau :</p>
+<pre>
+probe info? ftp://www.rebol.com/file.txt
+</pre>
+</blockquote>
+<p>
+<div class="top">[ <a href="#top">Retour au sommaire</a> ]</div>
+
+
+<h2 id="section-9">9. Répertoires</h2>
+<blockquote>
+<p>Il y a plusieurs fonctions prêtes à l'emploi pour lire des répertoires, gérer des 
+sous-répertoires, créer de nouveaux répertoires, renommer et effacer des fichiers.</p>
+<p>De plus, il existe les fonctions standards, pour connaître, modifier et lister le répertoire 
+courant.</p>
+<p>Pour plus d'informations pour l'accés aux répertoires, voir <a href="fr-rebolcore-14.html">le chapitre sur les Ports</a>.</p>
+</blockquote>
+<p>
+<h3 id="section-9.1">9.1 Lire un répertoire</h3>
+<blockquote>
+<p>Les répertoires sont lus de la même manière que les fichiers. 
+La fonction <b>read</b> renvoie un bloc de noms de fichiers au lieu de données texte ou binaires.</p>
+<p>Pour connaître tous les noms de fichiers du répertoire courant, utilisez la ligne suivante de 
+code :</p>
+<pre>
+read %.
+</pre>
+<p>L'exemple précédent lit le répertoire entier et renvoie un bloc composé des noms 
+des fichiers.</p>
+<p>Pour afficher les noms de tous les fichiers dans un répertoire, utilisez la ligne de 
+code suivante :</p>
+<pre>
+print read %intro/
+<span class="output">CVS/ history.t intro.t overview.t quick.t</span>
+</pre>
+<p>A l'intérieur du bloc renvoyé, les noms des répertoires sont spécifiés avec un slash final. 
+Pour afficher chaque nom de fichier sur un ligne différente, saisissez :</p>
+<pre>
+foreach file read %intro/ [print file]
+<span class="output">CVS/
+history.t
+intro.t
+overview.t
+quick.t</span>
+</pre>
+<p>Voici une manière facile d'afficher seulement les répertoires qui ont été trouvés :</p>
+<pre>
+foreach file read %intro/ [
+    if #"/" = last file [print file]
+]
+<span class="output">CVS/</span>
+</pre>
+<p>Si vous voulez lire un répertoire présent sur le réseau, n'oubliez pas d'inclure le symbole 
+"slash" à la fin de l'URL pour indiquer au protocole que vous faites référence à un répertoire :</p>
+<pre>
+print read ftp://ftp.rebol.com/
+</pre>
+</blockquote>
+<p>
+<h3 id="section-9.2">9.2 Créer un répertoire</h3>
+<blockquote>
+<p>La fonction <b>make-dir</b> permet de créer un nouveau répertoire.</p>
+<p>Le nom du nouveau répertoire doit être relatif au répertoire courant ou à un chemin absolu.</p>
+<pre>
+make-dir %new-dir
+make-dir %local-dir/
+make-dir %/work/docs/old-docs/
+</pre>
+<p>Le slash final est optionnel pour cette fonction. En interne, la fonction <b>make-dir</b> appelle 
+la fonction <b>open</b> avec le raffinement <b>/new</b>.</p>
+<p>La ligne :</p>
+<pre>
+close open/new %local-dir/
+</pre>
+<p>crée également un nouveau répertoire. Le slash final est par contre important dans cet exemple, car 
+il indique qu'un répertoire doit être créé plutôt qu'un fichier.</p>
+<p>Si vous utilisez la fonction <b>make-dir</b> pour créer un répertoire déjà existant, une erreur 
+sera générée. L'erreur peut être capturée avec la fonction <b>try</b>. L'existence du répertoire doit être 
+contrôlée auparavant avec la fonction <b>exists?</b>.</p>
+</blockquote>
+<p>
+<h3 id="section-9.3">9.3 Renommage des répertoires et des fichiers</h3>
+<blockquote>
+<p>Pour renommer un fichier, utilisez la fonction <b>rename</b> :</p>
+<pre>
+rename %old-file %new-file
+</pre>
+<p>L'ancien nom de fichier doit inclure le chemin d'accés complet au fichier, mais ceci n'est 
+pas nécessaire pour le nouveau nom de fichier. En effet, la fonction <b>rename</b> n'est 
+pas destinée à déplacer des fichiers entre différents répertoires.(Beaucoup de 
+systèmes d'exploitation ne permettent pas cette fonctionnalité.)</p>
+<pre>
+rename %../docs/intro.txt %conclusion.txt
+</pre>
+<p>Si l'ancien nom de fichier est un répertoire (indiqué par un slash final), la fonction 
+<b>rename</b> renommera le répertoire :</p>
+<pre>
+rename %../docs/ %manual/
+</pre>
+<p>Si le fichier ne peut être renommé, une erreur se produira. 
+L'erreur peut être capturée avec la fonction <b>try</b>.</p>
+</blockquote>
+<p>
+<h3 id="section-9.4">9.4 Effacer des répertoires et des fichiers</h3>
+<blockquote>
+<p>Les fichiers peuvent être effacés avec la fonction <b>delete</b> :</p>
+<pre>
+delete %file
+</pre>
+<p>Le fichier à supprimer doit avoir un chemin d'accès complet :</p>
+<pre>
+delete %source/docs/file.txt
+</pre>
+<p>Un bloc de plusieurs fichiers au sein d'un même répertoire peut aussi 
+être supprimé en une fois :</p>
+<pre>
+delete [%file1 %file2 %file3]
+</pre>
+<p>Un ensemble de fichiers peut être supprimé en utilisant un caractère joker et le raffinement <b>/any</b> :</p>
+<pre>
+delete/any %file*
+delete/any %secret.?
+</pre>
+<p>Le caractère joker "astérisque" <b>(*)</b> est équivalent à "tous les caractères", et le caractère 
+joker "point d'interrogation" <b>(?)</b> équivaut à remplacer un unique caractère.</p>
+<p>Pour supprimer un répertoire, mettez à son nom le slash final :</p>
+<pre>
+delete %dir/
+delete %../docs/old/
+</pre>
+<p>Si le fichier ne peut être supprimé, une erreur sera générée. Il est possible de 
+capturer cette erreur avec la fonction <b>try</b>.</p>
+</blockquote>
+<p>
+<h3 id="section-9.5">9.5 Répertoire courant</h3>
+<blockquote>
+<p>Utilisez la fonction <b>what-dir</b> pour déterminer le répertoire courant :</p>
+<pre>
+print what-dir
+<span class="output">/work/REBOL/</span>
+</pre>
+<p>La fonction <b>what-dir</b> fait référence au répertoire courant relatif au script en oeuvre comme 
+indiqué dans la variable  <b>system/script/path</b>.</p>
+</blockquote>
+<p>
+<h3 id="section-9.6">9.6 Modifier le répertoire courant</h3>
+<blockquote>
+<p>Pour modifier le répertoire courant, utilisez la fonction <b>change-dir</b> :</p>
+<pre>
+change-dir %new-path/to-dir/
+</pre>
+<p>Si le slash final n'est pas inclus, la fonction l'ajoute.</p>
+</blockquote>
+<p>
+<h3 id="section-9.7">9.7 Listing du Répertoire courant</h3>
+<blockquote>
+<p>Pour lister le contenu du répertoire courant, utilisez :</p>
+<pre>
+list-dir
+</pre>
+<p>Le nombre de colonnes utilisées pour afficher le contenu du répertoire dépend de la 
+taille de fenêtre de la console, et de la longueur maximale des noms de fichiers.</p>
+</blockquote><br><br><hr><br><center><span class="tail">Updated 8-Apr-2005 - <a href="http://www.rebol.com">Copyright REBOL Technologies</a> - Formatted with MakeDoc2 - Translation by Philippe Le Goff</span></center><blockquote>
+</blockquote>
+</p>
+</td></tr>
+</table>
+</center>
+
+
+<map name="bar-map">
+<area shape="rect" coords="0,0,150,28"   href="http://www.rebol.com" alt="REBOL.com">
+<area shape="rect" coords="175,0,275,28" href="http://www.rebol.com/docs.html" alt="Documents">
+<area shape="rect" coords="285,0,365,28" href="http://www.rebol.com/docs/core23/rebolcore.html" alt="Manual">
+<area shape="rect" coords="375,0,445,28" href="http://www.rebol.com/docs/dictionary.html" alt="Dictionary">
+<area shape="rect" coords="452,0,500,28" href="http://www.rebol.com/library.html" alt="Library">
+<area shape="rect" coords="510,0,575,28" href="http://www.rebol.com/feedback.html" alt="Feedback">
+</map>
+
+</body>
+</html>
